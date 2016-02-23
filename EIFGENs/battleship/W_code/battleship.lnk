@@ -1,8 +1,8 @@
 -STACK:5000000 -NODEFAULTLIB:libc -STACK:5000000 -NODEFAULTLIB:libc -SUBSYSTEM:CONSOLE -OUT:battleship.exe 
 e1\emain.obj 
-"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\studio\spec\win64\lib\msc\wkbench.lib" 
+"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\studio\spec\win64\lib\msc\wkbench.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\OpenAL\lib\win64\msc\OpenAL32.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\cpf\spec\msc\win64\lib\cpf_additions.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\audio_sound_file\spec\msc\win64\lib\sndfile_additions.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\libsndfile\lib\win64\msc\libsndfile-1.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\game_core\spec\msc\win64\lib\sdl_additions.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2\lib\win64\msc\SDL2.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2\lib\win64\msc\SDL2main.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_gfx\lib\win64\msc\SDL2_gfx.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_image\lib\win64\msc\SDL2_image.lib" "C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_ttf\lib\win64\msc\SDL2_ttf.lib" 
 USER32.lib WS2_32.lib ADVAPI32.lib GDI32.lib SHELL32.lib MSIMG32.lib COMDLG32.lib UUID.lib OLE32.lib OLEAUT32.lib COMCTL32.lib MPR.LIB SHLWAPI.LIB WINSPOOL.LIB "c:\users\guillaume\documents\eiffel user files\15.11\precomp\spec\win64\EIFGENs\base-safe\W_code\msc\precomp.lib" 
 battleship.res 
 E1\eparents.obj E1\einit.obj E1\ececil.obj E1\evisib.obj E1\enames.obj 
 E1\eskelet.obj E1\eplug.obj E1\ecall.obj E1\efrozen.obj E1\epattern.obj 
-E1\eoption.obj C1\Cobj1.lib 
+E1\eoption.obj C2\Cobj2.lib C1\Cobj1.lib 

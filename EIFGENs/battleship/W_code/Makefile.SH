@@ -11,7 +11,7 @@ case "$O" in
 esac
 echo "Preparing C compilation"
 $spitshell >Makefile <<!GROK!THIS!
-INCLUDE_PATH = 
+INCLUDE_PATH =  -I"\$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\OpenAL\include" -I"\$(EIFFEL_LIBRARY)\contrib\library\game2\cpf\spec\include" -I"\$(EIFFEL_LIBRARY)/contrib/library/game2/audio_sound_file/spec/include" -I"\$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\libsndfile\include" -I"\$(EIFFEL_LIBRARY)/contrib/library/game2/game_core/spec/include" -I"\$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\SDL2\include" -I"\$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\SDL2_gfx\include" -I"\$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\SDL2_image\include" -I"\$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\SDL2_ttf\include"
 SHELL = /bin/sh
 CC = $cc
 CPP = $cpp
@@ -53,14 +53,27 @@ $spitshell >>Makefile <<'!NO!SUBS!'
 .cpp.o:
 	$(CPP) $(CPPFLAGS) -c $<
 
-SUBDIRS = C1 E1
+SUBDIRS = C1 C2 E1
 
-EXTERNALS = 
+EXTERNALS =  \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\OpenAL\lib\$(ISE_PLATFORM)\$(ISE_C_COMPILER)\OpenAL32.lib" \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\cpf\spec\$(ISE_C_COMPILER)\$(ISE_PLATFORM)\lib\cpf_additions.lib" \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\audio_sound_file\spec\$(ISE_C_COMPILER)\$(ISE_PLATFORM)\lib\sndfile_additions.lib" \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\libsndfile\lib\$(ISE_PLATFORM)\$(ISE_C_COMPILER)\libsndfile-1.lib" \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\game_core\spec\$(ISE_C_COMPILER)\$(ISE_PLATFORM)\lib\sdl_additions.lib" \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\SDL2\lib\$(ISE_PLATFORM)\$(ISE_C_COMPILER)\SDL2.lib" \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\SDL2\lib\$(ISE_PLATFORM)\$(ISE_C_COMPILER)\SDL2main.lib" \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\SDL2_gfx\lib\$(ISE_PLATFORM)\$(ISE_C_COMPILER)\SDL2_gfx.lib" \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\SDL2_image\lib\$(ISE_PLATFORM)\$(ISE_C_COMPILER)\SDL2_image.lib" \
+	"$(EIFFEL_LIBRARY)\contrib\library\game2\C_lib_win\SDL2_ttf\lib\$(ISE_PLATFORM)\$(ISE_C_COMPILER)\SDL2_ttf.lib"
 
 all: battleship
 
 C1/Cobj1.o: Makefile E1/estructure.h
 	cd C1 ; $(START_TEST) $(SHELL) Makefile.SH ; $(MAKE) $(END_TEST)
+
+C2/Cobj2.o: Makefile E1/estructure.h
+	cd C2 ; $(START_TEST) $(SHELL) Makefile.SH ; $(MAKE) $(END_TEST)
 
 E1/Makefile: E1/Makefile.SH
 	cd E1 ; $(SHELL) Makefile.SH
@@ -102,7 +115,7 @@ E1/einit.o: Makefile E1/Makefile E1/estructure.h
 E1/eparents.o: Makefile E1/Makefile E1/estructure.h
 	cd E1 ; $(MAKE) eparents.o
 
-OBJECTS= C1/Cobj1.o  E1/eoption.o E1/epattern.o E1/efrozen.o E1/ecall.o E1/eplug.o E1/eskelet.o E1/enames.o E1/evisib.o E1/ececil.o E1/einit.o E1/eparents.o
+OBJECTS= C2/Cobj2.o C1/Cobj1.o  E1/eoption.o E1/epattern.o E1/efrozen.o E1/ecall.o E1/eplug.o E1/eskelet.o E1/enames.o E1/evisib.o E1/ececil.o E1/einit.o E1/eparents.o
 
 PRECOMP_OBJECTS= "c:\users\guillaume\documents\eiffel user files\15.11\precomp\spec\win64\EIFGENs\base-safe\W_code\precomp.lib"
 

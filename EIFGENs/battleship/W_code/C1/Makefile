@@ -1,4 +1,4 @@
-INCLUDE_PATH = 
+INCLUDE_PATH =  -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\OpenAL\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\cpf\spec\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\audio_sound_file\spec\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\libsndfile\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\game_core\spec\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_gfx\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_image\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_ttf\include"
 SHELL = \bin\sh
 CC = cl
 CPP = cl
@@ -41,7 +41,14 @@ SYSTEM_IN_DYNAMIC_LIB = battleship.dll
 
 OBJECTS = big_file_C1_c.obj 
 
-OLDOBJECTS =  ap861.obj ap861d.obj 
+OLDOBJECTS =  ap861.obj ap861d.obj im890.obj im890d.obj ga889.obj ga889d.obj im881.obj im881d.obj \
+	ga864.obj ga864d.obj ga874.obj ga874d.obj ga888.obj ga888d.obj ga882.obj ga882d.obj \
+	im863.obj im863d.obj im880.obj im880d.obj ga878.obj ga878d.obj ga887.obj ga887d.obj \
+	ga886.obj ga886d.obj ga862.obj ga862d.obj ga885.obj ga885d.obj ga873.obj ga873d.obj \
+	ga884.obj ga884d.obj ga892.obj ga892d.obj ga879.obj ga879d.obj ga872.obj ga872d.obj \
+	ga871.obj ga871d.obj ga883.obj ga883d.obj ga868.obj ga868d.obj ga869.obj ga869d.obj \
+	ga877.obj ga877d.obj ga870.obj ga870d.obj ga867.obj ga867d.obj ga866.obj ga866d.obj \
+	ga875.obj ga875d.obj ga891.obj ga891d.obj ga865.obj ga865d.obj ga876.obj ga876d.obj 
 
 all::  Cobj1.lib
 

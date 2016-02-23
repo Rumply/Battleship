@@ -1,4 +1,4 @@
-INCLUDE_PATH = 
+INCLUDE_PATH =  -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\OpenAL\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\cpf\spec\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\audio_sound_file\spec\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\libsndfile\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\game_core\spec\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_gfx\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_image\include" -I"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_ttf\include"
 SHELL = \bin\sh
 CC = cl
 CPP = cl
@@ -39,9 +39,19 @@ SYSTEM_IN_DYNAMIC_LIB = battleship.dll
 .cpp.obj:
 	$(CPP) $(CPPFLAGS) -c $<
 
-SUBDIRS = C1 E1
+SUBDIRS = C1 C2 E1
 
-EXTERNALS = 
+EXTERNALS =  \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\OpenAL\lib\win64\msc\OpenAL32.lib" \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\cpf\spec\msc\win64\lib\cpf_additions.lib" \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\audio_sound_file\spec\msc\win64\lib\sndfile_additions.lib" \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\libsndfile\lib\win64\msc\libsndfile-1.lib" \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\game_core\spec\msc\win64\lib\sdl_additions.lib" \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2\lib\win64\msc\SDL2.lib" \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2\lib\win64\msc\SDL2main.lib" \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_gfx\lib\win64\msc\SDL2_gfx.lib" \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_image\lib\win64\msc\SDL2_image.lib" \
+	"C:\Program Files\Eiffel Software\EiffelStudio 15.11 GPL\contrib\library\game2\C_lib_win\SDL2_ttf\lib\win64\msc\SDL2_ttf.lib"
 
 all:: battleship.exe
 	echo done > completed.eif
@@ -49,6 +59,11 @@ all:: battleship.exe
 C1\Cobj1.lib: Makefile E1\estructure.h
 	cd C1
 	$(START_TEST) $(MAKE) Cobj1.lib $(END_TEST)
+	cd ..
+
+C2\Cobj2.lib: Makefile E1\estructure.h
+	cd C2
+	$(START_TEST) $(MAKE) Cobj2.lib $(END_TEST)
 	cd ..
 
 E1\emain.obj:  Makefile E1\Makefile
@@ -112,9 +127,9 @@ E1\eparents.obj : Makefile E1\Makefile E1\estructure.h
 	$(START_TEST) $(MAKE) eparents.obj  $(END_TEST)
 	cd ..
 
-OBJECTS = E1\eparents.obj  E1\einit.obj  E1\ececil.obj  E1\evisib.obj  E1\enames.obj  E1\eskelet.obj  E1\eplug.obj  E1\ecall.obj  E1\efrozen.obj  E1\epattern.obj  E1\eoption.obj  C1\Cobj1.lib 
+OBJECTS = E1\eparents.obj  E1\einit.obj  E1\ececil.obj  E1\evisib.obj  E1\enames.obj  E1\eskelet.obj  E1\eplug.obj  E1\ecall.obj  E1\efrozen.obj  E1\epattern.obj  E1\eoption.obj  C2\Cobj2.lib C1\Cobj1.lib 
 
-C_OBJECTS = C1\Cobj1.lib 
+C_OBJECTS = C2\Cobj2.lib C1\Cobj1.lib 
 
 EOBJECTS = E1\eparents.obj  E1\einit.obj  E1\ececil.obj  E1\evisib.obj  E1\enames.obj  E1\eskelet.obj  E1\eplug.obj  E1\ecall.obj  E1\efrozen.obj  E1\epattern.obj  E1\eoption.obj  
 
@@ -135,13 +150,13 @@ battleship.lnk: $(OBJECTS) e1\emain.obj battleship.res Makefile
 	if exist $@ $(RM) $@
 	@echo $(LDFLAGS) $(CCLDFLAGS) -OUT:battleship.exe >> $@
 	@echo e1\emain.obj >> $@
-	@echo $(EIFLIB)  >> $@
+	@echo $(EIFLIB) $(EXTERNALS) >> $@
 	@echo USER32.lib WS2_32.lib ADVAPI32.lib GDI32.lib SHELL32.lib MSIMG32.lib \
 	COMDLG32.lib UUID.lib OLE32.lib OLEAUT32.lib COMCTL32.lib MPR.LIB SHLWAPI.LIB WINSPOOL.LIB $(ISE_SHAREDLIBS) $(PRECOMP_OBJECTS) >> $@
 	@echo battleship.res >> $@
 	echo E1\eparents.obj  E1\einit.obj  E1\ececil.obj  E1\evisib.obj  E1\enames.obj   >> $@ 
 	echo E1\eskelet.obj  E1\eplug.obj  E1\ecall.obj  E1\efrozen.obj  E1\epattern.obj   >> $@ 
-	echo E1\eoption.obj  C1\Cobj1.lib  >> $@ 
+	echo E1\eoption.obj  C2\Cobj2.lib C1\Cobj1.lib  >> $@ 
 
 
 RCECIL = wmalloc.obj wgarcol.obj wlocal.obj wexcept.obj wstore.obj wretrieve.obj whash.obj \
