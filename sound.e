@@ -33,7 +33,7 @@ feature {NONE}
 			create l_environment
 			audio_library.sources_add -- Add a sound source in the audio context.
 			l_source:=audio_library.last_source_added
-			create l_sound.make("PN_Try_This.ogg")
+			create l_sound.make("./ressource/son/PN_Try_This.ogg")
 			l_sound.open
 			l_source.queue_sound_loop(l_sound,1)
 			from l_source.play

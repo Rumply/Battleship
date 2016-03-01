@@ -31,6 +31,8 @@ feature {NONE} -- Initialization
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
 			l_background:ELEMENT
 			l_window:GAME_WINDOW_SURFACED
+			l_sound:SOUND
+
 		do
 			create l_background
 			if not l_background.has_error then
@@ -41,6 +43,7 @@ feature {NONE} -- Initialization
 				l_window := l_window_builder.generate_window
 				game_library.quit_signal_actions.extend(agent on_quit)
 				cycle(l_background, l_window)
+				create l_sound.make
 				--game_library.iteration_actions.extend (agent cycle(?, l_background, l_window))
 				game_library.launch
 			else
