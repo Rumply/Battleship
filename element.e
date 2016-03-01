@@ -9,21 +9,21 @@ class
 
 inherit
 	GAME_SURFACE
-		redefine
-			default_create
-		end
 
 create
-	default_create
+	make_surface
 
 feature {NONE} -- Initialization
 
-	default_create()
+	make_surface(a_filename:READABLE_STRING_GENERAL)
 		local
 			l_background: IMG_IMAGE_FILE
-			l_xPos,l_yPos: INTEGER
+			l_path: STRING_32
 		do
-			create l_background.make("./ressource/image/eau.jpg")
+
+			l_path:="./ressource/image/"
+			l_path.append_string_general (a_filename)
+			create l_background.make(l_path)
 			if l_background.is_openable then
 				l_background.open
 				if l_background.is_open then
