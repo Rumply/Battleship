@@ -32,7 +32,6 @@ feature {NONE} -- Initialization
 			l_menu:MAIN_MENU
 			l_window:GAME_WINDOW_SURFACED
 		do
-
 			create l_window_builder
 			l_window_builder.set_dimension (1500,1000)
 			l_window_builder.set_title("Premier teste")
