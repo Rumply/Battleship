@@ -9,6 +9,7 @@ class
 inherit
 	GAME_LIBRARY_SHARED		-- To use `game_library'
 	IMG_LIBRARY_SHARED		-- To use `image_file_library'
+	EXCEPTIONS
 
 
 create
@@ -19,6 +20,7 @@ feature {NONE} -- Initialization
 	make
 			-- Run application.
 		do
+			die(1)
 			game_library.enable_video -- Enable the video functionalities
 			image_file_library.enable_image (true, true, false)  -- Enable PNG image, JPG image (but not TIF).
 			run_game  -- Run the core creator of the game.
@@ -32,7 +34,7 @@ feature {NONE} -- Initialization
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
 			l_window:GAME_WINDOW_SURFACED
 		do
-			create l_window_builderd
+			create l_window_builder
 			l_window_builder.set_dimension (100,100)
 			l_window_builder.set_title("Premier teste")
 			l_window := l_window_builder.generate_window
