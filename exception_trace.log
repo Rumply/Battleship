@@ -78,3 +78,5 @@ APPLICATION         make @3
 APPLICATION         root's creation                                     
 <0000007E51F185A8>                         Routine failure.              Exit
 -------------------------------------------------------------------------------
+Catcall detected in {PROCEDURE}.call for arg#1: expected TUPLE [NATURAL_32, !GAME_MOUSE_MOTION_STATE, INTEGER_32, INTEGER_32] but got TUPLE [NATURAL_32]
+Catcall detected in {PROCEDURE}.call for arg#1: expected TUPLE [NATURAL_32, !GAME_MOUSE_MOTION_STATE, INTEGER_32, INTEGER_32] but got TUPLE [NATURAL_32]

@@ -23,9 +23,12 @@ feature {NONE}
 			create l_environment
 			audio_library.sources_add -- Add a sound source in the audio context.
 			l_source:=audio_library.last_source_added
-			create l_sound.make("PN_Try_This.ogg")
+			create l_sound.make("teste2.wav")
 			l_sound.open
 			l_source.queue_sound_loop(l_sound,1)
+			l_source.set_buffer_size (64000)
+			--l_source.set_gain (0.2)
+
 			l_source.play
 		end
 
