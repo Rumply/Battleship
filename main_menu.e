@@ -14,6 +14,26 @@ feature {NONE} -- Initialize
 
 	make_menu(a_window:GAME_WINDOW_SURFACED)
 	do
+		create background.make_surface ("eau.jpg")
+		create bouton.make_surface ("main_button.jpg")
+		create title.make_surface ("title.png")
+
+		create {TUPLE[x,y:INTEGER]} bouton1.default_create
+		bouton1.x:= 500
+		bouton1.y:= 300
+		create {TUPLE[x,y:INTEGER]} bouton2.default_create
+		bouton2.x:= 500
+		bouton2.y:= 600
+
+		create {TUPLE[x,y:INTEGER]} speaker_pos.default_create
+		speaker_pos.x:= 10
+		speaker_pos.y:= 10
+
+		Speaker_Scale_width:=50
+		Speaker_Scale_height:=50
+
+		create speaker.make_surface ("speaker.png")
+
 		cycle(a_window)
 	end
 
@@ -21,31 +41,25 @@ feature {NONE} -- Implementation
 
 	cycle(a_window:GAME_WINDOW_SURFACED)
 			-- Event that is launch at each iteration.
-		local
-			l_background,l_title:ELEMENT
 		do
 			menu:= a_window
 
-			create l_background.make_surface ("eau.jpg")
-			fill_background(l_background)
-
-			create bouton.make_surface ("main_button.jpg")
+			fill_background
 			setup_button
-
-			create l_title.make_surface ("title.png")
-			setup_title(l_title)
+			setup_title
+			setup_speaker
 
 			-- Update modification in the screen
 			menu.update
 		end
 
-	fill_background(a_background:ELEMENT)
+	fill_background
 		local
 			width,height,l_Wreste,l_Hreste,l_x,l_y:INTEGER
 		do
 			-- Draw the scene
-			width:=a_background.width.to_integer
-			height:=a_background.height.to_integer
+			width:=background.width.to_integer
+			height:=background.height.to_integer
 			l_x:=0
 			l_y:=0
 
@@ -60,26 +74,37 @@ feature {NONE} -- Implementation
 					l_Wreste <= 0
 				loop
 					l_Wreste:= l_Wreste - width
-					menu.surface.draw_surface(a_background, l_x, l_y)
+					menu.surface.draw_surface(background, l_x, l_y)
 					l_x:= l_x + width
 				end
 				l_x:=0
 				l_Hreste:= l_Hreste - height
-				menu.surface.draw_surface(a_background, l_x, l_y)
+				menu.surface.draw_surface(background, l_x, l_y)
 				l_y:= l_y + height
 			end
 		end
 
-	setup_title(a_title:ELEMENT)
+	setup_title
 		local
 			width,height:INTEGER
 		do
 			-- Draw the scene
-			width:=a_title.width.to_integer
-			height:=a_title.height.to_integer
+			width:=title.width.to_integer
+			height:=title.height.to_integer
 
 			-- Image title
-			menu.surface.draw_sub_surface_with_scale (a_title, 0, 0, width, height, 375, 50, 750, 200)
+			menu.surface.draw_sub_surface_with_scale (title, 0, 0, width, height, 375, 50, 750, 200)
+
+		end
+
+	setup_speaker
+		do
+			Speaker_width:=speaker.width.to_integer.quotient (2).truncated_to_integer
+			Speaker_height:=speaker.height.to_integer
+
+			menu.surface.draw_sub_surface_with_scale (speaker, 0, 0, Speaker_width, Speaker_height,
+													  Speaker_pos.x,Speaker_pos.y, Speaker_Scale_width,
+													  Speaker_Scale_height)
 
 		end
 
@@ -88,13 +113,6 @@ feature {NONE} -- Implementation
 			-- Draw the scene
 			BTN_width:=bouton.width.to_integer.quotient (2).truncated_to_integer
 			BTN_height:=bouton.height.to_integer.quotient (2).truncated_to_integer
-
-			create {TUPLE[x,y:INTEGER]} bouton1.default_create
-			bouton1.x:= 500
-			bouton1.y:= 300
-			create {TUPLE[x,y:INTEGER]} bouton2.default_create
-			bouton2.x:= 500
-			bouton2.y:= 600
 
 			-- Bouton SinglePlayer
 			menu.surface.draw_sub_surface (bouton, 0, 0, BTN_width, BTN_height, bouton1.x, bouton1.y)
@@ -106,6 +124,8 @@ feature {NONE} -- Implementation
 
 feature -- Access
 
+	-- Bouton 1 joueur
+
 	hover_button_1
 		do
 			menu.surface.draw_sub_surface (bouton, 500, 0, BTN_width, BTN_height, bouton1.x, bouton1.y)
@@ -116,7 +136,7 @@ feature -- Access
 			menu.surface.draw_sub_surface (bouton, 0, 0, BTN_width, BTN_height, bouton1.x, bouton1.y)
 		end
 
-	-- Bouton Multi
+	-- Bouton 2 joueur
 
 	hover_button_2
 		do
@@ -126,6 +146,15 @@ feature -- Access
 	normal_button_2
 		do
 			menu.surface.draw_sub_surface (bouton, 0, 250, BTN_width, BTN_height,bouton2.x, bouton2.y)
+		end
+
+	speaker_on
+		do
+			menu.surface.draw_sub_surface_with_scale (speaker, 0, 0, speaker_width, speaker_height, speaker_pos.x, speaker_pos.y, 50, 50)
+		end
+	speaker_off
+		do
+			menu.surface.draw_sub_surface_with_scale (speaker, 250, 0, speaker_width, speaker_height, speaker_pos.x, speaker_pos.y, 50, 50)
 		end
 
 	x:INTEGER assign set_x
@@ -150,14 +179,18 @@ feature -- Access
 			Is_Assign: y = a_y
 		end
 
-	menu:GAME_WINDOW_SURFACED
-
+	title:ELEMENT
+	background:ELEMENT
 	bouton:ELEMENT
+	speaker:ELEMENT
+
+	menu:GAME_WINDOW_SURFACED
 
 	bouton1:TUPLE[x,y:INTEGER]
 	bouton2:TUPLE[x,y:INTEGER]
+	speaker_pos:TUPLE[x,y:INTEGER]
 
-	BTN_width,BTN_height:INTEGER
+	BTN_width,BTN_height,Speaker_width,Speaker_height,Speaker_Scale_width,Speaker_Scale_height:INTEGER
 
 
 end

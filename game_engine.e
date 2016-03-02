@@ -24,7 +24,9 @@ feature {NONE}
 			l_window_builder.set_title("BattleShip")
 			window := l_window_builder.generate_window
 			create menu.make_menu (window)
-			create sound.make
+			create musique_menu.make_environment
+			musique_menu.add ("teste2.wav", -1)
+			musique_menu.play
 		end
 
 feature
@@ -37,6 +39,7 @@ feature
 			game_library.quit_signal_actions.extend(agent on_quit(?))
 			game_library.iteration_actions.extend (agent cycle(?))
 			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- When the user move the mouse on the window
+			window.mouse_button_pressed_actions.extend (agent on_mouse_click(?,?,?))
 			game_library.launch
 		end
 
@@ -98,6 +101,40 @@ feature {NONE} -- Implementation
 		audio_library.update
 	end
 
+	on_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; something: NATURAL_8)
+		local
+			l_x:INTEGER
+			l_y:INTEGER
+			click_on:BOOLEAN
+		do
+			l_x:=a_mouse_state.x
+			l_y:=a_mouse_state.y
+			click_on:=False
+
+			if l_x>menu.speaker_pos.x and l_x<(menu.speaker_pos.x+menu.speaker_scale_width) then
+				if l_y>menu.speaker_pos.y and l_y<(menu.speaker_pos.y+menu.speaker_scale_height)then
+					click_on:=True
+				else
+					click_on:=False
+				end
+			else
+				click_on:=False
+			end
+
+			if click_on then
+				if not musique_menu.muted then
+					musique_menu.mute
+					menu.speaker_off
+				elseif musique_menu.muted then
+					musique_menu.unmute
+					menu.speaker_on
+				end
+
+			end
+			window.update
+			audio_library.update
+		end
+
 	on_quit(a_timestamp: NATURAL_32)
 			-- This method is called when the quit signal is send to the application (ex: window X button pressed).
 		do
@@ -108,6 +145,6 @@ feature {NONE} -- Access
 
 	menu:MAIN_MENU
 	window:GAME_WINDOW_SURFACED
-	sound:SOUND
+	musique_menu:SOUND_ENGINE
 
 end

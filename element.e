@@ -17,17 +17,15 @@ feature {NONE} -- Initialization
 
 	make_surface(a_filename:READABLE_STRING_GENERAL)
 		local
-			l_background: IMG_IMAGE_FILE
-			l_path: STRING_32
+			l_path:STRING_32
 		do
-
 			l_path:="./ressource/image/"
 			l_path.append_string_general (a_filename)
-			create l_background.make(l_path)
-			if l_background.is_openable then
-				l_background.open
-				if l_background.is_open then
-					make_from_image (l_background)
+			create background.make(l_path)
+			if background.is_openable then
+				background.open
+				if background.is_open then
+					make_from_image (background)
 				else
 					has_error := True
 					make(1,1)
@@ -37,5 +35,9 @@ feature {NONE} -- Initialization
 				make(1,1)
 			end
 		end
+
+feature -- Access
+
+	background:IMG_IMAGE_FILE
 
 end
