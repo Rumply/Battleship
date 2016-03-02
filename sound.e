@@ -9,22 +9,12 @@ class
 
 inherit
 		AUDIO_LIBRARY_SHARED -- Enable the `audio_library' functionnality
-
 create
 	make
 
 feature {NONE}
 
 	make
-			-- Run application
-		do
-			audio_library.enable_sound -- Permit to the Audio
-			run_player
-			audio_library.quit_library -- Properly quit the library
-		end
-
-	run_player
-
 		local
 			l_source:AUDIO_SOURCE
 			l_sound:AUDIO_SOUND_FILE
@@ -36,13 +26,9 @@ feature {NONE}
 			create l_sound.make("PN_Try_This.ogg")
 			l_sound.open
 			l_source.queue_sound_loop(l_sound,1)
-			from l_source.play
-			until not l_source.is_playing
-			loop
-				l_environment.sleep (10000000) -- Put a loop delay to remove the CPU time.
-				audio_library.update -- This line is very important. If it is not executed reguraly, the source will stop playing.
-			end
+			l_source.play
 		end
+
 
 
 end
