@@ -29,73 +29,78 @@ feature {NONE} -- Initialization
 			-- Create ressources and launch the game
 		local
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
-			l_background:ELEMENT
+			l_menu:MAIN_MENU
 			l_window:GAME_WINDOW_SURFACED
 			l_sound:SOUND
-
 		do
-			create l_background
-			if not l_background.has_error then
-				create l_window_builder
-
-				l_window_builder.set_dimension (500,500)
-				l_window_builder.set_title("Premier teste")
-				l_window := l_window_builder.generate_window
-				game_library.quit_signal_actions.extend(agent on_quit)
-				cycle(l_background, l_window)
-				create l_sound.make
-				--game_library.iteration_actions.extend (agent cycle(?, l_background, l_window))
-				game_library.launch
-			else
-				print("Cannot create the background surface.")
-			end
+			create l_window_builder
+			l_window_builder.set_dimension (1500,1000)
+			l_window_builder.set_title("Premier teste")
+			l_window := l_window_builder.generate_window
+			create l_menu.make_menu (l_window)
+			game_library.quit_signal_actions.extend(agent on_quit)
+			create l_sound.make
+			l_window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?, l_window, l_menu))	-- When the user move the mouse on the window
+			game_library.launch
 		end
 
 feature {NONE} -- Implementation
 
-	cycle(a_background:ELEMENT; a_window:GAME_WINDOW_SURFACED)
-			-- Event that is launch at each iteration.
-		do
-			fill_background(a_background,a_window)
+	on_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32;a_window:GAME_WINDOW_SURFACED; a_menu:MAIN_MENU)
+	local
+		l_x:INTEGER
+		l_y:INTEGER
+		hover1:BOOLEAN
+		hover2:BOOLEAN
+	do
+		l_x:=a_mouse_state.x
+		l_y:=a_mouse_state.y
+		hover1:=False
+		hover2:=False
 
-			-- Update modification in the screen
-			a_window.update
-		end
-
-	fill_background(a_background:ELEMENT; a_window:GAME_WINDOW_SURFACED)
-		local
-			width,height,l_Wreste,l_Hreste,l_x,l_y:INTEGER
-		do
-			-- Draw the scene
-			width:=a_background.width.to_integer
-			height:=a_background.height.to_integer
-			l_x:=0
-			l_y:=0
-
-			from
-				l_Hreste:=a_window.height.to_integer
-			until
-				l_Hreste <= 0
-			loop
-				from
-					l_Wreste:=a_window.width.to_integer
-				until
-					l_Wreste <= 0
-				loop
-					l_Wreste:= l_Wreste - width
-					a_window.surface.draw_surface(a_background, l_x, l_y)
-					l_x:= l_x + width
-				end
-				l_x:=0
-				l_Hreste:= l_Hreste - height
-				a_window.surface.draw_surface(a_background, l_x, l_y)
-				l_y:= l_y + height
+		if l_x>a_menu.bouton1.x and l_x<(a_menu.bouton1.x+a_menu.btn_width) then
+			if l_y>a_menu.bouton1.y and l_y<(a_menu.bouton1.y+a_menu.btn_height)then
+				hover1:=True
+			else
+				hover1:=False
 			end
+		else
+			hover1:=False
 		end
+
+		if l_x>a_menu.bouton2.x and l_x<(a_menu.bouton2.x+a_menu.btn_width) then
+			if l_y>a_menu.bouton2.y and l_y<(a_menu.bouton2.y+a_menu.btn_height)then
+				hover2:=True
+			else
+				hover2:=False
+			end
+		else
+			hover2:=False
+		end
+
+		if hover1 then
+			a_menu.hover_button_1
+		else if hover2 then
+			a_menu.hover_button_2
+		end
+
+		end
+
+		if not hover1 then
+			a_menu.normal_button_1
+		end
+
+		if not hover2 then
+			a_menu.normal_button_2
+		end
+
+		a_window.update
+	end
 
 	on_quit(a_timestamp: NATURAL_32)
 			-- This method is called when the quit signal is send to the application (ex: window X button pressed).
 		do
 			game_library.stop  -- Stop the controller loop (allow game_library.launch to return)
 		end
+
 end

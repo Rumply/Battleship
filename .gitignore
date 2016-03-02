@@ -1,2 +1,7 @@
 *.dll
+<<<<<<< HEAD
 EIFGENs
+=======
+EIFGENs
+*.xcf
+>>>>>>> a0dd6df7d5e488e72bd7a8f33149339569d0f7e7
