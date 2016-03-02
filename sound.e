@@ -9,22 +9,12 @@ class
 
 inherit
 		AUDIO_LIBRARY_SHARED -- Enable the `audio_library' functionnality
-
 create
 	make
 
 feature {NONE}
 
 	make
-			-- Run application
-		do
-			audio_library.enable_sound -- Permit to the Audio
-			run_player
-			audio_library.quit_library -- Properly quit the library
-		end
-
-	run_player
-
 		local
 			l_source:AUDIO_SOURCE
 			l_sound:AUDIO_SOUND_FILE
@@ -38,4 +28,10 @@ feature {NONE}
 			l_source.queue_sound_loop(l_sound,1)
 			l_source.play
 		end
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 118de5ceab7cfde9a2e995384d84bd23852d02e5
 end
