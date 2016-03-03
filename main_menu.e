@@ -125,40 +125,21 @@ feature {NONE} -- Implementation
 
 	setup_title
 		do
-			-- Image title
-			menu.surface.draw_sub_surface_with_scale (title,
-														title.in_image_pos.x,
-														title.in_image_pos.y,
-														title.filedimension.width,
-														title.filedimension.height,
-														title.position.x,
-														title.position.y,
-														title.gamedimension.width,
-														title.gamedimension.height)
-
+			draw(title)
 		end
 
 	setup_speaker
 		do
-			menu.surface.draw_sub_surface_with_scale (speaker,
-														speaker.in_image_pos.x,
-														speaker.in_image_pos.y,
-														speaker.filedimension.width,
-														speaker.filedimension.height,
-														speaker.position.x,
-														speaker.position.y,
-														speaker.gamedimension.width,
-														speaker.gamedimension.height)
-
+			draw(speaker)
 		end
 
 	setup_button
 		do
 			-- Bouton SinglePlayer
-			normal_button_1
+			normal_button_s
 
 			-- Bouton MultiPlayer
-			normal_button_2
+			normal_button_m
 
 		end
 
@@ -181,23 +162,21 @@ feature -- Access
 
 			bouton_s.is_on (a_x, a_y)
 			if bouton_s.hover then
-				hover_button_1
+				hover_button_s
 			elseif not bouton_s.hover then
-				normal_button_1
+				normal_button_s
 			end
 
 			bouton_m.is_on (a_x, a_y)
 			if bouton_m.hover then
-				hover_button_2
+				hover_button_m
 			elseif not bouton_m.hover then
-				normal_button_2
+				normal_button_m
 			end
 
 		end
 
-	-- Bouton 1 joueur
-
-	draw_bouton(a_bouton:ELEMENT)
+	draw(a_bouton:ELEMENT)
 		do
 			menu.surface.draw_sub_surface_with_scale (a_bouton,
 														a_bouton.in_image_pos.x,
@@ -210,78 +189,55 @@ feature -- Access
 														a_bouton.gamedimension.height)
 		end
 
-	hover_button_1
+	-- Bouton 1 joueur
+
+	hover_button_s
 		do
 			bouton_s.in_image_pos.x:=500
 			bouton_s.in_image_pos.y:=0
-			draw_bouton(bouton_s)
+			draw(bouton_s)
 		end
 
-	normal_button_1
+	normal_button_s
 		do
 			bouton_s.in_image_pos.x:=0
 			bouton_s.in_image_pos.y:=0
-			draw_bouton(bouton_s)
+			draw(bouton_s)
 		end
 
-	-- Bouton 2 joueur
+	-- Bouton : 2 joueur
 
-	hover_button_2
+	hover_button_m
 		do
 
 			bouton_m.in_image_pos.x:=500
 			bouton_m.in_image_pos.y:=250
-			draw_bouton(bouton_m)
+			draw(bouton_m)
 		end
 
-	normal_button_2
+	normal_button_m
 		do
 
 			bouton_m.in_image_pos.x:=0
 			bouton_m.in_image_pos.y:=250
-			draw_bouton(bouton_m)
+			draw(bouton_m)
 		end
 
 	speaker_on
 		do
 			speaker.in_image_pos.x:=0
 			speaker.in_image_pos.y:=0
-			draw_bouton(speaker)
+			draw(speaker)
 		end
 	speaker_off
 		do
 			speaker.in_image_pos.x:=250
 			speaker.in_image_pos.y:=0
-			draw_bouton(speaker)
-		end
-
-	x:INTEGER assign set_x
-			-- Vertical position of `Current'
-
-	y:INTEGER assign set_y
-			-- Horizontal position of `Current'
-
-	set_x(a_x:INTEGER)
-			-- Assign the value of `x' with `a_x'
-		do
-			x := a_x
-		ensure
-			Is_Assign: x = a_x
-		end
-
-	set_y(a_y:INTEGER)
-			-- Assign the value of `y' with `a_y'
-		do
-			y := a_y
-		ensure
-			Is_Assign: y = a_y
+			draw(speaker)
 		end
 
 	background,title,bouton_S,bouton_M,speaker:ELEMENT
 
 	menu:GAME_WINDOW_SURFACED
-
-	BTN_width,BTN_height,Speaker_width,Speaker_height,Speaker_Scale_width,Speaker_Scale_height:INTEGER
-
 
 end

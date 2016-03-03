@@ -90,8 +90,6 @@ feature -- Access
 
 	source:AUDIO_SOURCE
 
-	path:STRING_32
-
 	has_error:BOOLEAN
 
 	bufferSize:INTEGER assign set_bufferSize
@@ -105,5 +103,9 @@ feature -- Access
 		ensure
 			Is_Assign: bufferSize = a_bufferSize
 		end
+
+feature -- Constant
+
+	path:STRING_32
 
 end

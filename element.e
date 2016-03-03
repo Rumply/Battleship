@@ -68,13 +68,6 @@ feature -- Access
 
 	hover:BOOLEAN
 
-	set_sub_image(a_x,a_y:INTEGER)
-		do
-			in_image_pos.x:= a_x
-			in_image_pos.y:= a_y
-		end
-
-
 	in_image_pos:TUPLE[x,y:INTEGER]
 
 	position:TUPLE[x,y:INTEGER]
@@ -84,6 +77,7 @@ feature -- Access
 	gameDimension:TUPLE[width,height:INTEGER]
 
 feature --Constants
+
 	path:STRING_32
 
 end
