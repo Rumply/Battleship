@@ -25,7 +25,8 @@ feature {NONE}
 			window := l_window_builder.generate_window
 			create menu.make_menu (window)
 			create musique_menu.make_environment
-			musique_menu.add ("teste2.wav", -1)
+			musique_menu.add ("theme1.wav", 1)
+			musique_menu.add ("theme2.wav", 1)
 			musique_menu.play
 		end
 
@@ -33,8 +34,6 @@ feature
 
 	run_game
 			-- Create ressources and launch the game
-		local
-			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
 		do
 			game_library.quit_signal_actions.extend(agent on_quit(?))
 			game_library.iteration_actions.extend (agent cycle(?))
@@ -52,50 +51,12 @@ feature {NONE} -- Implementation
 
 	on_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32)
 	local
-		l_x:INTEGER
-		l_y:INTEGER
-		hover1:BOOLEAN
-		hover2:BOOLEAN
-	do
-		l_x:=a_mouse_state.x
-		l_y:=a_mouse_state.y
-		hover1:=False
-		hover2:=False
-
-		if l_x>menu.bouton1.x and l_x<(menu.bouton1.x+menu.btn_width) then
-			if l_y>menu.bouton1.y and l_y<(menu.bouton1.y+menu.btn_height)then
-				hover1:=True
-			else
-				hover1:=False
-			end
-		else
-			hover1:=False
-		end
-
-		if l_x>menu.bouton2.x and l_x<(menu.bouton2.x+menu.btn_width) then
-			if l_y>menu.bouton2.y and l_y<(menu.bouton2.y+menu.btn_height)then
-				hover2:=True
-			else
-				hover2:=False
-			end
-		else
-			hover2:=False
-		end
-
-		if hover1 then
-			menu.hover_button_1
-		elseif hover2 then
-			menu.hover_button_2
-		end
-
-
-		if not hover1 then
-			menu.normal_button_1
-		end
-
-		if not hover2 then
-			menu.normal_button_2
-		end
+			l_x:INTEGER
+			l_y:INTEGER
+		do
+			l_x:=a_mouse_state.x
+			l_y:=a_mouse_state.y
+			menu.mouse_click (musique_menu, l_x, l_y,False)
 
 		window.update
 		audio_library.update
@@ -105,32 +66,11 @@ feature {NONE} -- Implementation
 		local
 			l_x:INTEGER
 			l_y:INTEGER
-			click_on:BOOLEAN
 		do
 			l_x:=a_mouse_state.x
 			l_y:=a_mouse_state.y
-			click_on:=False
+			menu.mouse_click (musique_menu, l_x, l_y,True)
 
-			if l_x>menu.speaker_pos.x and l_x<(menu.speaker_pos.x+menu.speaker_scale_width) then
-				if l_y>menu.speaker_pos.y and l_y<(menu.speaker_pos.y+menu.speaker_scale_height)then
-					click_on:=True
-				else
-					click_on:=False
-				end
-			else
-				click_on:=False
-			end
-
-			if click_on then
-				if not musique_menu.muted then
-					musique_menu.mute
-					menu.speaker_off
-				elseif musique_menu.muted then
-					musique_menu.unmute
-					menu.speaker_on
-				end
-
-			end
 			window.update
 			audio_library.update
 		end

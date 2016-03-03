@@ -15,8 +15,6 @@ create
 feature {NONE}
 
 	make_environment
-		local
-			l_filePath:STRING_32
 		do
 			path:="./ressource/son/"
 			bufferSize:=64000
