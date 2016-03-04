@@ -20,6 +20,7 @@ feature {NONE}
 		local
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
 		do
+			--io.default_output.
 			l_window_builder.set_dimension (1500,1000)
 			l_window_builder.set_title("BattleShip")
 			window := l_window_builder.generate_window

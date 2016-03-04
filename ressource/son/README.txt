@@ -3,3 +3,6 @@ NOUS, L’UTILISONS DE FAÇON ÉDUCATIVE
 LA VERSION FINALE POSSÉDERA DES SONS ACHETÉS
 OU GRATUITS OU AVEC LICENCE D’UTILISATION
 QUI SERA DANS UN FICHIER "LISCENCE.TXT"
+
+les themes viennent de cette playlist:
+https://www.youtube.com/watch?v=BAAoE2jOpzQ&index=3&list=PLR3R_-LsCwyCezkdwNB5GmkX8JWE-tyir

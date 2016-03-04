@@ -10,6 +10,7 @@ class
 inherit
 	GAME_SURFACE
 
+
 create
 	make_surface
 

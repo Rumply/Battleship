@@ -80,3 +80,16 @@ APPLICATION         root's creation
 -------------------------------------------------------------------------------
 Catcall detected in {PROCEDURE}.call for arg#1: expected TUPLE [NATURAL_32, !GAME_MOUSE_MOTION_STATE, INTEGER_32, INTEGER_32] but got TUPLE [NATURAL_32]
 Catcall detected in {PROCEDURE}.call for arg#1: expected TUPLE [NATURAL_32, !GAME_MOUSE_MOTION_STATE, INTEGER_32, INTEGER_32] but got TUPLE [NATURAL_32]
+
+battleship: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+battleship: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+APPLICATION         root's creation        Unexpected harmful signal (Segmentation violation):
+<0000002D5B388098>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------

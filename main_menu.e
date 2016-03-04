@@ -14,7 +14,6 @@ feature {NONE} -- Initialize
 
 	make_menu(a_window:GAME_WINDOW_SURFACED)
 	do
-
 		create background.make_surface ("eau.jpg")
 		create bouton_s.make_surface ("main_button.jpg")
 		create bouton_m.make_surface ("main_button.jpg")
@@ -97,18 +96,18 @@ feature {NONE} -- Implementation
 			width,height,l_Wreste,l_Hreste,l_x,l_y:INTEGER
 		do
 			-- Draw the scene
-			width:=background.width.to_integer
-			height:=background.height.to_integer
+			width:=background.width
+			height:=background.height
 			l_x:=0
 			l_y:=0
 
 			from
-				l_Hreste:=menu.height.to_integer
+				l_Hreste:=menu.height
 			until
 				l_Hreste <= 0
 			loop
 				from
-					l_Wreste:=menu.width.to_integer
+					l_Wreste:=menu.width
 				until
 					l_Wreste <= 0
 				loop
@@ -140,7 +139,6 @@ feature {NONE} -- Implementation
 
 			-- Bouton MultiPlayer
 			normal_button_m
-
 		end
 
 feature -- Access

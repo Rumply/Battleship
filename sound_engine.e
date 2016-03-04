@@ -42,7 +42,7 @@ feature -- Access
 
 	mute
 		do
-			if source.is_playing then
+			if not muted then
 				source.set_gain(0)
 				muted:=True
 			end
@@ -50,7 +50,7 @@ feature -- Access
 
 	unmute
 		do
-			if source.is_playing then
+			if muted then
 				source.set_gain (1)
 				muted:=False
 			end
