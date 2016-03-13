@@ -93,3 +93,72 @@ Class / Object      Routine                Nature of exception           Effect
 APPLICATION         root's creation        Unexpected harmful signal (Segmentation violation):
 <0000002D5B388098>                         Eiffel run-time panic.        Bye
 -------------------------------------------------------------------------------
+
+battleship: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+battleship: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+APPLICATION         root's creation        Unexpected harmful signal (Segmentation violation):
+<0000000003B78098>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+battleship: dumping core to generate debugging information...
+
+battleship: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+battleship: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+APPLICATION         root's creation        Unexpected harmful signal (Segmentation violation):
+<0000000003B5E098>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+battleship: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+battleship: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+APPLICATION         root's creation        Unexpected harmful signal (Segmentation violation):
+<0000000003BB4098>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+battleship: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+battleship: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+APPLICATION         root's creation        Unexpected harmful signal (Segmentation violation):
+<0000000003C0F098>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------
+
+battleship: dumping core to generate debugging information...
+
+battleship: PANIC: Unexpected harmful signal (Segmentation violation) ...
+
+battleship: system execution failed.
+Following is the set of recorded exceptions.
+NB: The raised panic may have induced completely inconsistent information:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+APPLICATION         root's creation        Unexpected harmful signal (Segmentation violation):
+<0000000003D6C098>                         Eiffel run-time panic.        Bye
+-------------------------------------------------------------------------------

@@ -5,12 +5,13 @@ note
 	revision: "$1.0$"
 
 class
-	GAME_ENGINE
+	MAIN_ENGINE
 
 inherit
 	GAME_LIBRARY_SHARED		-- To use `game_library'
 	IMG_LIBRARY_SHARED		-- To use `image_file_library'
 	AUDIO_LIBRARY_SHARED	-- To use `audio_library'
+
 create
 	make
 
@@ -20,14 +21,17 @@ feature {NONE}
 		local
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
 		do
-			--io.default_output.
 			l_window_builder.set_dimension (1500,1000)
 			l_window_builder.set_title("BattleShip")
 			window := l_window_builder.generate_window
 			create menu.make_menu (window)
 			create musique_menu.make_environment
-			musique_menu.add ("theme1.wav", 1)
+
+			create last_x.make_from_reference (0)
+			create last_y.make_from_reference (0)
+
 			musique_menu.add ("theme2.wav", 1)
+			musique_menu.add ("theme1.wav", 1)
 			musique_menu.play
 		end
 
@@ -35,11 +39,19 @@ feature
 
 	run_game
 			-- Create ressources and launch the game
+--		local
+--			l_font:TEXT_FONT
 		do
 			game_library.quit_signal_actions.extend(agent on_quit(?))
 			game_library.iteration_actions.extend (agent cycle(?))
 			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- When the user move the mouse on the window
 			window.mouse_button_pressed_actions.extend (agent on_mouse_click(?,?,?))
+
+--			create l_font.make ("./ressource/font/ArmyStamp.ttf", 50)
+--			if l_font.is_openable then
+--				l_font.open
+--			end
+
 			game_library.launch
 		end
 
@@ -47,30 +59,27 @@ feature {NONE} -- Implementation
 
 	cycle(a_timestamp: NATURAL_32)
 		do
+			window.update
 			audio_library.update
 		end
 
 	on_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32)
-	local
-			l_x:INTEGER
-			l_y:INTEGER
 		do
-			l_x:=a_mouse_state.x
-			l_y:=a_mouse_state.y
-			menu.mouse_click (musique_menu, l_x, l_y,False)
+			last_x:=a_mouse_state.x
+			last_y:=a_mouse_state.y
 
-		window.update
-		audio_library.update
-	end
+			menu.mouse_click (musique_menu, last_x, last_y,False)
 
-	on_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; something: NATURAL_8)
-		local
-			l_x:INTEGER
-			l_y:INTEGER
+			window.update
+			audio_library.update
+		end
+
+
+	on_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; click_count: NATURAL_8)
 		do
-			l_x:=a_mouse_state.x
-			l_y:=a_mouse_state.y
-			menu.mouse_click (musique_menu, l_x, l_y,True)
+			last_x:=a_mouse_state.x
+			last_y:=a_mouse_state.y
+			menu.mouse_click (musique_menu, last_x, last_y,True)
 
 			window.update
 			audio_library.update
@@ -87,5 +96,8 @@ feature {NONE} -- Access
 	menu:MAIN_MENU
 	window:GAME_WINDOW_SURFACED
 	musique_menu:SOUND_ENGINE
+
+	last_x, last_y:INTEGER
+			-- Last known coordinate of the mouse pointer inside the window
 
 end

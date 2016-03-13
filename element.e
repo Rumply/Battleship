@@ -10,7 +10,6 @@ class
 inherit
 	GAME_SURFACE
 
-
 create
 	make_surface
 
@@ -18,23 +17,23 @@ feature {NONE} -- Initialization
 
 	make_surface(a_filename:READABLE_STRING_GENERAL)
 		do
-			path:="./ressource/image/"
-
 			load_background(a_filename)
 			create {TUPLE[x,y:INTEGER]} position.default_create
 			create {TUPLE[width,height:INTEGER]} filedimension.default_create
 			create {TUPLE[width,height:INTEGER]} gamedimension.default_create
 			create {TUPLE[x,y:INTEGER]} in_image_pos.default_create
 			hover:=False
+			selected:=False
 		end
 
-		load_background(a_filename:READABLE_STRING_GENERAL)
+	load_background(a_filename:READABLE_STRING_GENERAL)
 		local
 			l_filePath:STRING_32
 			l_image:IMG_IMAGE_FILE
 
 		do
-			l_filePath:= path
+			l_filePath:=""
+			l_filePath.append (image_location)
 			l_filePath.append_string_general (a_filename)
 			create l_image.make(l_filePath)
 			if l_image.is_openable then
@@ -75,10 +74,25 @@ feature -- Access
 
 	fileDimension:TUPLE[width,height:INTEGER]
 
+	selected:BOOLEAN assign set_selected
+			-- `Current' is selected
+
+	set_selected(a_selected:BOOLEAN)
+			-- Assign the value of `selected' with `a_selected'
+		do
+			selected := a_selected
+		ensure
+			Is_Assign: selected = a_selected
+		end
+
 	gameDimension:TUPLE[width,height:INTEGER]
 
 feature --Constants
 
-	path:STRING_32
+	image_location: STRING_32
+            -- `Result' is DIRECTORY constant named image_location.
+        once
+            Result := "./ressource/image/"
+        end
 
 end

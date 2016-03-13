@@ -15,10 +15,15 @@ feature {NONE} -- Initialize
 	make_menu(a_window:GAME_WINDOW_SURFACED)
 	do
 		create background.make_surface ("eau.jpg")
-		create bouton_s.make_surface ("main_button.jpg")
-		create bouton_m.make_surface ("main_button.jpg")
+		create bouton_s.make_surface ("main_button.png")
+		create bouton_m.make_surface ("main_button.png")
 		create speaker.make_surface ("speaker.png")
 		create title.make_surface ("title.png")
+
+		create yellow.make_rgb (255, 255, 0)
+		create black.make_rgb (0,0,0)
+
+		color:=black
 
 		initialize_bouton_s
 		initialize_bouton_m
@@ -135,18 +140,20 @@ feature {NONE} -- Implementation
 	setup_button
 		do
 			-- Bouton SinglePlayer
-			normal_button_s
+			draw_bouton(bouton_s)
 
 			-- Bouton MultiPlayer
-			normal_button_m
+			draw_bouton(bouton_m)
 		end
 
 feature -- Access
 
 	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
 		do
+			speaker.is_on (a_x, a_y)
+			bouton_s.is_on (a_x, a_y)
+			bouton_m.is_on (a_x, a_y)
 			if click then
-				speaker.is_on (a_x, a_y)
 				if speaker.hover then
 					if not audio.muted then
 						audio.mute
@@ -156,22 +163,48 @@ feature -- Access
 						speaker_on
 					end
 				end
+
+				if bouton_s.hover then
+					bouton_s.set_selected (True)
+				elseif not bouton_s.hover then
+					bouton_s.set_selected (False)
+				end
+				if bouton_m.hover then
+					bouton_m.set_selected (True)
+				elseif not bouton_m.hover then
+					bouton_m.set_selected (False)
+				end
 			end
 
-			bouton_s.is_on (a_x, a_y)
 			if bouton_s.hover then
-				hover_button_s
+				bouton_s.in_image_pos.x:=500
+				bouton_s.in_image_pos.y:=0
 			elseif not bouton_s.hover then
-				normal_button_s
+				bouton_s.in_image_pos.x:=0
+				bouton_s.in_image_pos.y:=0
 			end
 
-			bouton_m.is_on (a_x, a_y)
 			if bouton_m.hover then
-				hover_button_m
+				bouton_m.in_image_pos.x:=500
+				bouton_m.in_image_pos.y:=250
 			elseif not bouton_m.hover then
-				normal_button_m
+				bouton_m.in_image_pos.x:=0
+				bouton_m.in_image_pos.y:=250
 			end
 
+			if bouton_s.selected then
+				color:=yellow
+			elseif not bouton_s.selected then
+				color:=black
+			end
+			draw_bouton(bouton_s)
+
+			if bouton_m.selected then
+				color:=yellow
+			elseif not bouton_m.selected then
+				color:=black
+			end
+			draw_bouton(bouton_m)
 		end
 
 	draw(a_bouton:ELEMENT)
@@ -189,36 +222,15 @@ feature -- Access
 
 	-- Bouton 1 joueur
 
-	hover_button_s
-		do
-			bouton_s.in_image_pos.x:=500
-			bouton_s.in_image_pos.y:=0
-			draw(bouton_s)
-		end
-
-	normal_button_s
-		do
-			bouton_s.in_image_pos.x:=0
-			bouton_s.in_image_pos.y:=0
-			draw(bouton_s)
-		end
-
-	-- Bouton : 2 joueur
-
-	hover_button_m
+	draw_bouton(a_bouton:ELEMENT)
 		do
 
-			bouton_m.in_image_pos.x:=500
-			bouton_m.in_image_pos.y:=250
-			draw(bouton_m)
-		end
-
-	normal_button_m
-		do
-
-			bouton_m.in_image_pos.x:=0
-			bouton_m.in_image_pos.y:=250
-			draw(bouton_m)
+			menu.surface.draw_rectangle (color,
+										a_bouton.position.x,
+										a_bouton.position.y,
+										a_bouton.gamedimension.width,
+										a_bouton.gamedimension.height)
+			draw(a_bouton)
 		end
 
 	speaker_on
@@ -237,5 +249,7 @@ feature -- Access
 	background,title,bouton_S,bouton_M,speaker:ELEMENT
 
 	menu:GAME_WINDOW_SURFACED
+
+	color,yellow,black:GAME_COLOR
 
 end
