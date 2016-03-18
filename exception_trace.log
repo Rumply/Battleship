@@ -162,3 +162,114 @@ Class / Object      Routine                Nature of exception           Effect
 APPLICATION         root's creation        Unexpected harmful signal (Segmentation violation):
 <0000000003D6C098>                         Eiffel run-time panic.        Bye
 -------------------------------------------------------------------------------
+
+battleship: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME_WINDOW_SURFACED
+                    surface @16            
+<0000000003AD8318>                         Assertion violated.           Fail
+-------------------------------------------------------------------------------
+GAME_WINDOW_SURFACED
+                    surface @16            
+<0000000003AD8318>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+MAIN_MENU           make_menu @15                                       
+<0000000003AD9188>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+MAIN_ENGINE         make @4                                             
+<0000000003AD7A98>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         make @5                                             
+<0000000003AD55A8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         root's creation                                     
+<0000000003AD55A8>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+
+battleship: PANIC: caught signal #21 (Ctrl-Break) -- Giving up...
+
+battleship: system execution failed.
+Following is the set of recorded exceptions:
+
+-------------------------------------------------------------------------------
+Class / Object      Routine                Nature of exception           Effect
+-------------------------------------------------------------------------------
+GAME_EVENTS_CONTROLLER
+                    poll_event @1          
+<0000000003F28FE8>                         Precondition violated.        Fail
+-------------------------------------------------------------------------------
+GAME_LIBRARY_CONTROLLER
+                    update_events @1       
+<0000000003F28988>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME_LIBRARY_CONTROLLER
+                    launch @4              
+<0000000003F28988>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+INGAME_ENGINE       run_game @5                                         
+<0000000003F2CD28>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+MAIN_ENGINE         on_mouse_click @9                                   
+<0000000003F270F8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           fast_call                                           
+<0000000003F2A088>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           call @5                                             
+<0000000003F2A088>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ACTION_SEQUENCE     call @22                                            
+<0000000003F29FC8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME_WINDOW_SURFACED
+                    mouse_button_pressed_events_dispatcher @4
+<0000000003F27B68>  (From GAME_WINDOW_EVENTS)
+                                           Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME_WINDOW_SURFACED
+                    inline-agent#7 of make @1
+<0000000003F27B68>  (From GAME_WINDOW_EVENTS)
+                                           Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           fast_call                                           
+<0000000003F282E8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+PROCEDURE           call @5                                             
+<0000000003F282E8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+ACTION_SEQUENCE     call @22                                            
+<0000000003F2C048>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME_EVENTS_CONTROLLER
+                    decode_event @17       
+<0000000003F2A1D8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME_EVENTS_CONTROLLER
+                    poll_event @8          
+<0000000003F2A1D8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME_LIBRARY_CONTROLLER
+                    update_events @1       
+<0000000003F28988>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+GAME_LIBRARY_CONTROLLER
+                    launch @4              
+<0000000003F28988>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+MAIN_ENGINE         run_game @5                                         
+<0000000003F270F8>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         make @6                                             
+<0000000003F27098>                         Routine failure.              Fail
+-------------------------------------------------------------------------------
+APPLICATION         root's creation                                     
+<0000000003F27098>                         Routine failure.              Exit
+-------------------------------------------------------------------------------
+
+
+battleship: PANIC: caught signal #21 (Ctrl-Break) -- Giving up...

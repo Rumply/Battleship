@@ -8,28 +8,45 @@ class
 	MAIN_MENU
 
 create
-	make_menu
+	make
 
 feature {NONE} -- Initialize
 
-	make_menu(a_window:GAME_WINDOW_SURFACED)
+	make(a_window:GAME_WINDOW_SURFACED)
+	local
+--		l_bouton:BOUTON
 	do
-		create background.make_surface ("eau.jpg")
-		create bouton_s.make_surface ("main_button.png")
-		create bouton_m.make_surface ("main_button.png")
-		create speaker.make_surface ("speaker.png")
-		create title.make_surface ("title.png")
+		window:=a_window
+
+		create masque.make (window.surface.width, window.surface.height)
+		create background.make ("eau.jpg")
+		create bouton_s.make ("main_button.png")
+		create bouton_m.make ("main_button.png")
+		create speaker.make ("speaker.png")
+		create title.make ("title.png")
 
 		create yellow.make_rgb (255, 255, 0)
 		create black.make_rgb (0,0,0)
 
 		color:=black
+		singleGame:=False
 
 		initialize_bouton_s
 		initialize_bouton_m
+
 		initialize_speaker
 		initialize_title
-		cycle(a_window)
+
+		cycle
+		--window.surface.draw_surface (masque, 0,0)
+		--window.surface.draw_surface (masque, 0,0)
+		--window.surface.draw_surface (bouton_s, 0,0)
+--		masque.draw_empty_rect (color,
+--								0,
+--								400,
+--								800,
+--								800,
+--								5)
 	end
 
 	initialize_bouton_s
@@ -82,18 +99,16 @@ feature {NONE} -- Initialize
 
 feature {NONE} -- Implementation
 
-	cycle(a_window:GAME_WINDOW_SURFACED)
+	cycle
 			-- Event that is launch at each iteration.
 		do
-			menu:= a_window
-
 			fill_background
 			setup_button
 			setup_title
 			setup_speaker
 
 			-- Update modification in the screen
-			menu.update
+			window.update
 		end
 
 	fill_background
@@ -107,22 +122,22 @@ feature {NONE} -- Implementation
 			l_y:=0
 
 			from
-				l_Hreste:=menu.height
+				l_Hreste:=window.height
 			until
 				l_Hreste <= 0
 			loop
 				from
-					l_Wreste:=menu.width
+					l_Wreste:=window.width
 				until
 					l_Wreste <= 0
 				loop
 					l_Wreste:= l_Wreste - width
-					menu.surface.draw_surface(background, l_x, l_y)
+					window.surface.draw_surface(background, l_x, l_y)
 					l_x:= l_x + width
 				end
 				l_x:=0
 				l_Hreste:= l_Hreste - height
-				menu.surface.draw_surface(background, l_x, l_y)
+				window.surface.draw_surface(background, l_x, l_y)
 				l_y:= l_y + height
 			end
 		end
@@ -146,9 +161,11 @@ feature {NONE} -- Implementation
 			draw_bouton(bouton_m)
 		end
 
-feature -- Access
+feature -- Access bouton
 
 	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
+		local
+			game:INGAME_ENGINE
 		do
 			speaker.is_on (a_x, a_y)
 			bouton_s.is_on (a_x, a_y)
@@ -166,6 +183,7 @@ feature -- Access
 
 				if bouton_s.hover then
 					bouton_s.set_selected (True)
+					singleGame:=True
 				elseif not bouton_s.hover then
 					bouton_s.set_selected (False)
 				end
@@ -207,25 +225,23 @@ feature -- Access
 			draw_bouton(bouton_m)
 		end
 
-	draw(a_bouton:ELEMENT)
+	draw(a_element:ELEMENT)
 		do
-			menu.surface.draw_sub_surface_with_scale (a_bouton,
-														a_bouton.in_image_pos.x,
-														a_bouton.in_image_pos.y,
-														a_bouton.filedimension.width,
-														a_bouton.filedimension.height,
-														a_bouton.position.x,
-														a_bouton.position.y,
-														a_bouton.gamedimension.width,
-														a_bouton.gamedimension.height)
+			window.surface.draw_sub_surface_with_scale (a_element,
+														a_element.in_image_pos.x,
+														a_element.in_image_pos.y,
+														a_element.filedimension.width,
+														a_element.filedimension.height,
+														a_element.position.x,
+														a_element.position.y,
+														a_element.gamedimension.width,
+														a_element.gamedimension.height)
 		end
-
-	-- Bouton 1 joueur
 
 	draw_bouton(a_bouton:ELEMENT)
 		do
 
-			menu.surface.draw_rectangle (color,
+			window.surface.draw_rectangle (color,
 										a_bouton.position.x,
 										a_bouton.position.y,
 										a_bouton.gamedimension.width,
@@ -246,9 +262,14 @@ feature -- Access
 			draw(speaker)
 		end
 
-	background,title,bouton_S,bouton_M,speaker:ELEMENT
+feature -- Access variable
 
-	menu:GAME_WINDOW_SURFACED
+	background,title,bouton_S,bouton_M,speaker:ELEMENT
+	masque:MASQUE
+
+	singleGame:BOOLEAN
+
+	window:GAME_WINDOW_SURFACED
 
 	color,yellow,black:GAME_COLOR
 

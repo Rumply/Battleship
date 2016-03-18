@@ -1,11 +1,11 @@
 note
-	description: "Game engine pour le menu principal."
+	description: "Summary description for {INGAME_ENGINE}."
 	author: ""
-	date: "$1 Mars 2016$"
-	revision: "$1.0$"
+	date: "$Date$"
+	revision: "$Revision$"
 
 class
-	MAIN_ENGINE
+	INGAME_ENGINE
 
 inherit
 	GAME_LIBRARY_SHARED		-- To use `game_library'
@@ -27,9 +27,6 @@ feature {NONE}
 			create menu.make (window)
 			create musique_menu.make_environment
 
-			create last_x.make_from_reference (0)
-			create last_y.make_from_reference (0)
-
 			musique_menu.add ("theme2.wav", 1)
 			musique_menu.add ("theme1.wav", 1)
 			musique_menu.play
@@ -50,7 +47,6 @@ feature
 
 
 			game_library.launch
-			game_library.quit_library
 			--game_library.clear_all_events
 		end
 
@@ -75,21 +71,10 @@ feature {NONE} -- Implementation
 
 
 	on_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; click_count: NATURAL_8)
-		local
-			game:INGAME_ENGINE
 		do
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y
 			menu.mouse_click (musique_menu, last_x, last_y,True)
-
-			if menu.singlegame then
-				game_library.clear_all_events
-				create game.make
-				window.hide
-				game.run_game
-				window.show
-
-			end
 
 			window.update
 			audio_library.update
@@ -103,7 +88,7 @@ feature {NONE} -- Implementation
 
 feature {NONE} -- Access
 
-	menu:MAIN_MENU
+	menu:INGAME_SCREEN
 	window:GAME_WINDOW_SURFACED
 	musique_menu:SOUND_ENGINE
 

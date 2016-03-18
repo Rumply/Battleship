@@ -51,7 +51,7 @@ feature -- Access
 	unmute
 		do
 			if muted then
-				source.set_gain (1)
+				source.set_gain (0.5)
 				muted:=False
 			end
 		end

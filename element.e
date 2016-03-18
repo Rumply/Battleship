@@ -9,13 +9,16 @@ class
 
 inherit
 	GAME_SURFACE
+		rename
+			make as make_game_surface
+		end
 
 create
-	make_surface
+	make
 
 feature {NONE} -- Initialization
 
-	make_surface(a_filename:READABLE_STRING_GENERAL)
+	make(a_filename:READABLE_STRING_GENERAL)
 		do
 			load_background(a_filename)
 			create {TUPLE[x,y:INTEGER]} position.default_create
@@ -42,16 +45,18 @@ feature {NONE} -- Initialization
 					make_from_image (l_image)
 				else
 					has_error := True
-					make(1,1)
+					make_game_surface(1,1)
 				end
 
 			else
 				has_error := True
-				make(1,1)
+				make_game_surface(1,1)
 			end
 		end
 
 feature -- Access
+
+
 
 	is_on(a_mouse_x,a_mouse_y:INTEGER)
 		do
