@@ -11,24 +11,26 @@ inherit
 	GAME_LIBRARY_SHARED		-- To use `game_library'
 	IMG_LIBRARY_SHARED		-- To use `image_file_library'
 	AUDIO_LIBRARY_SHARED	-- To use `audio_library'
+	EXECUTION_ENVIRONMENT
 
 create
 	make
 
 feature {NONE}
 
-	make
+	make(a_window:GAME_WINDOW_SURFACED)
 		local
-			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
+			--l_window_builder:GAME_WINDOW_SURFACED_BUILDER
 		do
-			l_window_builder.set_dimension (1500,1000)
-			l_window_builder.set_title("BattleShip")
-			window := l_window_builder.generate_window
+			--l_window_builder.set_dimension (1500,1000)
+			--l_window_builder.set_title("BattleShip")
+			--window := l_window_builder.generate_window
+			window := a_window
 			create menu.make (window)
 			create musique_menu.make_environment
 
-			musique_menu.add ("theme2.wav", 1)
 			musique_menu.add ("theme1.wav", 1)
+			musique_menu.add ("theme2.wav", 1)
 			musique_menu.play
 		end
 

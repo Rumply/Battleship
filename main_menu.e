@@ -37,7 +37,7 @@ feature {NONE} -- Initialize
 		initialize_speaker
 		initialize_title
 
-		cycle
+		setup_object
 		--window.surface.draw_surface (masque, 0,0)
 		--window.surface.draw_surface (masque, 0,0)
 		--window.surface.draw_surface (bouton_s, 0,0)
@@ -99,7 +99,7 @@ feature {NONE} -- Initialize
 
 feature {NONE} -- Implementation
 
-	cycle
+	setup_object
 			-- Event that is launch at each iteration.
 		do
 			fill_background

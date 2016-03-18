@@ -17,7 +17,7 @@ feature {NONE}
 --		l_bouton:BOUTON
 	do
 		window:=a_window
-
+		io.put_boolean (true)
 		create masque.make (window.surface.width, window.surface.height)
 		create background.make ("eau.jpg")
 		create speaker.make ("speaker.png")
@@ -30,6 +30,7 @@ feature {NONE}
 		initialize_speaker
 
 
+		setup_object
 	end
 
 	initialize_speaker
@@ -83,6 +84,17 @@ feature {NONE}
 		end
 
 feature -- Access
+
+	setup_object
+			-- Event that is launch at each iteration.
+		do
+			fill_background
+
+			setup_speaker
+
+			-- Update modification in the screen
+			window.update
+		end
 
 	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
 		do

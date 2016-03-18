@@ -84,11 +84,9 @@ feature {NONE} -- Implementation
 
 			if menu.singlegame then
 				game_library.clear_all_events
-				create game.make
-				window.hide
+				musique_menu.source.stop
+				create game.make(window)
 				game.run_game
-				window.show
-
 			end
 
 			window.update
