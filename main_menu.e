@@ -40,27 +40,37 @@ feature {NONE} -- Initialize
 	end
 
 	initialize_bouton_s
+		local
+			l_double:REAL_64
 		do
-			bouton_s.position.x:=500
-			bouton_s.position.y:=300
 			bouton_s.in_image_pos.x:=0
 			bouton_s.in_image_pos.y:=0
 			bouton_s.filedimension.width:=bouton_s.width.to_integer.quotient (2).truncated_to_integer
 			bouton_s.filedimension.height:=bouton_s.height.to_integer.quotient (2).truncated_to_integer
 			bouton_s.gamedimension.width:=500
 			bouton_s.gamedimension.height:=250
+			l_double:=window.width/2
+			l_double:=l_double-(bouton_s.gamedimension.width/2)
+			bouton_s.position.x:=l_double.floor
+			l_double:=window.height/2
+			l_double:=l_double-(bouton_s.gamedimension.height)
+			bouton_s.position.y:=l_double.floor
 		end
 
 	initialize_bouton_m
+		local
+			l_double:REAL_64
 		do
-			bouton_m.position.x:=500
-			bouton_m.position.y:=600
-			bouton_m.in_image_pos.x:=0
-			bouton_m.in_image_pos.y:=250
 			bouton_m.filedimension.width:=bouton_m.width.to_integer.quotient (2).truncated_to_integer
 			bouton_m.filedimension.height:=bouton_m.height.to_integer.quotient (2).truncated_to_integer
 			bouton_m.gamedimension.width:=500
 			bouton_m.gamedimension.height:=250
+			l_double:=window.width/2
+			l_double:=l_double-(bouton_m.gamedimension.width/2)
+			bouton_m.position.x:=l_double.floor
+			l_double:=window.height/2
+			l_double:=l_double+(bouton_m.gamedimension.height/2)
+			bouton_m.position.y:=l_double.floor
 		end
 
 	initialize_speaker
@@ -76,8 +86,9 @@ feature {NONE} -- Initialize
 		end
 
 	initialize_title
+		local
+			l_double:REAL_64
 		do
-			title.position.x:=375
 			title.position.y:=50
 			title.in_image_pos.x:=0
 			title.in_image_pos.y:=0
@@ -85,6 +96,9 @@ feature {NONE} -- Initialize
 			title.filedimension.height:=title.height
 			title.gamedimension.width:=750
 			title.gamedimension.height:=100
+			l_double:=window.width/2
+			l_double:=l_double-(title.gamedimension.width/2)
+			title.position.x:=l_double.floor
 		end
 
 feature {NONE} -- Implementation
