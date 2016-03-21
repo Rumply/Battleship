@@ -11,7 +11,6 @@ inherit
 	GAME_LIBRARY_SHARED		-- To use `game_library'
 	IMG_LIBRARY_SHARED		-- To use `image_file_library'
 	AUDIO_LIBRARY_SHARED	-- To use `audio_library'
-	EXECUTION_ENVIRONMENT
 
 create
 	make
@@ -19,12 +18,7 @@ create
 feature {NONE}
 
 	make(a_window:GAME_WINDOW_SURFACED)
-		local
-			--l_window_builder:GAME_WINDOW_SURFACED_BUILDER
 		do
-			--l_window_builder.set_dimension (1500,1000)
-			--l_window_builder.set_title("BattleShip")
-			--window := l_window_builder.generate_window
 			window := a_window
 			create menu.make (window)
 			create musique_menu.make_environment
@@ -38,8 +32,6 @@ feature
 
 	run_game
 			-- Create ressources and launch the game
---		local
---			l_font:TEXT_FONT
 		do
 			game_library.quit_signal_actions.extend(agent on_quit(?))
 			game_library.iteration_actions.extend (agent cycle(?))
@@ -49,7 +41,6 @@ feature
 
 
 			game_library.launch
-			--game_library.clear_all_events
 		end
 
 feature {NONE} -- Implementation

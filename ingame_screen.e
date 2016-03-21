@@ -13,12 +13,10 @@ create
 feature {NONE}
 
 	make(a_window:GAME_WINDOW_SURFACED)
-	local
---		l_bouton:BOUTON
 	do
 		window:=a_window
-		io.put_boolean (true)
-		create masque.make (window.surface.width, window.surface.height)
+		create masque.make_as_mask (window.surface.width, window.surface.height)
+		masque.enable_alpha_blending
 		create background.make ("eau.jpg")
 		create speaker.make ("speaker.png")
 
@@ -83,13 +81,20 @@ feature {NONE}
 			draw(speaker)
 		end
 
+	setup_border
+		do
+			masque.draw_empty_rect (black, 300, 300, 500, 400, 20)
+			window.surface.draw_surface (masque, 200, 0)
+
+		end
+
 feature -- Access
 
 	setup_object
 			-- Event that is launch at each iteration.
 		do
 			fill_background
-
+			setup_border
 			setup_speaker
 
 			-- Update modification in the screen

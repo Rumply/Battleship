@@ -13,12 +13,11 @@ create
 feature {NONE} -- Initialize
 
 	make(a_window:GAME_WINDOW_SURFACED)
-	local
---		l_bouton:BOUTON
 	do
 		window:=a_window
 
-		create masque.make (window.surface.width, window.surface.height)
+		create masque.make_as_mask (window.surface.width, window.surface.height)
+		masque.enable_alpha_blending
 		create background.make ("eau.jpg")
 		create bouton_s.make ("main_button.png")
 		create bouton_m.make ("main_button.png")
@@ -38,15 +37,6 @@ feature {NONE} -- Initialize
 		initialize_title
 
 		setup_object
-		--window.surface.draw_surface (masque, 0,0)
-		--window.surface.draw_surface (masque, 0,0)
-		--window.surface.draw_surface (bouton_s, 0,0)
---		masque.draw_empty_rect (color,
---								0,
---								400,
---								800,
---								800,
---								5)
 	end
 
 	initialize_bouton_s
@@ -164,8 +154,6 @@ feature {NONE} -- Implementation
 feature -- Access bouton
 
 	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
-		local
-			game:INGAME_ENGINE
 		do
 			speaker.is_on (a_x, a_y)
 			bouton_s.is_on (a_x, a_y)

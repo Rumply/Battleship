@@ -21,13 +21,18 @@ feature {NONE} -- Initialization
 	make(a_filename:READABLE_STRING_GENERAL)
 		do
 			load_background(a_filename)
-			create {TUPLE[x,y:INTEGER]} position.default_create
-			create {TUPLE[width,height:INTEGER]} filedimension.default_create
-			create {TUPLE[width,height:INTEGER]} gamedimension.default_create
-			create {TUPLE[x,y:INTEGER]} in_image_pos.default_create
-			hover:=False
-			selected:=False
+			make_attributs
 		end
+
+	make_attributs
+	do
+		create {TUPLE[x,y:INTEGER]} position
+		create {TUPLE[width,height:INTEGER]} filedimension
+		create {TUPLE[width,height:INTEGER]} gamedimension
+		create {TUPLE[x,y:INTEGER]} in_image_pos
+		hover:=False
+		selected:=False
+	end
 
 	load_background(a_filename:READABLE_STRING_GENERAL)
 		local

@@ -51,7 +51,6 @@ feature
 
 			game_library.launch
 			game_library.quit_library
-			--game_library.clear_all_events
 		end
 
 feature {NONE} -- Implementation
