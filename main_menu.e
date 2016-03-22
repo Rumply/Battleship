@@ -14,150 +14,242 @@ feature {NONE} -- Initialize
 
 	make_menu(a_window:GAME_WINDOW_SURFACED)
 	do
+		create background.make_surface ("eau.jpg")
+		create bouton_s.make_surface ("main_button.png")
+		create bouton_m.make_surface ("main_button.png")
+		create speaker.make_surface ("speaker.png")
+		create title.make_surface ("title.png")
+
+		create yellow.make_rgb (255, 255, 0)
+		create black.make_rgb (0,0,0)
+
+		color:=black
+
+		initialize_bouton_s
+		initialize_bouton_m
+		initialize_speaker
+		initialize_title
 		cycle(a_window)
 	end
+
+	initialize_bouton_s
+		do
+			bouton_s.position.x:=500
+			bouton_s.position.y:=300
+			bouton_s.in_image_pos.x:=0
+			bouton_s.in_image_pos.y:=0
+			bouton_s.filedimension.width:=bouton_s.width.to_integer.quotient (2).truncated_to_integer
+			bouton_s.filedimension.height:=bouton_s.height.to_integer.quotient (2).truncated_to_integer
+			bouton_s.gamedimension.width:=500
+			bouton_s.gamedimension.height:=250
+		end
+
+	initialize_bouton_m
+		do
+			bouton_m.position.x:=500
+			bouton_m.position.y:=600
+			bouton_m.in_image_pos.x:=0
+			bouton_m.in_image_pos.y:=250
+			bouton_m.filedimension.width:=bouton_m.width.to_integer.quotient (2).truncated_to_integer
+			bouton_m.filedimension.height:=bouton_m.height.to_integer.quotient (2).truncated_to_integer
+			bouton_m.gamedimension.width:=500
+			bouton_m.gamedimension.height:=250
+		end
+
+	initialize_speaker
+		do
+			speaker.position.x:=10
+			speaker.position.y:=10
+			speaker.in_image_pos.x:=0
+			speaker.in_image_pos.y:=0
+			speaker.filedimension.width:=speaker.width.to_integer.quotient (2).truncated_to_integer
+			speaker.filedimension.height:=speaker.height
+			speaker.gamedimension.width:=50
+			speaker.gamedimension.height:=50
+		end
+
+	initialize_title
+		do
+			title.position.x:=375
+			title.position.y:=50
+			title.in_image_pos.x:=0
+			title.in_image_pos.y:=0
+			title.filedimension.width:=title.width
+			title.filedimension.height:=title.height
+			title.gamedimension.width:=750
+			title.gamedimension.height:=100
+		end
 
 feature {NONE} -- Implementation
 
 	cycle(a_window:GAME_WINDOW_SURFACED)
 			-- Event that is launch at each iteration.
-		local
-			l_background,l_title:ELEMENT
 		do
 			menu:= a_window
 
-			create l_background.make_surface ("eau.jpg")
-			fill_background(l_background)
-
-			create bouton.make_surface ("main_button.jpg")
+			fill_background
 			setup_button
-
-			create l_title.make_surface ("title.png")
-			setup_title(l_title)
+			setup_title
+			setup_speaker
 
 			-- Update modification in the screen
 			menu.update
 		end
 
-	fill_background(a_background:ELEMENT)
+	fill_background
 		local
 			width,height,l_Wreste,l_Hreste,l_x,l_y:INTEGER
 		do
 			-- Draw the scene
-			width:=a_background.width.to_integer
-			height:=a_background.height.to_integer
+			width:=background.width
+			height:=background.height
 			l_x:=0
 			l_y:=0
 
 			from
-				l_Hreste:=menu.height.to_integer
+				l_Hreste:=menu.height
 			until
 				l_Hreste <= 0
 			loop
 				from
-					l_Wreste:=menu.width.to_integer
+					l_Wreste:=menu.width
 				until
 					l_Wreste <= 0
 				loop
 					l_Wreste:= l_Wreste - width
-					menu.surface.draw_surface(a_background, l_x, l_y)
+					menu.surface.draw_surface(background, l_x, l_y)
 					l_x:= l_x + width
 				end
 				l_x:=0
 				l_Hreste:= l_Hreste - height
-				menu.surface.draw_surface(a_background, l_x, l_y)
+				menu.surface.draw_surface(background, l_x, l_y)
 				l_y:= l_y + height
 			end
 		end
 
-	setup_title(a_title:ELEMENT)
-		local
-			width,height:INTEGER
+	setup_title
 		do
-			-- Draw the scene
-			width:=a_title.width.to_integer
-			height:=a_title.height.to_integer
+			draw(title)
+		end
 
-			-- Image title
-			menu.surface.draw_sub_surface_with_scale (a_title, 0, 0, width, height, 375, 50, 750, 200)
-
+	setup_speaker
+		do
+			draw(speaker)
 		end
 
 	setup_button
 		do
-			-- Draw the scene
-			BTN_width:=bouton.width.to_integer.quotient (2).truncated_to_integer
-			BTN_height:=bouton.height.to_integer.quotient (2).truncated_to_integer
-
-			create {TUPLE[x,y:INTEGER]} bouton1.default_create
-			bouton1.x:= 500
-			bouton1.y:= 300
-			create {TUPLE[x,y:INTEGER]} bouton2.default_create
-			bouton2.x:= 500
-			bouton2.y:= 600
-
 			-- Bouton SinglePlayer
-			menu.surface.draw_sub_surface (bouton, 0, 0, BTN_width, BTN_height, bouton1.x, bouton1.y)
+			draw_bouton(bouton_s)
 
 			-- Bouton MultiPlayer
-			menu.surface.draw_sub_surface (bouton, 0, 250, BTN_width, BTN_height, bouton2.x, bouton2.y)
-
+			draw_bouton(bouton_m)
 		end
 
 feature -- Access
 
-	hover_button_1
+	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
 		do
-			menu.surface.draw_sub_surface (bouton, 500, 0, BTN_width, BTN_height, bouton1.x, bouton1.y)
+			speaker.is_on (a_x, a_y)
+			bouton_s.is_on (a_x, a_y)
+			bouton_m.is_on (a_x, a_y)
+			if click then
+				if speaker.hover then
+					if not audio.muted then
+						audio.mute
+						speaker_off
+					elseif audio.muted then
+						audio.unmute
+						speaker_on
+					end
+				end
+
+				if bouton_s.hover then
+					bouton_s.set_selected (True)
+				elseif not bouton_s.hover then
+					bouton_s.set_selected (False)
+				end
+				if bouton_m.hover then
+					bouton_m.set_selected (True)
+				elseif not bouton_m.hover then
+					bouton_m.set_selected (False)
+				end
+			end
+
+			if bouton_s.hover then
+				bouton_s.in_image_pos.x:=500
+				bouton_s.in_image_pos.y:=0
+			elseif not bouton_s.hover then
+				bouton_s.in_image_pos.x:=0
+				bouton_s.in_image_pos.y:=0
+			end
+
+			if bouton_m.hover then
+				bouton_m.in_image_pos.x:=500
+				bouton_m.in_image_pos.y:=250
+			elseif not bouton_m.hover then
+				bouton_m.in_image_pos.x:=0
+				bouton_m.in_image_pos.y:=250
+			end
+
+			if bouton_s.selected then
+				color:=yellow
+			elseif not bouton_s.selected then
+				color:=black
+			end
+			draw_bouton(bouton_s)
+
+			if bouton_m.selected then
+				color:=yellow
+			elseif not bouton_m.selected then
+				color:=black
+			end
+			draw_bouton(bouton_m)
 		end
 
-	normal_button_1
+	draw(a_bouton:ELEMENT)
 		do
-			menu.surface.draw_sub_surface (bouton, 0, 0, BTN_width, BTN_height, bouton1.x, bouton1.y)
+			menu.surface.draw_sub_surface_with_scale (a_bouton,
+														a_bouton.in_image_pos.x,
+														a_bouton.in_image_pos.y,
+														a_bouton.filedimension.width,
+														a_bouton.filedimension.height,
+														a_bouton.position.x,
+														a_bouton.position.y,
+														a_bouton.gamedimension.width,
+														a_bouton.gamedimension.height)
 		end
 
-	-- Bouton Multi
+	-- Bouton 1 joueur
 
-	hover_button_2
+	draw_bouton(a_bouton:ELEMENT)
 		do
-			menu.surface.draw_sub_surface (bouton, 500, 250, BTN_width, BTN_height, bouton2.x, bouton2.y)
+
+			menu.surface.draw_rectangle (color,
+										a_bouton.position.x,
+										a_bouton.position.y,
+										a_bouton.gamedimension.width,
+										a_bouton.gamedimension.height)
+			draw(a_bouton)
 		end
 
-	normal_button_2
+	speaker_on
 		do
-			menu.surface.draw_sub_surface (bouton, 0, 250, BTN_width, BTN_height,bouton2.x, bouton2.y)
+			speaker.in_image_pos.x:=0
+			speaker.in_image_pos.y:=0
+			draw(speaker)
+		end
+	speaker_off
+		do
+			speaker.in_image_pos.x:=250
+			speaker.in_image_pos.y:=0
+			draw(speaker)
 		end
 
-	x:INTEGER assign set_x
-			-- Vertical position of `Current'
-
-	y:INTEGER assign set_y
-			-- Horizontal position of `Current'
-
-	set_x(a_x:INTEGER)
-			-- Assign the value of `x' with `a_x'
-		do
-			x := a_x
-		ensure
-			Is_Assign: x = a_x
-		end
-
-	set_y(a_y:INTEGER)
-			-- Assign the value of `y' with `a_y'
-		do
-			y := a_y
-		ensure
-			Is_Assign: y = a_y
-		end
+	background,title,bouton_S,bouton_M,speaker:ELEMENT
 
 	menu:GAME_WINDOW_SURFACED
 
-	bouton:ELEMENT
-
-	bouton1:TUPLE[x,y:INTEGER]
-	bouton2:TUPLE[x,y:INTEGER]
-
-	BTN_width,BTN_height:INTEGER
-
+	color,yellow,black:GAME_COLOR
 
 end
