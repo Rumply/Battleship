@@ -21,6 +21,7 @@ feature {NONE}
 			create environment
 			audio_library.sources_add -- Add a sound source in the audio context.
 			source:=audio_library.last_source_added
+			source.gain:=0.2
 			muted:=False
 		end
 
@@ -51,7 +52,11 @@ feature -- Access
 	unmute
 		do
 			if muted then
+<<<<<<< HEAD
 				source.set_gain (1)
+=======
+				source.set_gain (0.2)
+>>>>>>> 98567ffa487cddd0317f94cedf2d2dd8e14a3830
 				muted:=False
 			end
 		end

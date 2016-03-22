@@ -1,3 +1,4 @@
 *.dll
 EIFGENs
 *.xcf
+exception_trace.log

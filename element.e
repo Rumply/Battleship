@@ -9,22 +9,30 @@ class
 
 inherit
 	GAME_SURFACE
+		rename
+			make as make_game_surface
+		end
 
 create
-	make_surface
+	make
 
 feature {NONE} -- Initialization
 
-	make_surface(a_filename:READABLE_STRING_GENERAL)
+	make(a_filename:READABLE_STRING_GENERAL)
 		do
 			load_background(a_filename)
-			create {TUPLE[x,y:INTEGER]} position.default_create
-			create {TUPLE[width,height:INTEGER]} filedimension.default_create
-			create {TUPLE[width,height:INTEGER]} gamedimension.default_create
-			create {TUPLE[x,y:INTEGER]} in_image_pos.default_create
-			hover:=False
-			selected:=False
+			make_attributs
 		end
+
+	make_attributs
+	do
+		create {TUPLE[x,y:INTEGER]} position
+		create {TUPLE[width,height:INTEGER]} filedimension
+		create {TUPLE[width,height:INTEGER]} gamedimension
+		create {TUPLE[x,y:INTEGER]} in_image_pos
+		hover:=False
+		selected:=False
+	end
 
 	load_background(a_filename:READABLE_STRING_GENERAL)
 		local
@@ -42,28 +50,18 @@ feature {NONE} -- Initialization
 					make_from_image (l_image)
 				else
 					has_error := True
-					make(1,1)
+					make_game_surface(1,1)
 				end
 
 			else
 				has_error := True
-				make(1,1)
+				make_game_surface(1,1)
 			end
 		end
 
-feature {ELEMENT} -- Access
-
-	 --| Remove line when `element_bouton' is initialized in creation procedure.
-
-feature {ELEMENT} -- Access
-
-	 --| Remove line when `element' is initialized in creation procedure.
-
-feature {ELEMENT} -- Access
-
-	 --| Remove line when `new' is initialized in creation procedure.
-
 feature -- Access
+
+
 
 	is_on(a_mouse_x,a_mouse_y:INTEGER)
 		do

@@ -21,7 +21,6 @@ feature {NONE} -- Initialization
 			-- Run application.
 		local
 			l_engine:detachable MAIN_ENGINE
-			l_bouton:BOUTON
 		do
 			game_library.enable_video -- Enable the video functionalities
 			image_file_library.enable_image (true, true, false)  -- Enable PNG image, JPG image (but not TIF).
