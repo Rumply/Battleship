@@ -61,8 +61,6 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-
-
 	is_on(a_mouse_x,a_mouse_y:INTEGER)
 		do
 			if a_mouse_x>position.x and a_mouse_x<(position.x+gamedimension.width) then
@@ -97,7 +95,7 @@ feature -- Access
 
 	gameDimension:TUPLE[width,height:INTEGER]
 
-feature --Constants
+feature {NONE} --Constants
 
 	image_location: STRING_32
             -- `Result' is DIRECTORY constant named image_location.

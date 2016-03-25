@@ -19,6 +19,7 @@ feature {NONE}
 
 	make(a_window:GAME_WINDOW_SURFACED)
 		do
+
 			window := a_window
 			create menu.make (window)
 			create musique_menu.make_environment
@@ -37,8 +38,6 @@ feature
 			game_library.iteration_actions.extend (agent cycle(?))
 			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- When the user move the mouse on the window
 			window.mouse_button_pressed_actions.extend (agent on_mouse_click(?,?,?))
-
-
 
 			game_library.launch
 		end

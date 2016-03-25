@@ -47,8 +47,6 @@ feature
 			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- When the user move the mouse on the window
 			window.mouse_button_pressed_actions.extend (agent on_mouse_click(?,?,?))
 
-
-
 			game_library.launch
 			game_library.quit_library
 		end

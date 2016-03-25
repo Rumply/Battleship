@@ -7,24 +7,41 @@ note
 class
 	CASE
 
+inherit
+	MASQUE
+
 create
 	make
 
 feature {NONE} -- Initialization
 
-	make
+	make(a_x, a_y, a_width, a_height, a_bordure:INTEGER)
 			-- Initialization for `Current'.
 		do
-			
+			create {TUPLE[width,height,bordure:INTEGER]} dimension
+			create {TUPLE[x,y:INTEGER]} position2
+			make_attributs
+			position.x:=a_x
+			position.y:=a_y
+			dimension.width:=a_width
+			dimension.height:=a_height
+			dimension.bordure:=a_bordure
+			make_as_mask (dimension.width, dimension.height)
 		end
 
 feature {CASE} -- Access
 
 	case: ELEMENT
 			-- `case'
-		attribute check False then end end --| Remove line when `case' is initialized in creation procedure.
+		attribute
+			check False then
+			end
+		end --| Remove line when `case' is initialized in creation procedure.
 
 feature -- Access
+
+	position2:TUPLE[x,y:INTEGER_32]
+	dimension:TUPLE[width,height,bordure:INTEGER_32]
 
 feature -- Measurement
 
