@@ -1,6 +1,6 @@
 note
 	description: "Summary description for {ELEMENT}."
-	author: ""
+	author: "Guillaume Hamel Gagné"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -26,6 +26,7 @@ feature {NONE} -- Initialization
 
 	make_attributs
 	do
+		-- Crée les tuples contenant les `position', les `filedimension', les `gamedimension' et les `in_image_pos'.
 		create {TUPLE[x,y:INTEGER]} position
 		create {TUPLE[width,height:INTEGER]} filedimension
 		create {TUPLE[width,height:INTEGER]} gamedimension
@@ -36,8 +37,8 @@ feature {NONE} -- Initialization
 
 	load_background(a_filename:READABLE_STRING_GENERAL)
 		local
-			l_filePath:STRING_32
-			l_image:IMG_IMAGE_FILE
+			l_filePath:STRING_32 -- Prend un path (position) afin de trouver une image à placer en arrière plan.
+			l_image:IMG_IMAGE_FILE -- Prend une image classée dans le répertoire donné précédemment.
 
 		do
 			l_filePath:=""

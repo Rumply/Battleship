@@ -1,6 +1,6 @@
 note
 	description: "Summary description for {MAIN_MENU}."
-	author: ""
+	author: "Guillaume Hamel Gagné"
 	date: "$Date$"
 	revision: "$Revision$"
 

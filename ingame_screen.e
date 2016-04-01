@@ -1,6 +1,6 @@
 note
 	description: "Summary description for {INGAME_SCREEN}."
-	author: ""
+	author: "Guillaume Hamel Gagné"
 	date: "$Date$"
 	revision: "$Revision$"
 

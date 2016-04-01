@@ -1,6 +1,6 @@
 note
 	description: "Game engine pour le menu principal."
-	author: ""
+	author: "Guillaume Hamel Gagné"
 	date: "$1 Mars 2016$"
 	revision: "$1.0$"
 

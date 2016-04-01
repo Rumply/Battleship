@@ -1,6 +1,6 @@
 note
 	description: "Summary description for {MASQUE}."
-	author: ""
+	author: "Guillaume Hamel Gagné"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -29,7 +29,7 @@ feature {NONE}
 			make_attributs
 			old_make_for_pixel_format (l_pixel, a_width, a_height)
 			enable_alpha_blending
-			
+
 		end
 
 feature -- Access
