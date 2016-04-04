@@ -1,6 +1,10 @@
 note
-	description: "Game engine pour le menu principal."
-	author: "Guillaume Hamel Gagné"
+	description: "[
+				Classe qui gère l'application dans son apparence soit, la grosseure limite
+				de l'écran, les sons dans le jeu, les images et les moments où est-ce que
+				l'utilisateur appuis à l'emplacement de son curseur.
+				]"
+	author: "Guillaume Hamel-Gagné"
 	date: "$1 Mars 2016$"
 	revision: "$1.0$"
 

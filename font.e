@@ -1,5 +1,5 @@
 note
-	description: "Summary description for {FONT}."
+	description: "Classe qui décide quelle police d'écriture sera utilisé dans l'outil de discussion instantanée."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"

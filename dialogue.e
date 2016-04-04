@@ -1,5 +1,5 @@
 note
-	description: "Summary description for {DIALOGUE}."
+	description: "Classe ou les dialogues en jeu sont créé à des fin d'apprentisage."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
@@ -15,7 +15,7 @@ feature {NONE} -- Initialization
 	make
 			-- Initialization for `Current'.
 		do
-			
+
 		end
 
 feature {DIALOGUE} -- Access

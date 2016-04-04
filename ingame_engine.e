@@ -1,6 +1,9 @@
 note
-	description: "Summary description for {INGAME_ENGINE}."
-	author: "Guillaume Hamel Gagné"
+	description: "[
+				Classe qui fait un surlignement de l'emplacement en jeu du curseur. La
+				Classe contrôle aussi les sons dès le moment où l'application est lancée.
+				]"
+	author: "Guillaume Hamel-Gagné"
 	date: "$Date$"
 	revision: "$Revision$"
 

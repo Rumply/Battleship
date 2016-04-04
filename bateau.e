@@ -1,5 +1,5 @@
 note
-	description: "Summary description for {BATEAU}."
+	description: "Classe ou est-ce que les bateaux seront déssiné. BATEAU est un enfant de MASQUE."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"

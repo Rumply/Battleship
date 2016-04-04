@@ -1,8 +1,12 @@
 note
-	description: "Summary description for {GRILLE}."
-	author: "Guillaume Hamel Gagné"
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "[
+			Classe où est-ce que le tableau de jeu est créé. 10x10 est sa dimension par 
+			défaut. La classe GRILLE hérite de la classe MASQUE afin de pouvoir garder
+			en mémoire l'emplacement des bateaux à leur application sur la grille.
+			]"
+	author: "Guillaume Hamel-Gagné"
+	date: "28 mars 2016"
+	revision: "1.0"
 
 class
 	GRILLE

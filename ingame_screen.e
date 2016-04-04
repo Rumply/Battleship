@@ -1,6 +1,10 @@
 note
-	description: "Summary description for {INGAME_SCREEN}."
-	author: "Guillaume Hamel Gagné"
+	description: "[
+				Classe qui fait en sorte que la grille de jeu soit réactive aux mouvements de
+				l'utilisateur. La Classe crée aussi l'arrière plan, le haut-parleur, les limites
+				de la boîte de dialogue et les limites de la boîte de discussion instantanée.
+				]"
+	author: "Guillaume Hamel-Gagné"
 	date: "$Date$"
 	revision: "$Revision$"
 

@@ -1,5 +1,5 @@
 note
-	description: "This application play ogg files passed in argument. The argument must be a ogg sound file."
+	description: "Cette application joue un fichier ogg placé en argument. Cet argument doit être un fichier ogg."
 	author: "Francis Mathieu"
 	date: "$Date$"
 	revision: "$Revision$"

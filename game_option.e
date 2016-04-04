@@ -1,6 +1,6 @@
 note
-	description: "Summary description for {GAME_OPTION}."
-	author: ""
+	description: "Classe où les options du jeu seront crées, Solo vs Multi par exemple."
+	author: "Guillaume Hamel-Gagné"
 	date: "$Date$"
 	revision: "$Revision$"
 

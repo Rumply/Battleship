@@ -1,5 +1,5 @@
 note
-	description: "Summary description for {CHAT}."
+	description: "Classe ou l'outil de discussion instantanée est créé et utilisé en réseau."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"

@@ -1,8 +1,12 @@
 note
-	description: "Summary description for {ELEMENT}."
-	author: "Guillaume Hamel Gagné"
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "[
+		Classe ou tout ce qui est dessiné est créé.La grille de jeu,les images et
+		la boîte de discussion instantanée sont toutes implémantée dans le jeu grâce
+		à la classe ELEMENT.
+		]"
+	author: "Guillaume Hamel-Gagné"
+	date: "4 avril 2016"
+	revision: "1.0"
 
 class
 	ELEMENT
@@ -37,8 +41,8 @@ feature {NONE} -- Initialization
 
 	load_background(a_filename:READABLE_STRING_GENERAL)
 		local
-			l_filePath:STRING_32 -- Prend un path (position) afin de trouver une image à placer en arrière plan.
-			l_image:IMG_IMAGE_FILE -- Prend une image classée dans le répertoire donné précédemment.
+			l_filePath:STRING_32 -- Prend un path `l_filePath' afin de trouver une image à placer en arrière plan.
+			l_image:IMG_IMAGE_FILE -- Prend une image, `l_image' classée dans l'emplacemnet `l_filePath' donné précédemment.
 
 		do
 			l_filePath:=""

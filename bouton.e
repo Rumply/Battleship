@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {BOUTON}."
-	author: "Guillaume Hamel Gagné"
+	description: "Classe ou est-ce que les boutons sont crée et appliqué sur le menu."
+	author: "Guillaume Hamel-Gagné"
 	date: "$Date$"
-	revision: "$Revision$"
+	revision: "1.0"
 
 class
 	BOUTON
