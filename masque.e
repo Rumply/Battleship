@@ -1,5 +1,9 @@
 note
-	description: "Summary description for {MASQUE}."
+	description: "[
+				Classe qui dessine un masque de l'image en cours (de la grille) afin de
+				garder en mémoire l'emplacement de la grille et des bateaux lorsque ceux-ci
+				seront placé.
+				]"
 	author: "Guillaume Hamel-Gagné"
 	date: "$Date$"
 	revision: "$Revision$"

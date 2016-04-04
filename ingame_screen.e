@@ -5,8 +5,8 @@ note
 				de la boîte de dialogue et les limites de la boîte de discussion instantanée.
 				]"
 	author: "Guillaume Hamel-Gagné"
-	date: "$Date$"
-	revision: "$Revision$"
+	date: "4 avril 2016"
+	revision: "1.0"
 
 class
 	INGAME_SCREEN

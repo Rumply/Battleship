@@ -25,6 +25,7 @@ create
 feature {NONE}
 
 	make_bouton(a_filename:READABLE_STRING_GENERAL;a_text:STRING)
+		-- Routine qui fait en sorte que l'écriture dans les boutons soit d'une certaine couleur et d'une certaine police d'écriture prédéfinie.
 	local
 		l_font:TEXT_FONT
 		l_black:GAME_COLOR

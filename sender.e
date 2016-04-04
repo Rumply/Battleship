@@ -1,5 +1,8 @@
 note
-	description: "Summary description for {SENDER}."
+	description: "[
+				La classe SENDER fait en sorte que lorsque le jeu est joué en multijoueurs,
+				les deux joueurs savent qui a écrit quoi et qui a envoyé quoi.
+				]"
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
@@ -15,7 +18,7 @@ feature {NONE} -- Initialization
 	make
 			-- Initialization for `Current'.
 		do
-			
+
 		end
 
 feature {SENDER} -- Access

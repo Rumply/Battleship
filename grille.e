@@ -20,10 +20,12 @@ feature {NONE}
 		local
 			black:GAME_COLOR
 		do
-			create {TUPLE[x,y:INTEGER]} position
-			create {TUPLE[x,y:INTEGER]} selected_pos
-			create {TUPLE[width,height,bordure:INTEGER]} dimension
-			create {TUPLE[width,height,bordure:INTEGER]} case_dimension
+			create {TUPLE[x,y:INTEGER]} position -- Crée un tuple qui garde en mémoire la position en x et en y sous une forme d'integer.
+			create {TUPLE[x,y:INTEGER]} selected_pos -- Crée un tuple qui garde en mémoire la position sélectionnée en x et en y sous une forme d'integer.
+			create {TUPLE[width,height,bordure:INTEGER]} dimension -- Crée un tuple, pour les dimensions, contenant la largeur, la hauteure et les bordures
+																   -- sous forme d'integer.
+			create {TUPLE[width,height,bordure:INTEGER]} case_dimension -- Crée un tuple, pour la dimension de la case, contenant la largeur, la hauteure et
+																		-- les bordures sous une forme d'integer.
 			dimension.width:=a_width
 			dimension.height:=a_height
 			dimension.bordure:=a_bordure
@@ -33,14 +35,16 @@ feature {NONE}
 			index:=1
 			old_index:=2
 			hover:=false
-			create black.make_rgb (0,0,0)
+			create black.make_rgb (0,0,0) -- Utilise la couleur noir (#000000)
 			create listCase.make (100)
-			create element.make ("eau.jpg")
-			create viseur.make ("bois.jpg")
+			create element.make ("eau.jpg") -- Crée l'élément "eau.jpg" pour l'arrière plan.
+			create viseur.make ("bois.jpg") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
 			fill_listCase
 		end
 
 		fill_listCase
+				-- Routine qui fait en sorte que la grille soit séparée en 10 parties pour la longeure et 10 parties pour la hauteur
+				-- ce qui résulte en une grille de 10x10 soit, 100 emplacements jouables.
 			local
 			l_index,l_Wreste,l_Hreste,l_x,l_y:INTEGER_32
 			l_double:REAL_64
@@ -90,12 +94,14 @@ feature {NONE}
 feature --Access
 
 	get_case_position
+		-- Routine qui prend en argument quelle est la position des x et des y dans la grille.
 		do
 			selected_pos.x:=(position.x+(colonne*case_dimension.width))
 			selected_pos.y:=(position.y+(ranger*case_dimension.height))
 		end
 
 	is_on(a_mouse_x,a_mouse_y:INTEGER)
+		-- Routine qui garde en mémoire l'emplacement du curseur afin de faire surligner la case ou le bouton sur lequel il est en ce moment.
 		do
 			if a_mouse_x>position.x and a_mouse_x<(position.x+dimension.width) then
 				if a_mouse_y>position.y and a_mouse_y<(position.y+dimension.height) then
@@ -109,6 +115,7 @@ feature --Access
 		end
 
 	get_index_from_mousePos(a_mouse_x,a_mouse_y:INTEGER_32)
+		-- Routine qui compare l'emplacement en x et en y du curseur et des positions antérieurement choisies.
 		local
 			l_temp:INTEGER_32
 		do

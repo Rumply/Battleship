@@ -21,6 +21,7 @@ create
 feature {NONE}
 
 	make(a_window:GAME_WINDOW_SURFACED)
+		-- Routine qui lance le menu et la musique dès le lancement de l'application.
 		do
 
 			window := a_window
@@ -35,11 +36,11 @@ feature {NONE}
 feature
 
 	run_game
-			-- Create ressources and launch the game
+			-- Crée les ressources et lance le jeu.
 		do
 			game_library.quit_signal_actions.extend(agent on_quit(?))
 			game_library.iteration_actions.extend (agent cycle(?))
-			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- When the user move the mouse on the window
+			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- Lorsque l'utilisateur bouge son curseur sur l'écran.
 			window.mouse_button_pressed_actions.extend (agent on_mouse_click(?,?,?))
 
 			game_library.launch
@@ -48,12 +49,15 @@ feature
 feature {NONE} -- Implementation
 
 	cycle(a_timestamp: NATURAL_32)
+		-- Routine qui fait les mises à jours de l'écran et des sons.
 		do
 			window.update
 			audio_library.update
 		end
 
 	on_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32)
+		-- Routine qui fait les mises à jours de l'écran et des sons par rapport à ce que l'utilisateur fait en ce moment.
+		-- Si l'utilisateur appuie sur le haut-parleur, la routine met le BOOLEAN à False.
 		do
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y
@@ -66,6 +70,8 @@ feature {NONE} -- Implementation
 
 
 	on_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; click_count: NATURAL_8)
+		-- Routine qui fait les mises à jours de l'écran et des sons par rapport à ce que l'utilisateur fait en ce moment.
+		-- Si l'utilisateur n'appuie pas sur le haut-parleur lors du lancement de l'application, la routine laisse le BOOLEAN à True.
 		do
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y

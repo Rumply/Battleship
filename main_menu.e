@@ -1,5 +1,8 @@
 note
-	description: "Summary description for {MAIN_MENU}."
+	description: "[
+				Classe qui innitialise l'arrière plan, les boutons, le haut-parleur, le titre
+				à leur emplacement final lors du lancement de l'application.
+				]"
 	author: "Guillaume Hamel-Gagné"
 	date: "$Date$"
 	revision: "$Revision$"

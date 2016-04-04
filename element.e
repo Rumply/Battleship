@@ -29,17 +29,19 @@ feature {NONE} -- Initialization
 		end
 
 	make_attributs
-	do
-		-- Crée les tuples contenant les `position', les `filedimension', les `gamedimension' et les `in_image_pos'.
-		create {TUPLE[x,y:INTEGER]} position
-		create {TUPLE[width,height:INTEGER]} filedimension
-		create {TUPLE[width,height:INTEGER]} gamedimension
-		create {TUPLE[x,y:INTEGER]} in_image_pos
-		hover:=False
-		selected:=False
-	end
+	-- Crée les tuples contenant les `position', les `filedimension', les `gamedimension' et les `in_image_pos'.
+		do
+			create {TUPLE[x,y:INTEGER]} position
+			create {TUPLE[width,height:INTEGER]} filedimension
+			create {TUPLE[width,height:INTEGER]} gamedimension
+			create {TUPLE[x,y:INTEGER]} in_image_pos
+			hover:=False
+			selected:=False
+		end
 
 	load_background(a_filename:READABLE_STRING_GENERAL)
+		-- Routine qui prend en argument un string afin de vérifier s'il est bon pour l'utilisation de l'application.
+		-- Un mauvais chemin pourait avoir un résultat qui ferait échouer la compilation.
 		local
 			l_filePath:STRING_32 -- Prend un path `l_filePath' afin de trouver une image à placer en arrière plan.
 			l_image:IMG_IMAGE_FILE -- Prend une image, `l_image' classée dans l'emplacemnet `l_filePath' donné précédemment.
@@ -65,7 +67,7 @@ feature {NONE} -- Initialization
 		end
 
 feature -- Access
-
+	-- Fait en sorte que lorsque le curseur est au dessus d'un emplacement unique du jeu, la case `hover' passe à True.
 	is_on(a_mouse_x,a_mouse_y:INTEGER)
 		do
 			if a_mouse_x>position.x and a_mouse_x<(position.x+gamedimension.width) then

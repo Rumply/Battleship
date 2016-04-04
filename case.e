@@ -2,7 +2,7 @@ note
 	description: "Classe ou est-ce que les cases sont surlignées lorsque le curseur de l'utilisateur passe par dessus."
 	author: "Guillaume Hamel-Gagné"
 	date: "$Date$"
-	revision: "$Revision$"
+	revision: "1.0"
 
 class
 	CASE
