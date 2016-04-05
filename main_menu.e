@@ -43,6 +43,7 @@ feature {NONE} -- Initialize
 	end
 
 	initialize_bouton_s
+		-- Routine qui initialise les attributs du bouton afin de jouer seul.
 		local
 			l_double:REAL_64
 		do
@@ -61,6 +62,7 @@ feature {NONE} -- Initialize
 		end
 
 	initialize_bouton_m
+		-- Routine qui initialise les attributs du bouton afin de jouer contre quelqu'un d'autre.
 		local
 			l_double:REAL_64
 		do
@@ -77,6 +79,7 @@ feature {NONE} -- Initialize
 		end
 
 	initialize_speaker
+		-- Routine qui initialise le haut-parleur dans le menu.
 		do
 			speaker.position.x:=10
 			speaker.position.y:=10
@@ -89,6 +92,7 @@ feature {NONE} -- Initialize
 		end
 
 	initialize_title
+	-- Routine qui initialise les attributs du titre dans le menu.
 		local
 			l_double:REAL_64
 		do
@@ -107,18 +111,19 @@ feature {NONE} -- Initialize
 feature {NONE} -- Implementation
 
 	setup_object
-			-- Event that is launch at each iteration.
+			-- Événement qui est lancé à chaque itération.
 		do
 			fill_background
 			setup_button
 			setup_title
 			setup_speaker
 
-			-- Update modification in the screen
+			-- Routine qui met à jour les modifications à l'écran.
 			window.update
 		end
 
 	fill_background
+		-- Routine qui dessine l'arrière plan.
 		local
 			width,height,l_Wreste,l_Hreste,l_x,l_y:INTEGER
 		do
@@ -150,16 +155,19 @@ feature {NONE} -- Implementation
 		end
 
 	setup_title
+		-- Routine qui dessine le titre.
 		do
 			draw(title)
 		end
 
 	setup_speaker
+		-- Routine qui dessine le haut parleur.
 		do
 			draw(speaker)
 		end
 
 	setup_button
+		-- Routine qui dessine les boutons.
 		do
 			-- Bouton SinglePlayer
 			draw_bouton(bouton_s)
@@ -171,6 +179,7 @@ feature {NONE} -- Implementation
 feature -- Access bouton
 
 	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
+		-- Routine qui applique le BOOLEAN de click lorsque l'utilisateur appuis sur le haut-parleur afin de fermer ou d'ouvrir le son.
 		do
 			speaker.is_on (a_x, a_y)
 			bouton_s.is_on (a_x, a_y)
@@ -231,6 +240,7 @@ feature -- Access bouton
 		end
 
 	draw(a_element:ELEMENT)
+		-- Routine qui dessine les éléments de l'écran.
 		do
 			window.surface.draw_sub_surface_with_scale (a_element,
 														a_element.in_image_pos.x,
@@ -244,6 +254,7 @@ feature -- Access bouton
 		end
 
 	draw_bouton(a_bouton:ELEMENT)
+		-- Routine qui dessine les boutons à l'écran.
 		do
 
 			window.surface.draw_rectangle (color,
@@ -255,12 +266,14 @@ feature -- Access bouton
 		end
 
 	speaker_on
+		-- Routine qui dessine un haut-parleur.
 		do
 			speaker.in_image_pos.x:=0
 			speaker.in_image_pos.y:=0
 			draw(speaker)
 		end
 	speaker_off
+		-- Routine qui dessine un haut-parleur barré.
 		do
 			speaker.in_image_pos.x:=250
 			speaker.in_image_pos.y:=0

@@ -1,8 +1,8 @@
 note
 	description: "Cette application joue un fichier ogg placé en argument. Cet argument doit être un fichier ogg."
 	author: "Francis Mathieu"
-	date: "$Date$"
-	revision: "$Revision$"
+	date: "5 avril 2016"
+	revision: "1.0"
 
 class
 	SOUND_ENGINE
@@ -28,6 +28,7 @@ feature {NONE}
 feature -- Access
 
 	play
+		-- Routine qui fait jouer de la musique.
 		do
 			if not source.is_playing then
 				source.play
@@ -35,6 +36,7 @@ feature -- Access
 		end
 
 	pause
+		-- Routine qui fait arreter la musique.
 		do
 			if source.is_playing then
 				source.pause
@@ -42,6 +44,7 @@ feature -- Access
 		end
 
 	mute
+		-- Routine qui enlève le son de la musique.
 		do
 			if not muted then
 				source.set_gain(0)
@@ -50,6 +53,7 @@ feature -- Access
 		end
 
 	unmute
+		-- Routine qui remet le son de la musique.
 		do
 			if muted then
 				source.set_gain (0.2)
@@ -58,6 +62,7 @@ feature -- Access
 		end
 
 	continue
+		-- Routine qui fait en sorte qe la musique ne s'arrête jamais.
 		do
 			if source.is_pause then
 				source.play
@@ -66,6 +71,7 @@ feature -- Access
 
 
 	add(a_filename:READABLE_STRING_GENERAL; a_nb_loop:INTEGER)
+		-- Routine qui prend en argument le chemin d'accès d'une ou de plusieurs musiques et qui les joues.
 		local
 			l_filePath:STRING_32
 			l_sound:AUDIO_SOUND_FILE

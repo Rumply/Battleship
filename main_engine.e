@@ -58,12 +58,14 @@ feature
 feature {NONE} -- Implementation
 
 	cycle(a_timestamp: NATURAL_32)
+		-- Routine qui fait les mises à jours de l'écran et de la librairie de son.
 		do
 			window.update
 			audio_library.update
 		end
 
 	on_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32)
+		-- Routine qui garde en mémoire l'emplacement du curseur lors de ses mouvements.
 		do
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y
@@ -76,6 +78,7 @@ feature {NONE} -- Implementation
 
 
 	on_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; click_count: NATURAL_8)
+		-- Routine qui garde en mémoire les actions du curseur lorsqu'un click est effectué.
 		local
 			game:INGAME_ENGINE
 		do

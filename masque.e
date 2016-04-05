@@ -25,6 +25,7 @@ create
 feature {NONE}
 
 	make_as_mask (a_width, a_height: INTEGER_32)
+		-- Routine qui dessine des masques.
 		local
 			l_pixel:GAME_PIXEL_FORMAT
 		do
@@ -39,11 +40,13 @@ feature {NONE}
 feature -- Access
 
 	draw_surface_with_scale(a_element:ELEMENT;a_x,a_y,a_width,a_height:INTEGER_32)
+		-- Routine qui dessine un masque de la surface jouée en ce moment.
 		do
 			draw_sub_surface_with_scale (a_element, 0, 0, a_element.width, a_element.height, a_x, a_y, a_width, a_height)
 		end
 
 	draw_empty_rect(a_color:GAME_COLOR;a_x,a_y,a_width,a_height,a_bordure:INTEGER_32)
+		-- Routine qui dessine un rectangle vide.
 		local
 			l_x,l_y:INTEGER_32
 		do
@@ -56,6 +59,7 @@ feature -- Access
 		end
 
 	draw_rect_with_tile(a_filename: READABLE_STRING_GENERAL; a_width, a_height, a_bordure:INTEGER_32)
+		-- Routine qui dessine un rectangle vide avec des tuiles.
 		local
 			l_element:ELEMENT
 			l_x,l_y:INTEGER_32

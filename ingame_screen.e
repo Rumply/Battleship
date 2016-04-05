@@ -48,6 +48,8 @@ feature {NONE}
 	end
 
 	load_case_element
+		-- Routine qui fait en sorte que la texture de bois ne dépasse pas le cadre qui lui est imposé (la grille).
+		-- Routine qui fait en sorte que les images de bateaux appliquées sur la grille restent dans la grille et qu'ils ne dépassent pas lorsqu'appliquée près des bords.
 		do
 			create bordure1.make_as_mask (820, 820)
 			bordure1.draw_rect_with_tile ("bois.jpg", 820, 820, 10)
@@ -59,6 +61,7 @@ feature {NONE}
 		end
 
 	set_as_bateau1(a_bateau:MASQUE)
+		-- Routine qui impose les attributs du bateau1 et qui enregistre son emplacement sous forme de masque dès le premier click sur la grille.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=0
@@ -71,6 +74,7 @@ feature {NONE}
 		end
 
 	set_as_bateau2(a_bateau:MASQUE)
+		-- Routine qui impose les attributs du bateau2 et qui enregistre son emplacement sous forme de masque dès le deuxième click sur la grille.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=80
@@ -83,6 +87,7 @@ feature {NONE}
 		end
 
 	set_as_bateau3(a_bateau:MASQUE)
+	-- Routine qui impose les attributs du bateau3 et qui enregistre son emplacement sous forme de masque dès le troisième click sur la grille.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=160
@@ -95,6 +100,7 @@ feature {NONE}
 		end
 
 	set_as_bateau4(a_bateau:MASQUE)
+	-- Routine qui impose les attributs du bateau4 et qui enregistre son emplacement sous forme de masque dès le quatrième click sur la grille.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=240
@@ -107,6 +113,7 @@ feature {NONE}
 		end
 
 	set_as_bateau5(a_bateau:MASQUE)
+	-- Routine qui impose les attributs de bateau5 et qui enregistre son emplacement sous forme de masque dès le cinquième click sur la grille.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=320
@@ -119,6 +126,7 @@ feature {NONE}
 		end
 
 	initialize_speaker
+		-- Routine qui impose les attributs du haut-parleur.
 		do
 			speaker.position.x:=10
 			speaker.position.y:=10
@@ -131,6 +139,7 @@ feature {NONE}
 		end
 
 	initialize_grille
+		-- Routine qui initialise les attributs de la grille.
 		do
 			grille.position.x:=80
 			grille.position.y:=80
@@ -142,6 +151,7 @@ feature {NONE}
 		end
 
 	initialize_chat_bordure
+		-- Routine qui initialise la bordure de discussion instantanée.
 		local
 			l_double:REAL_64
 		do
@@ -153,12 +163,14 @@ feature {NONE}
 		end
 
 	initialize_bordure
+		-- Routine qui initialise les bordures de la grille.
 		do
 			bordure1.position.x:=grille.position.x - grille.dimension.bordure
 			bordure1.position.y:=grille.position.y - grille.dimension.bordure
 		end
 
 	fill_background
+		-- Routine qui remplit l'arrière plan avec une image prédéfinie.
 		local
 			width,height,l_Wreste,l_Hreste,l_x,l_y:INTEGER
 		do
@@ -190,11 +202,13 @@ feature {NONE}
 		end
 
 	setup_speaker
+		-- Routine qui dessine un haut-parleur à l'écran.
 		do
 			draw(speaker)
 		end
 
 	setup_border
+		-- Routine qui dessine la grille, les bordures et les bordures de la discussion instantanée.
 		do
 			window.surface.draw_surface (grille.masque, grille.position.x,grille.position.y)
 			window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
@@ -215,6 +229,8 @@ feature -- Access
 		end
 
 	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
+		-- Routine qui met laisse le BOOLEAN à True si le boutton n'est pas touché et qui le met à False si le bouton l'est.
+		-- Routine qui applique les bateaux un par un lorsqu'un click est fait dans la grille, jusqu'à un maximum de 5 bateaux dans la grille.
 		do
 			speaker.is_on (a_x, a_y)
 			grille.is_on (a_x, a_y)
@@ -244,6 +260,7 @@ feature -- Access
 		end
 
 	draw_case(a_x,a_y,a_nb_bateau:INTEGER_32)
+		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
 		local
 			l_temp:INTEGER_32
 
@@ -269,6 +286,7 @@ feature -- Access
 		end
 
 	draw_pointer(a_x,a_y:INTEGER_32)
+		-- Routine qui dessine un élément temporaire à l'emplacement du curseur sur la grille.
 		local
 			l_temp:INTEGER_32
 		do
@@ -282,6 +300,7 @@ feature -- Access
 		end
 
 	draw(a_element:ELEMENT)
+		-- Routine qui dessine à l'écran les éléments de a_element.
 		do
 			window.surface.draw_sub_surface_with_scale (a_element,
 														a_element.in_image_pos.x,
@@ -297,6 +316,7 @@ feature -- Access
 	-- Bouton 1 joueur
 
 	draw_bouton(a_bouton:ELEMENT)
+		-- Routine qui dessine un boutton.
 		do
 
 			window.surface.draw_rectangle (color,
@@ -308,12 +328,15 @@ feature -- Access
 		end
 
 	speaker_on
+		-- Routine qui dessine un haut-parleur ouvert.
 		do
 			speaker.in_image_pos.x:=0
 			speaker.in_image_pos.y:=0
 			draw(speaker)
 		end
+
 	speaker_off
+		-- Routine qui dessine un haut-parleur barré.
 		do
 			speaker.in_image_pos.x:=250
 			speaker.in_image_pos.y:=0
