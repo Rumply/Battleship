@@ -17,6 +17,10 @@ create
 feature {NONE}
 
 	make(a_width,a_height,a_bordure:INTEGER_32)
+		require
+			a_width_valide: a_width >= 0
+			a_height_valide: a_height >= 0
+			a_bordure_valide: a_bordure >= 0
 		local
 			black:GAME_COLOR
 		do
