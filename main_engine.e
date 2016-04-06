@@ -37,6 +37,9 @@ feature {NONE}
 			musique_menu.add ("theme2.wav", 1)
 			musique_menu.add ("theme1.wav", 1)
 			musique_menu.play
+		ensure
+			musique_menu_is_playing: musique_menu.source.is_open
+			musique_menu_is_playing: musique_menu.source.is_playing
 		end
 
 feature

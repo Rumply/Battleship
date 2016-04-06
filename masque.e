@@ -26,6 +26,9 @@ feature {NONE}
 
 	make_as_mask (a_width, a_height: INTEGER_32)
 		-- Routine qui dessine des masques.
+		require
+			a_width_valide: a_width >= 0
+			a_height_valide: a_height >= 0
 		local
 			l_pixel:GAME_PIXEL_FORMAT
 		do
@@ -34,7 +37,7 @@ feature {NONE}
 			make_attributs
 			old_make_for_pixel_format (l_pixel, a_width, a_height)
 			enable_alpha_blending
-
+		
 		end
 
 feature -- Access

@@ -23,9 +23,13 @@ create
 feature {NONE} -- Initialization
 
 	make(a_filename:READABLE_STRING_GENERAL)
+		require
+			a_filename_valide: a_filename.count > 0
 		do
 			load_background(a_filename)
 			make_attributs
+		ensure
+			a_filename_erreur : has_error = false
 		end
 
 	make_attributs

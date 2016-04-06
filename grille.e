@@ -48,6 +48,7 @@ feature {NONE}
 			local
 			l_index,l_Wreste,l_Hreste,l_x,l_y:INTEGER_32
 			l_double:REAL_64
+			l_case:CASE
 		do
 			l_double:=dimension.width/10
 			case_dimension.width:=l_double.floor
@@ -72,9 +73,10 @@ feature {NONE}
 				loop
 					l_Wreste:= l_Wreste - case_dimension.width
 					listcase.extend (create {CASE}.make(l_x, l_y, case_dimension.width, case_dimension.height, case_dimension.bordure))
-					listcase[l_index].draw_surface (element, 0, 0)
-					listcase[l_index].draw_empty_rect (create {GAME_COLOR}.make_rgb (0,0,0), 0,0, case_dimension.width, case_dimension.height, case_dimension.bordure)
-					masque.draw_surface (listcase[l_index], l_x, l_y)
+					l_case:=listcase[l_index]
+					l_case.draw_surface (element, 0, 0)
+					l_case.draw_empty_rect (create {GAME_COLOR}.make_rgb (0,0,0), 0,0, case_dimension.width, case_dimension.height, case_dimension.bordure)
+					masque.draw_surface (l_case, l_x, l_y)
 					l_x:= l_x + case_dimension.width
 					l_index:= l_index + 1
 				end
@@ -82,9 +84,10 @@ feature {NONE}
 				listcase.move (l_index)
 				l_Hreste:= l_Hreste - case_dimension.height
 				listcase.extend (create {CASE}.make(l_x, l_y, case_dimension.width, case_dimension.height, case_dimension.bordure))
-				listcase[l_index].draw_surface (element, 0, 0)
-				listcase[l_index].draw_empty_rect (create {GAME_COLOR}.make_rgb (0,0,0), 0,0, case_dimension.width, case_dimension.height, case_dimension.bordure)
-				masque.draw_surface (listcase[l_index], l_x, l_y)
+				l_case:=listcase[l_index]
+				l_case.draw_surface (element, 0, 0)
+				l_case.draw_empty_rect (create {GAME_COLOR}.make_rgb (0,0,0), 0,0, case_dimension.width, case_dimension.height, case_dimension.bordure)
+				masque.draw_surface (l_case, l_case.position.x, l_case.position.y)
 				l_y:= l_y + case_dimension.height
 				l_index:= l_index + 1
 			end

@@ -17,6 +17,8 @@ create
 feature {NONE}
 
 	make(a_window:GAME_WINDOW_SURFACED)
+	require
+		a_window_is_open: a_window.surface.is_open
 	local
 		l_double:REAL_64
 	do
@@ -48,8 +50,8 @@ feature {NONE}
 	end
 
 	load_case_element
-		-- Routine qui fait en sorte que la texture de bois ne dépasse pas le cadre qui lui est imposé (la grille).
-		-- Routine qui fait en sorte que les images de bateaux appliquées sur la grille restent dans la grille et qu'ils ne dépassent pas lorsqu'appliquée près des bords.
+		-- Routine qui fait en sorte que la texture de bois soit autour du cadre (grille).
+		-- Routine qui crée un pointeur à la position du curseur.
 		do
 			create bordure1.make_as_mask (820, 820)
 			bordure1.draw_rect_with_tile ("bois.jpg", 820, 820, 10)
@@ -61,7 +63,7 @@ feature {NONE}
 		end
 
 	set_as_bateau1(a_bateau:MASQUE)
-		-- Routine qui impose les attributs du bateau1 et qui enregistre son emplacement sous forme de masque dès le premier click sur la grille.
+		-- Routine qui impose les attributs de `a_bateau'.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=0
@@ -74,7 +76,7 @@ feature {NONE}
 		end
 
 	set_as_bateau2(a_bateau:MASQUE)
-		-- Routine qui impose les attributs du bateau2 et qui enregistre son emplacement sous forme de masque dès le deuxième click sur la grille.
+		-- Routine qui impose les attributs de `a_bateau'.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=80
@@ -87,7 +89,7 @@ feature {NONE}
 		end
 
 	set_as_bateau3(a_bateau:MASQUE)
-	-- Routine qui impose les attributs du bateau3 et qui enregistre son emplacement sous forme de masque dès le troisième click sur la grille.
+	-- Routine qui impose les attributs de `a_bateau'.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=160
@@ -100,7 +102,7 @@ feature {NONE}
 		end
 
 	set_as_bateau4(a_bateau:MASQUE)
-	-- Routine qui impose les attributs du bateau4 et qui enregistre son emplacement sous forme de masque dès le quatrième click sur la grille.
+	-- Routine qui impose les attributs de `a_bateau'.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=240
@@ -113,7 +115,7 @@ feature {NONE}
 		end
 
 	set_as_bateau5(a_bateau:MASQUE)
-	-- Routine qui impose les attributs de bateau5 et qui enregistre son emplacement sous forme de masque dès le cinquième click sur la grille.
+	-- Routine qui impose les attributs de `a_bateau'.
 		do
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=320
@@ -229,7 +231,7 @@ feature -- Access
 		end
 
 	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
-		-- Routine qui met laisse le BOOLEAN à True si le boutton n'est pas touché et qui le met à False si le bouton l'est.
+		-- Routine qui gère les éléments et les actions faites par le curseur.
 		-- Routine qui applique les bateaux un par un lorsqu'un click est fait dans la grille, jusqu'à un maximum de 5 bateaux dans la grille.
 		do
 			speaker.is_on (a_x, a_y)

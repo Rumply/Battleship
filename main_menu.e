@@ -16,6 +16,8 @@ create
 feature {NONE} -- Initialize
 
 	make(a_window:GAME_WINDOW_SURFACED)
+	require
+		a_window_is_open: a_window.surface.is_open
 	do
 		window:=a_window
 

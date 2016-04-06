@@ -22,8 +22,9 @@ feature {NONE}
 
 	make(a_window:GAME_WINDOW_SURFACED)
 		-- Routine qui lance le menu et la musique dès le lancement de l'application.
+		require
+			a_window_is_open: a_window.surface.is_open
 		do
-
 			window := a_window
 			create menu.make (window)
 			create musique_menu.make_environment
@@ -31,6 +32,9 @@ feature {NONE}
 			musique_menu.add ("theme1.wav", 1)
 			musique_menu.add ("theme2.wav", 1)
 			musique_menu.play
+		ensure
+			musique_menu_is_playing: musique_menu.source.is_open
+			musique_menu_is_playing: musique_menu.source.is_playing
 		end
 
 feature
