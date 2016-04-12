@@ -30,6 +30,8 @@ feature {NONE}
 																   -- sous forme d'integer.
 			create {TUPLE[width,height,bordure:INTEGER]} case_dimension -- Crée un tuple, pour la dimension de la case, contenant la largeur, la hauteure et
 																		-- les bordures sous une forme d'integer.
+			create {ARRAYED_LIST[INTEGER]} indexs_used.make (0)
+
 			dimension.width:=a_width
 			dimension.height:=a_height
 			dimension.bordure:=a_bordure
@@ -39,10 +41,13 @@ feature {NONE}
 			index:=1
 			old_index:=2
 			hover:=false
+			case_valide:=true
 			create black.make_rgb (0,0,0) -- Utilise la couleur noir (#000000)
 			create listCase.make (100)
 			create element.make ("eau.jpg") -- Crée l'élément "eau.jpg" pour l'arrière plan.
-			create viseur.make ("bois.jpg") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
+			create viseur.make_element ("bois.jpg") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
+
+
 			fill_listCase
 		end
 
@@ -100,6 +105,49 @@ feature {NONE}
 
 feature --Access
 
+	is_position_bateau_valide(a_bateau_width,a_bateau_height:INTEGER;canAdd:BOOLEAN)
+		local
+			l_nombre_case_horizontal,l_nombre_case_vertical:INTEGER
+			l_index:INTEGER
+			position_used:ARRAYED_LIST[INTEGER]
+		do
+			l_nombre_case_horizontal:=(a_bateau_width/case_dimension.width).floor
+			l_nombre_case_vertical:=(a_bateau_height/case_dimension.height).floor
+			create position_used.make (0)
+			case_valide:=true
+			from
+				l_index:=0
+			until
+				l_index >= l_nombre_case_horizontal
+			loop
+				if (indexs_used.count >= 0) then
+					if (indexs_used.has (index + l_index) or ((colonne + l_nombre_case_horizontal) > 10)) then
+						case_valide:=false
+					else
+						position_used.extend (index + l_index)
+					end
+				end
+				l_index:= l_index + 1
+			end
+
+			from
+				l_index:=0
+			until
+				l_index >= l_nombre_case_vertical * 10
+			loop
+				position_used.extend (index+l_index)
+				l_index:= l_index + 10
+			end
+
+			if case_valide then
+				if canAdd then
+					io.put_string ("added")
+					io.new_line
+					indexs_used.append (position_used)
+				end
+			end
+		end
+
 	get_case_position
 		-- Routine qui prend en argument quelle est la position des x et des y dans la grille.
 		do
@@ -145,9 +193,11 @@ feature --Access
 	old_colonne,old_ranger:INTEGER_32
 	colonne,ranger:INTEGER_32
 	index, old_index:INTEGER_32
-	hover:BOOLEAN
+	indexs_used:ARRAYED_LIST[INTEGER]
+	hover,case_valide:BOOLEAN
 	masque:MASQUE
-	element,viseur:ELEMENT
+	viseur:MASQUE
+	element:ELEMENT
 	dimension:TUPLE[width,height,bordure:INTEGER_32]
 	case_dimension:TUPLE[width,height,bordure:INTEGER_32]
 	selected_pos:TUPLE[x,y:INTEGER]

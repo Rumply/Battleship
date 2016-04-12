@@ -37,10 +37,41 @@ feature {NONE}
 			make_attributs
 			old_make_for_pixel_format (l_pixel, a_width, a_height)
 			enable_alpha_blending
-		
+			gamedimension.width:=a_width;
+			gamedimension.height:=a_height
 		end
 
 feature -- Access
+
+	draw_background_with_tuile(a_tuile:MASQUE)
+		-- Routine qui fait en sorte que la grille soit séparée en 10 parties pour la longeure et 10 parties pour la hauteur
+		-- ce qui résulte en une grille de 10x10 soit, 100 emplacements jouables.
+		local
+			l_Wreste,l_Hreste,l_x,l_y:INTEGER_32
+		do
+			l_x:=0
+			l_y:=0
+
+			from
+				l_Hreste:=gamedimension.height
+			until
+				l_Hreste <= 0
+			loop
+				from
+					l_Wreste:=gamedimension.width
+				until
+					l_Wreste <= 0
+				loop
+					l_Wreste:= l_Wreste - a_tuile.width
+					draw_surface(a_tuile, l_x, l_y)
+					l_x:= l_x + a_tuile.width
+				end
+				l_x:=0
+				l_Hreste:= l_Hreste - a_tuile.height
+				draw_surface(a_tuile, l_x, l_y)
+				l_y:= l_y + a_tuile.height
+			end
+		end
 
 	draw_surface_with_scale(a_element:ELEMENT;a_x,a_y,a_width,a_height:INTEGER_32)
 		-- Routine qui dessine un masque de la surface jouée en ce moment.
