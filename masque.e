@@ -5,8 +5,8 @@ note
 				seront placé.
 				]"
 	author: "Guillaume Hamel-Gagné"
-	date: "$Date$"
-	revision: "$Revision$"
+	date: "12 avril 2016"
+	revision: "1.0"
 
 class
 	MASQUE

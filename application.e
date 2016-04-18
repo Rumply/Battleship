@@ -1,7 +1,7 @@
 note
 	description : "Battleship application root class"
-	date        : "$1 Mars 2016$"
-	revision    : "$1.5$"
+	date        : "1 Mars 2016"
+	revision    : "1.5"
 
 class
 	APPLICATION

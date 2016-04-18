@@ -238,7 +238,7 @@ feature -- Access
 
 	draw_on_window(a_other:GAME_SURFACE;a_x,a_y:INTEGER)
 		do
-			window.surface.draw_surface (background, 0,0)
+			--window.surface.draw_surface (background, 0,0)
 			window.surface.draw_surface (a_other, a_x, a_y)
 		end
 

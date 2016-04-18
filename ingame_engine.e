@@ -4,8 +4,8 @@ note
 				Classe contrôle aussi les sons dès le moment où l'application est lancée.
 				]"
 	author: "Guillaume Hamel-Gagné"
-	date: "$Date$"
-	revision: "$Revision$"
+	date: "6 avri 2016"
+	revision: "1.0"
 
 class
 	INGAME_ENGINE
