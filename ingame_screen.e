@@ -28,7 +28,7 @@ feature {NONE}
 		chat_bordure.draw_rect_with_tile ("bois.jpg", l_double.floor, 290, 10)
 		chat_bordure.enable_alpha_blending
 		create grille.make (800, 800, 10)
-
+		teste:=false
 		create bordure1.make_as_mask (820, 820)
 		bordure1.draw_rect_with_tile ("bois.jpg", 820, 820, 10)
 
@@ -187,14 +187,13 @@ feature {NONE}
 	setup_speaker
 		-- Routine qui dessine un haut-parleur à l'écran.
 		do
-			draw(speaker)
+			speaker_on
 		end
 
 	setup_border
 		-- Routine qui dessine la grille, les bordures et les bordures de la discussion instantanée.
 		do
 			background.draw_surface (grille.masque, grille.position.x,grille.position.y)
-			--window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 			background.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 			background.draw_surface (chat_bordure, chat_bordure.position.x, chat_bordure.position.y)
 		end
@@ -227,26 +226,15 @@ feature {NONE}
 		do
 			fill_background
 			setup_border
-			setup_speaker
+
 
 			window.surface.draw_surface (background, 0,0)
+			setup_speaker
 			-- Update modification in the screen
 			window.update
 		end
 
 feature -- Access
-
-	draw_on_window(a_other:GAME_SURFACE;a_x,a_y:INTEGER)
-		do
-			window.surface.draw_surface (background, 0,0)
-			window.surface.draw_surface (a_other, a_x, a_y)
-		end
-
-	draw_on_window_with_scale(a_other:GAME_SURFACE;a_x_source,a_y_source,a_width,a_height,a_x_destination,a_y_destination:INTEGER)
-		do
-			--window.surface.draw_surface (background, 0,0)
-			window.surface.draw_sub_surface (a_other, a_x_source, a_y_source, a_width, a_height, a_x_destination, a_y_destination)
-		end
 
 	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
 		-- Routine qui gère les éléments et les actions faites par le curseur.
@@ -264,23 +252,32 @@ feature -- Access
 						speaker_on
 					end
 				elseif grille.hover then
+					grille.get_index_from_mousePos(a_x,a_y)
 					grille.is_position_bateau_valide (pointer.gamedimension.width, pointer.gamedimension.height, true)
 					set_pointer
 					if grille.case_valide then
 						nb_bateau:= nb_bateau + 1
 						draw_case (a_x, a_y)
+					elseif nb_bateau > 4 and not teste then
+						teste:= true
+						draw_pointer (a_x, a_y)
 					end
 				elseif not grille.hover then
-					draw_on_window (grille.masque, grille.position.x, grille.position.y)
+					teste:=false
+					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
 				end
 
 			elseif not click then
 				if grille.hover then
+					grille.get_index_from_mousePos(a_x,a_y)
 					grille.is_position_bateau_valide (pointer.gamedimension.width, pointer.gamedimension.height, false)
 					set_pointer
-					draw_pointer (a_x, a_y)
+					if grille.case_valide or (nb_bateau > 4) then
+						draw_pointer (a_x, a_y)
+					end
 				else
-					draw_on_window (grille.masque, grille.position.x, grille.position.y)
+					teste:=false
+					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
 				end
 			end
 		end
@@ -300,7 +297,7 @@ feature -- Access
 			l_temp:INTEGER_32
 
 		do
-			if (nb_bateau<6) then
+			if (nb_bateau < 6) then
 				l_temp:=l_temp + grille.index
 				grille.get_index_from_mousepos (a_x, a_y)
 				grille.get_case_position
@@ -314,19 +311,21 @@ feature -- Access
 		local
 			l_temp:INTEGER_32
 		do
+			l_temp:=0
 			l_temp:=l_temp + grille.index
 			grille.get_index_from_mousepos (a_x, a_y)
-			if not (l_temp = grille.index) then
+
+			if not (grille.old_index = grille.index) then
 				grille.get_case_position
 				window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
-				window.surface.draw_sub_surface (pointer, image_bateau.in_image_pos.x, image_bateau.in_image_pos.y, image_bateau.gamedimension.width, image_bateau.gamedimension.height, grille.selected_pos.x, grille.selected_pos.y)
+				window.surface.draw_sub_surface_with_scale (pointer, pointer.in_image_pos.x,pointer.in_image_pos.y, pointer.filedimension.width, pointer.filedimension.height, grille.selected_pos.x, grille.selected_pos.y, pointer.gamedimension.width, pointer.gamedimension.height)
 			end
 		end
 
 	draw(a_element:ELEMENT)
 		-- Routine qui dessine à l'écran les éléments de a_element.
 		do
-			background.draw_sub_surface_with_scale (a_element,
+			window.surface.draw_sub_surface_with_scale (a_element,
 														a_element.in_image_pos.x,
 														a_element.in_image_pos.y,
 														a_element.filedimension.width,
@@ -356,7 +355,7 @@ feature -- Access
 		end
 
 	nb_bateau:INTEGER_32
-
+	teste:BOOLEAN
 	background_tuile,background,speaker:MASQUE
 	chat_bordure,bordure1,pointer:MASQUE
 	grille:GRILLE

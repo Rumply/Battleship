@@ -45,7 +45,7 @@ feature {NONE}
 			create black.make_rgb (0,0,0) -- Utilise la couleur noir (#000000)
 			create listCase.make (100)
 			create element.make ("eau.jpg") -- Crée l'élément "eau.jpg" pour l'arrière plan.
-			create viseur.make_element ("bois.jpg") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
+			create viseur.make_element ("vise.png") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
 
 
 			fill_listCase
@@ -141,8 +141,6 @@ feature --Access
 
 			if case_valide then
 				if canAdd then
-					io.put_string ("added")
-					io.new_line
 					indexs_used.append (position_used)
 				end
 			end
@@ -173,19 +171,26 @@ feature --Access
 		-- Routine qui compare l'emplacement en x et en y du curseur et des positions antérieurement choisies.
 		local
 			l_temp:INTEGER_32
+			l_colonne,l_ranger:INTEGER_32
 		do
+
+			old_ranger:=ranger
 			l_temp:=(a_mouse_y-position.y)
-			if not (l_temp=old_ranger) then
-				ranger:=(l_temp.integer_quotient ((dimension.height/10).floor))
+			l_ranger:=(l_temp.integer_quotient ((dimension.height/10).floor))
+			if not (l_ranger=old_ranger) then
+				ranger:=l_ranger
 			end
+
+			old_colonne:=colonne
 			l_temp:=(a_mouse_x-position.x)
-			if not (l_temp=old_colonne) then
-				colonne:=(l_temp.integer_quotient ((dimension.width/10).floor))
+			l_colonne:=l_temp.integer_quotient ((dimension.width/10).floor)
+			if not (old_colonne = l_colonne) then
+				colonne:=l_colonne
 			end
 			l_temp:=((ranger*10)+colonne)+1
+
 			if not (l_temp=index) then
-				old_index:=0
-				old_index:= old_index + index
+				old_index:= index
 				index:=l_temp
 			end
 		end
