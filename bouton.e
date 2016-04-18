@@ -1,7 +1,7 @@
 note
 	description: "Classe ou est-ce que les boutons sont crée et appliqué sur le menu."
 	author: "Guillaume Hamel-Gagné"
-	date: "$Date$"
+	date: "4 avril 2016"
 	revision: "1.0"
 
 class

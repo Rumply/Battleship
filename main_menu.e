@@ -4,8 +4,8 @@ note
 				à leur emplacement final lors du lancement de l'application.
 				]"
 	author: "Guillaume Hamel-Gagné"
-	date: "$Date$"
-	revision: "$Revision$"
+	date: "6 avril 2016"
+	revision: "1.0"
 
 class
 	MAIN_MENU

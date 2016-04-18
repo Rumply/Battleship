@@ -5,8 +5,8 @@ note
 				l'utilisateur appuis à l'emplacement de son curseur.
 				]"
 	author: "Guillaume Hamel-Gagné"
-	date: "$1 Mars 2016$"
-	revision: "$1.0$"
+	date: "1 Mars 2016"
+	revision: "1.0"
 
 class
 	MAIN_ENGINE
