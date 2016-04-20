@@ -26,15 +26,17 @@ feature {NONE}
 			a_window_is_open: a_window.surface.is_open
 		do
 			window := a_window
-			create menu.make (window)
-			create musique_menu.make_environment
+			create musique_menu.make
+			create menu.make (window,musique_menu)
 
-			musique_menu.add ("theme1.wav", 1)
-			musique_menu.add ("theme2.wav", 1)
-			musique_menu.play
+			musique_menu.environement_audio.add ("theme1.wav", 1)
+			musique_menu.environement_audio.add ("theme2.wav", -1)
+			musique_menu.environement_audio.play
+
+			menu.speaker_on
 		ensure
-			musique_menu_is_playing: musique_menu.source.is_open
-			musique_menu_is_playing: musique_menu.source.is_playing
+			musique_menu_is_playing: musique_menu.environement_audio.source.is_open
+			musique_menu_is_playing: musique_menu.environement_audio.source.is_playing
 		end
 
 feature
@@ -66,7 +68,7 @@ feature {NONE} -- Implementation
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y
 
-			menu.mouse_click (musique_menu, last_x, last_y,False)
+			menu.mouse_click (last_x, last_y,False)
 
 			window.update
 			audio_library.update
@@ -79,7 +81,7 @@ feature {NONE} -- Implementation
 		do
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y
-			menu.mouse_click (musique_menu, last_x, last_y,True)
+			menu.mouse_click (last_x, last_y,True)
 
 			window.update
 			audio_library.update
@@ -95,7 +97,7 @@ feature {NONE} -- Access
 
 	menu:INGAME_SCREEN
 	window:GAME_WINDOW_SURFACED
-	musique_menu:SOUND_ENGINE
+	musique_menu:SPEAKER
 
 	last_x, last_y:INTEGER
 			-- Last known coordinate of the mouse pointer inside the window

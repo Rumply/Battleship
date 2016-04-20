@@ -16,7 +16,7 @@ create
 
 feature {NONE}
 
-	make(a_window:GAME_WINDOW_SURFACED)
+	make(a_window:GAME_WINDOW_SURFACED; a_speaker:SPEAKER)
 	require
 		a_window_is_open: a_window.surface.is_open
 	local
@@ -34,7 +34,8 @@ feature {NONE}
 
 		create background.make_as_mask (window.width, window.height)
 		create background_tuile.make_element ("eau.jpg")
-		create speaker.make_element ("speaker.png")
+
+		speaker:=a_speaker
 
 		create yellow.make_rgb (255, 255, 0)
 		create black.make_rgb (0,0,0)
@@ -42,7 +43,7 @@ feature {NONE}
 		current_index:=1
 		color:=black
 
-		initialize_speaker
+		--initialize_speaker
 		initialize_chat_bordure
 		initialize_grille
 
@@ -141,19 +142,6 @@ feature {NONE}
 			a_bateau.position.y:=0
 		end
 
-	initialize_speaker
-		-- Routine qui impose les attributs du haut-parleur.
-		do
-			speaker.position.x:=10
-			speaker.position.y:=10
-			speaker.in_image_pos.x:=0
-			speaker.in_image_pos.y:=0
-			speaker.filedimension.width:=speaker.width.to_integer.quotient (2).truncated_to_integer
-			speaker.filedimension.height:=speaker.height
-			speaker.gamedimension.width:=50
-			speaker.gamedimension.height:=50
-		end
-
 	initialize_grille
 		-- Routine qui initialise les attributs de la grille.
 		do
@@ -182,12 +170,6 @@ feature {NONE}
 		do
 			bordure1.position.x:=grille.position.x - grille.dimension.bordure
 			bordure1.position.y:=grille.position.y - grille.dimension.bordure
-		end
-
-	setup_speaker
-		-- Routine qui dessine un haut-parleur à l'écran.
-		do
-			speaker_on
 		end
 
 	setup_border
@@ -227,28 +209,26 @@ feature {NONE}
 			fill_background
 			setup_border
 
-
 			window.surface.draw_surface (background, 0,0)
-			setup_speaker
+
+			draw(speaker.surface)
 			-- Update modification in the screen
 			window.update
 		end
 
 feature -- Access
 
-	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
+	mouse_click(a_x,a_y:INTEGER;click:BOOLEAN)
 		-- Routine qui gère les éléments et les actions faites par le curseur.
 		-- Routine qui applique les bateaux un par un lorsqu'un click est fait dans la grille, jusqu'à un maximum de 5 bateaux dans la grille.
 		do
-			speaker.is_on (a_x, a_y)
+			speaker.surface.is_on (a_x, a_y)
 			grille.is_on (a_x, a_y)
 			if click then
-				if speaker.hover then
-					if not audio.muted then
-						audio.mute
+				if speaker.surface.hover then
+					if not speaker.environement_audio.muted then
 						speaker_off
-					elseif audio.muted then
-						audio.unmute
+					elseif speaker.environement_audio.muted then
 						speaker_on
 					end
 				elseif grille.hover then
@@ -341,22 +321,21 @@ feature -- Access
 	speaker_on
 		-- Routine qui dessine un haut-parleur ouvert.
 		do
-			speaker.in_image_pos.x:=0
-			speaker.in_image_pos.y:=0
-			draw(speaker)
+			speaker.turnon
+			draw(speaker.surface)
 		end
 
 	speaker_off
 		-- Routine qui dessine un haut-parleur barré.
 		do
-			speaker.in_image_pos.x:=250
-			speaker.in_image_pos.y:=0
-			draw(speaker)
+			speaker.turnOff
+			draw(speaker.surface)
 		end
 
+	speaker:SPEAKER
 	nb_bateau:INTEGER_32
 	teste:BOOLEAN
-	background_tuile,background,speaker:MASQUE
+	background_tuile,background:MASQUE
 	chat_bordure,bordure1,pointer:MASQUE
 	grille:GRILLE
 	current_index:INTEGER_32
