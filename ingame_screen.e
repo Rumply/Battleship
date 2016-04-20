@@ -43,7 +43,6 @@ feature {NONE}
 		current_index:=1
 		color:=black
 
-		--initialize_speaker
 		initialize_chat_bordure
 		initialize_grille
 
@@ -58,23 +57,20 @@ feature {NONE}
 		-- Routine qui fait en sorte que la texture de bois soit autour du cadre (grille).
 		-- Routine qui crée un pointeur à la position du curseur.
 		do
-
-			create pointer.make_as_mask (grille.case_dimension.width*5, grille.case_dimension.height*5)
-			pointer.draw_surface_with_scale (grille.viseur, 0, 0, grille.case_dimension.width, grille.case_dimension.height)
-
+			create pointer.make(grille.case_dimension)
 			nb_bateau:=0
 		end
 
 	set_as_default_pointer
 		do
-			pointer.in_image_pos.x:=0
-			pointer.in_image_pos.y:=0
-			pointer.filedimension.width:=100
-			pointer.filedimension.height:=100
-			pointer.gamedimension.width:=grille.case_dimension.width
-			pointer.gamedimension.height:=grille.case_dimension.height
-			pointer.position.x:=0
-			pointer.position.y:=0
+			pointer.surface.in_image_pos.x:=0
+			pointer.surface.in_image_pos.y:=0
+			pointer.surface.filedimension.width:=100
+			pointer.surface.filedimension.height:=100
+			pointer.surface.gamedimension.width:=grille.case_dimension.width
+			pointer.surface.gamedimension.height:=grille.case_dimension.height
+			pointer.surface.position.x:=0
+			pointer.surface.position.y:=0
 		end
 
 	set_as_bateau1(a_bateau:MASQUE)
@@ -194,11 +190,11 @@ feature {NONE}
 				set_as_bateau5 (image_bateau)
 			end
 
-			if (nb_bateau>4) then
+			if (nb_bateau=5) then
 				set_as_default_pointer
-				pointer:=grille.viseur
-			else
-				pointer:=image_bateau
+				pointer.change_image (grille.viseur)
+			elseif (nb_bateau < 5) then
+				pointer.change_image (image_bateau)
 			end
 
 		end
@@ -233,7 +229,7 @@ feature -- Access
 					end
 				elseif grille.hover then
 					grille.get_index_from_mousePos(a_x,a_y)
-					grille.is_position_bateau_valide (pointer.gamedimension.width, pointer.gamedimension.height, true)
+					grille.is_position_bateau_valide (pointer.surface.gamedimension.width, pointer.surface.gamedimension.height, true)
 					set_pointer
 					if grille.case_valide then
 						nb_bateau:= nb_bateau + 1
@@ -250,7 +246,7 @@ feature -- Access
 			elseif not click then
 				if grille.hover then
 					grille.get_index_from_mousePos(a_x,a_y)
-					grille.is_position_bateau_valide (pointer.gamedimension.width, pointer.gamedimension.height, false)
+					grille.is_position_bateau_valide (pointer.surface.gamedimension.width, pointer.surface.gamedimension.height, false)
 					set_pointer
 					if grille.case_valide or (nb_bateau > 4) then
 						draw_pointer (a_x, a_y)
@@ -298,7 +294,7 @@ feature -- Access
 			if not (grille.old_index = grille.index) then
 				grille.get_case_position
 				window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
-				window.surface.draw_sub_surface_with_scale (pointer, pointer.in_image_pos.x,pointer.in_image_pos.y, pointer.filedimension.width, pointer.filedimension.height, grille.selected_pos.x, grille.selected_pos.y, pointer.gamedimension.width, pointer.gamedimension.height)
+				window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille.selected_pos.x, grille.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
 			end
 		end
 
@@ -332,11 +328,12 @@ feature -- Access
 			draw(speaker.surface)
 		end
 
+	pointer:VISEUR
 	speaker:SPEAKER
 	nb_bateau:INTEGER_32
 	teste:BOOLEAN
 	background_tuile,background:MASQUE
-	chat_bordure,bordure1,pointer:MASQUE
+	chat_bordure,bordure1:MASQUE
 	grille:GRILLE
 	current_index:INTEGER_32
 	window:GAME_WINDOW_SURFACED
@@ -348,7 +345,6 @@ feature {NONE} -- Singleton
 	image_bateau: MASQUE
             -- `Result' is DIRECTORY constant named image_location.
         once
-            --Result := {ELEMENT} create image_bateau.make ("bateaux.png")
             create Result.make_element ("bateaux.png")
         end
 
