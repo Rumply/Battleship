@@ -1,8 +1,12 @@
 note
-	description: "Summary description for {SPEAKER}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "[
+					Classe qui déssine les éléments du haut-parleur a l'emplacement auquel ils
+					ont été prédéfini. La classe fait sert aussi à ouvrir et à fermer le son
+					pendant que l'application est lancée.
+				]"
+	author: "Guillaume Hamel-Gagné"
+	date: "25 avril 2016"
+	revision: "1.0"
 
 class
 	SPEAKER
@@ -64,5 +68,5 @@ feature -- Access
 
 	environement_audio:SOUND_ENGINE
 	surface:MASQUE
-	
+
 end
