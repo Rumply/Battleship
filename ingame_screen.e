@@ -16,7 +16,7 @@ create
 
 feature {NONE}
 
-	make(a_window:GAME_WINDOW_SURFACED)
+	make(a_window:GAME_WINDOW_SURFACED; a_speaker:SPEAKER)
 	require
 		a_window_is_open: a_window.surface.is_open
 	local
@@ -28,13 +28,14 @@ feature {NONE}
 		chat_bordure.draw_rect_with_tile ("bois.jpg", l_double.floor, 290, 10)
 		chat_bordure.enable_alpha_blending
 		create grille.make (800, 800, 10)
-
+		teste:=false
 		create bordure1.make_as_mask (820, 820)
 		bordure1.draw_rect_with_tile ("bois.jpg", 820, 820, 10)
 
 		create background.make_as_mask (window.width, window.height)
 		create background_tuile.make_element ("eau.jpg")
-		create speaker.make_element ("speaker.png")
+
+		speaker:=a_speaker
 
 		create yellow.make_rgb (255, 255, 0)
 		create black.make_rgb (0,0,0)
@@ -42,7 +43,6 @@ feature {NONE}
 		current_index:=1
 		color:=black
 
-		initialize_speaker
 		initialize_chat_bordure
 		initialize_grille
 
@@ -57,23 +57,20 @@ feature {NONE}
 		-- Routine qui fait en sorte que la texture de bois soit autour du cadre (grille).
 		-- Routine qui crée un pointeur à la position du curseur.
 		do
-
-			create pointer.make_as_mask (grille.case_dimension.width*5, grille.case_dimension.height*5)
-			pointer.draw_surface_with_scale (grille.viseur, 0, 0, grille.case_dimension.width, grille.case_dimension.height)
-
+			create pointer.make(grille.case_dimension)
 			nb_bateau:=0
 		end
 
 	set_as_default_pointer
 		do
-			pointer.in_image_pos.x:=0
-			pointer.in_image_pos.y:=0
-			pointer.filedimension.width:=100
-			pointer.filedimension.height:=100
-			pointer.gamedimension.width:=grille.case_dimension.width
-			pointer.gamedimension.height:=grille.case_dimension.height
-			pointer.position.x:=0
-			pointer.position.y:=0
+			pointer.surface.in_image_pos.x:=0
+			pointer.surface.in_image_pos.y:=0
+			pointer.surface.filedimension.width:=100
+			pointer.surface.filedimension.height:=100
+			pointer.surface.gamedimension.width:=grille.case_dimension.width
+			pointer.surface.gamedimension.height:=grille.case_dimension.height
+			pointer.surface.position.x:=0
+			pointer.surface.position.y:=0
 		end
 
 	set_as_bateau1(a_bateau:MASQUE)
@@ -141,19 +138,6 @@ feature {NONE}
 			a_bateau.position.y:=0
 		end
 
-	initialize_speaker
-		-- Routine qui impose les attributs du haut-parleur.
-		do
-			speaker.position.x:=10
-			speaker.position.y:=10
-			speaker.in_image_pos.x:=0
-			speaker.in_image_pos.y:=0
-			speaker.filedimension.width:=speaker.width.to_integer.quotient (2).truncated_to_integer
-			speaker.filedimension.height:=speaker.height
-			speaker.gamedimension.width:=50
-			speaker.gamedimension.height:=50
-		end
-
 	initialize_grille
 		-- Routine qui initialise les attributs de la grille.
 		do
@@ -184,17 +168,10 @@ feature {NONE}
 			bordure1.position.y:=grille.position.y - grille.dimension.bordure
 		end
 
-	setup_speaker
-		-- Routine qui dessine un haut-parleur à l'écran.
-		do
-			draw(speaker)
-		end
-
 	setup_border
 		-- Routine qui dessine la grille, les bordures et les bordures de la discussion instantanée.
 		do
 			background.draw_surface (grille.masque, grille.position.x,grille.position.y)
-			--window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 			background.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 			background.draw_surface (chat_bordure, chat_bordure.position.x, chat_bordure.position.y)
 		end
@@ -213,11 +190,11 @@ feature {NONE}
 				set_as_bateau5 (image_bateau)
 			end
 
-			if (nb_bateau>4) then
+			if (nb_bateau=5) then
 				set_as_default_pointer
-				pointer:=grille.viseur
-			else
-				pointer:=image_bateau
+				pointer.change_image (grille.viseur)
+			elseif (nb_bateau < 5) then
+				pointer.change_image (image_bateau)
 			end
 
 		end
@@ -227,60 +204,56 @@ feature {NONE}
 		do
 			fill_background
 			setup_border
-			setup_speaker
 
 			window.surface.draw_surface (background, 0,0)
+
+			draw(speaker.surface)
 			-- Update modification in the screen
 			window.update
 		end
 
 feature -- Access
 
-	draw_on_window(a_other:GAME_SURFACE;a_x,a_y:INTEGER)
-		do
-			--window.surface.draw_surface (background, 0,0)
-			window.surface.draw_surface (a_other, a_x, a_y)
-		end
-
-	draw_on_window_with_scale(a_other:GAME_SURFACE;a_x_source,a_y_source,a_width,a_height,a_x_destination,a_y_destination:INTEGER)
-		do
-			--window.surface.draw_surface (background, 0,0)
-			window.surface.draw_sub_surface (a_other, a_x_source, a_y_source, a_width, a_height, a_x_destination, a_y_destination)
-		end
-
-	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
+	mouse_click(a_x,a_y:INTEGER;click:BOOLEAN)
 		-- Routine qui gère les éléments et les actions faites par le curseur.
 		-- Routine qui applique les bateaux un par un lorsqu'un click est fait dans la grille, jusqu'à un maximum de 5 bateaux dans la grille.
 		do
-			speaker.is_on (a_x, a_y)
+			speaker.surface.is_on (a_x, a_y)
 			grille.is_on (a_x, a_y)
 			if click then
-				if speaker.hover then
-					if not audio.muted then
-						audio.mute
+				if speaker.surface.hover then
+					if not speaker.environement_audio.muted then
 						speaker_off
-					elseif audio.muted then
-						audio.unmute
+					elseif speaker.environement_audio.muted then
 						speaker_on
 					end
 				elseif grille.hover then
-					grille.is_position_bateau_valide (pointer.gamedimension.width, pointer.gamedimension.height, true)
+					grille.get_index_from_mousePos(a_x,a_y)
+					grille.is_position_bateau_valide (pointer.surface.gamedimension.width, pointer.surface.gamedimension.height, true)
 					set_pointer
 					if grille.case_valide then
 						nb_bateau:= nb_bateau + 1
 						draw_case (a_x, a_y)
+					elseif nb_bateau > 4 and not teste then
+						teste:= true
+						draw_pointer (a_x, a_y)
 					end
 				elseif not grille.hover then
-					draw_on_window (grille.masque, grille.position.x, grille.position.y)
+					teste:=false
+					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
 				end
 
 			elseif not click then
 				if grille.hover then
-					grille.is_position_bateau_valide (pointer.gamedimension.width, pointer.gamedimension.height, false)
+					grille.get_index_from_mousePos(a_x,a_y)
+					grille.is_position_bateau_valide (pointer.surface.gamedimension.width, pointer.surface.gamedimension.height, false)
 					set_pointer
-					draw_pointer (a_x, a_y)
+					if grille.case_valide or (nb_bateau > 4) then
+						draw_pointer (a_x, a_y)
+					end
 				else
-					draw_on_window (grille.masque, grille.position.x, grille.position.y)
+					teste:=false
+					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
 				end
 			end
 		end
@@ -300,7 +273,7 @@ feature -- Access
 			l_temp:INTEGER_32
 
 		do
-			if (nb_bateau<6) then
+			if (nb_bateau < 6) then
 				l_temp:=l_temp + grille.index
 				grille.get_index_from_mousepos (a_x, a_y)
 				grille.get_case_position
@@ -314,19 +287,21 @@ feature -- Access
 		local
 			l_temp:INTEGER_32
 		do
+			l_temp:=0
 			l_temp:=l_temp + grille.index
 			grille.get_index_from_mousepos (a_x, a_y)
-			if not (l_temp = grille.index) then
+
+			if not (grille.old_index = grille.index) then
 				grille.get_case_position
 				window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
-				window.surface.draw_sub_surface (pointer, image_bateau.in_image_pos.x, image_bateau.in_image_pos.y, image_bateau.gamedimension.width, image_bateau.gamedimension.height, grille.selected_pos.x, grille.selected_pos.y)
+				window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille.selected_pos.x, grille.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
 			end
 		end
 
 	draw(a_element:ELEMENT)
 		-- Routine qui dessine à l'écran les éléments de a_element.
 		do
-			background.draw_sub_surface_with_scale (a_element,
+			window.surface.draw_sub_surface_with_scale (a_element,
 														a_element.in_image_pos.x,
 														a_element.in_image_pos.y,
 														a_element.filedimension.width,
@@ -342,23 +317,23 @@ feature -- Access
 	speaker_on
 		-- Routine qui dessine un haut-parleur ouvert.
 		do
-			speaker.in_image_pos.x:=0
-			speaker.in_image_pos.y:=0
-			draw(speaker)
+			speaker.turnon
+			draw(speaker.surface)
 		end
 
 	speaker_off
 		-- Routine qui dessine un haut-parleur barré.
 		do
-			speaker.in_image_pos.x:=250
-			speaker.in_image_pos.y:=0
-			draw(speaker)
+			speaker.turnOff
+			draw(speaker.surface)
 		end
 
+	pointer:VISEUR
+	speaker:SPEAKER
 	nb_bateau:INTEGER_32
-
-	background_tuile,background,speaker:MASQUE
-	chat_bordure,bordure1,pointer:MASQUE
+	teste:BOOLEAN
+	background_tuile,background:MASQUE
+	chat_bordure,bordure1:MASQUE
 	grille:GRILLE
 	current_index:INTEGER_32
 	window:GAME_WINDOW_SURFACED
@@ -370,7 +345,6 @@ feature {NONE} -- Singleton
 	image_bateau: MASQUE
             -- `Result' is DIRECTORY constant named image_location.
         once
-            --Result := {ELEMENT} create image_bateau.make ("bateaux.png")
             create Result.make_element ("bateaux.png")
         end
 

@@ -45,7 +45,7 @@ feature {NONE}
 			create black.make_rgb (0,0,0) -- Utilise la couleur noir (#000000)
 			create listCase.make (100)
 			create element.make ("eau.jpg") -- Crée l'élément "eau.jpg" pour l'arrière plan.
-			create viseur.make_element ("bois.jpg") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
+			create viseur.make_element ("vise.png") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
 
 
 			fill_listCase
@@ -54,21 +54,16 @@ feature {NONE}
 		fill_listCase
 				-- Routine qui fait en sorte que la grille soit séparée en 10 parties pour la longeure et 10 parties pour la hauteur
 				-- ce qui résulte en une grille de 10x10 soit, 100 emplacements jouables.
-			local
+		local
 			l_index,l_Wreste,l_Hreste,l_x,l_y:INTEGER_32
 			l_double:REAL_64
 			l_case:CASE
 		do
-			l_double:=dimension.width/10
-			case_dimension.width:=l_double.floor
-			l_double:=dimension.height/10
-			case_dimension.height:=l_double.floor
+			case_dimension.width:=(dimension.width/10).floor
+			case_dimension.height:=(dimension.height/10).floor
 
-			l_double:=dimension.bordure/2
-			case_dimension.bordure:=l_double.floor
+			case_dimension.bordure:=(dimension.bordure/2).floor
 			l_index:=1
-			l_x:=0
-			l_y:=0
 
 			from
 				l_Hreste:=dimension.height
@@ -81,27 +76,29 @@ feature {NONE}
 					l_Wreste <= 0
 				loop
 					l_Wreste:= l_Wreste - case_dimension.width
-					listcase.extend (create {CASE}.make(l_x, l_y, case_dimension.width, case_dimension.height, case_dimension.bordure))
-					l_case:=listcase[l_index]
-					l_case.draw_surface (element, 0, 0)
-					l_case.draw_empty_rect (create {GAME_COLOR}.make_rgb (0,0,0), 0,0, case_dimension.width, case_dimension.height, case_dimension.bordure)
-					masque.draw_surface (l_case, l_x, l_y)
+					add_case(l_index,l_x,l_y)
 					l_x:= l_x + case_dimension.width
 					l_index:= l_index + 1
 				end
 				l_x:=0
 				listcase.move (l_index)
 				l_Hreste:= l_Hreste - case_dimension.height
-				listcase.extend (create {CASE}.make(l_x, l_y, case_dimension.width, case_dimension.height, case_dimension.bordure))
-				l_case:=listcase[l_index]
-				l_case.draw_surface (element, 0, 0)
-				l_case.draw_empty_rect (create {GAME_COLOR}.make_rgb (0,0,0), 0,0, case_dimension.width, case_dimension.height, case_dimension.bordure)
-				masque.draw_surface (l_case, l_case.position.x, l_case.position.y)
+				add_case(l_index,l_x,l_y)
 				l_y:= l_y + case_dimension.height
 				l_index:= l_index + 1
 			end
 		end
 
+	add_case(a_index,a_x,a_y:INTEGER)
+		local
+			l_case:CASE
+		do
+			l_case:= create {CASE}.make(a_x, a_y, case_dimension.width, case_dimension.height, case_dimension.bordure)
+			l_case.draw_surface (element, 0, 0)
+			l_case.draw_empty_rect (create {GAME_COLOR}.make_rgb (0,0,0), 0,0, case_dimension.width, case_dimension.height, case_dimension.bordure)
+			listcase.extend (l_case)
+			masque.draw_surface (l_case, a_x, a_y)
+		end
 
 feature --Access
 
@@ -141,8 +138,6 @@ feature --Access
 
 			if case_valide then
 				if canAdd then
-					io.put_string ("added")
-					io.new_line
 					indexs_used.append (position_used)
 				end
 			end
@@ -173,19 +168,26 @@ feature --Access
 		-- Routine qui compare l'emplacement en x et en y du curseur et des positions antérieurement choisies.
 		local
 			l_temp:INTEGER_32
+			l_colonne,l_ranger:INTEGER_32
 		do
+
+			old_ranger:=ranger
 			l_temp:=(a_mouse_y-position.y)
-			if not (l_temp=old_ranger) then
-				ranger:=(l_temp.integer_quotient ((dimension.height/10).floor))
+			l_ranger:=(l_temp.integer_quotient ((dimension.height/10).floor))
+			if not (l_ranger=old_ranger) then
+				ranger:=l_ranger
 			end
+
+			old_colonne:=colonne
 			l_temp:=(a_mouse_x-position.x)
-			if not (l_temp=old_colonne) then
-				colonne:=(l_temp.integer_quotient ((dimension.width/10).floor))
+			l_colonne:=l_temp.integer_quotient ((dimension.width/10).floor)
+			if not (old_colonne = l_colonne) then
+				colonne:=l_colonne
 			end
 			l_temp:=((ranger*10)+colonne)+1
+
 			if not (l_temp=index) then
-				old_index:=0
-				old_index:= old_index + index
+				old_index:= index
 				index:=l_temp
 			end
 		end
