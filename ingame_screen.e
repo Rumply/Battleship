@@ -260,8 +260,6 @@ feature -- Access
 
 	fill_background
 		-- Routine qui remplit l'arrière plan avec une image prédéfinie.
-		local
-			width,height,l_Wreste,l_Hreste,l_x,l_y:INTEGER
 		do
 			background.draw_background_with_tuile (background_tuile)
 			window.surface.draw_surface(background, 0, 0)
