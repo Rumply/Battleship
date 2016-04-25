@@ -22,3 +22,5 @@ feature {NONE} -- Initialization
 		end
 
 feature -- Access
+
+end

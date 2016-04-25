@@ -8,7 +8,7 @@ note
 	testing: "type/manual"
 
 class
-	NEW_TEST_SET
+	TEST_MASQUE
 
 inherit
 	EQA_TEST_SET

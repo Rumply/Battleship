@@ -31,3 +31,5 @@ feature {CHAT} -- Access
 		attribute check False then end end --| Remove line when `chat_sender' is initialized in creation procedure.
 
 feature -- Access
+
+end

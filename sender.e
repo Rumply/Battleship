@@ -28,3 +28,5 @@ feature {SENDER} -- Access
 		attribute check False then end end --| Remove line when `sender_reseau' is initialized in creation procedure.
 
 feature -- Access
+
+end

@@ -54,3 +54,4 @@ feature -- Access
 
 	position2:TUPLE[x,y:INTEGER_32]
 	dimension:TUPLE[width,height:INTEGER_32]
+end
