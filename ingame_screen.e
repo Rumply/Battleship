@@ -234,8 +234,7 @@ feature -- Access
 					if grille.case_valide then
 						nb_bateau:= nb_bateau + 1
 						draw_case (a_x, a_y)
-					elseif nb_bateau > 4 and not teste then
-						teste:= true
+						set_pointer
 						draw_pointer (a_x, a_y)
 					end
 				elseif not grille.hover then
@@ -248,8 +247,8 @@ feature -- Access
 					grille.get_index_from_mousePos(a_x,a_y)
 					grille.is_position_bateau_valide (pointer.surface.gamedimension.width, pointer.surface.gamedimension.height, false)
 					set_pointer
-					if grille.case_valide or (nb_bateau > 4) then
-						draw_pointer (a_x, a_y)
+					if (nb_bateau < 5) then
+						draw_pointer (grille.position.x + (grille.dimension.width/2).floor, grille.position.y + grille.dimension.height)
 					end
 				else
 					teste:=false

@@ -34,6 +34,16 @@ feature
 
 feature --Modification
 
+	set_masque(a_masque:MASQUE)
+		do
+			surface:=a_masque
+		end
+
+	set_environement_audio(a_environement_audio:SOUND_ENGINE)
+		do
+			environement_audio:=a_environement_audio
+		end
+
 	turnOn
 		-- Routine qui dessine un haut-parleur ouvert.
 		do
@@ -54,4 +64,5 @@ feature -- Access
 
 	environement_audio:SOUND_ENGINE
 	surface:MASQUE
+	
 end
