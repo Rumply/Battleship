@@ -35,7 +35,7 @@
 			<file_rule>
 				<exclude>^tests$</exclude>
 			</file_rule>
-			<cluster name="tests" location="\home\francis\Documents\Battleship\tests\"/>
+			<cluster name="tests" location=".\tests\"/>
 		</cluster>
 	</target>
 </system>
