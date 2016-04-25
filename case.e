@@ -24,11 +24,11 @@ feature {NONE} -- Initialization
 			a_height_valide: a_height >= 0
 			a_bordure_valide: a_bordure >= 0
 		do
-			create {TUPLE[width,height:INTEGER]} dimension
-			create {TUPLE[x,y:INTEGER]} position2
+			create {TUPLE[width,height:INTEGER]} dimension -- crée le tuple pour les dimensions
+			create {TUPLE[x,y:INTEGER]} position2 -- crée le tuple de la position2
 			dimension.width:=a_width
 			dimension.height:=a_height
-			make_as_mask (dimension.width, dimension.height)
+			make_as_mask (dimension.width, dimension.height) -- Prend un élément et l'utilise comme masque.
 			position.x:=a_x
 			position.y:=a_y
 			bordure:=a_bordure
@@ -54,38 +54,3 @@ feature -- Access
 
 	position2:TUPLE[x,y:INTEGER_32]
 	dimension:TUPLE[width,height:INTEGER_32]
-
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
-
-end

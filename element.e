@@ -86,13 +86,13 @@ feature -- Access
 			end
 		end
 
-	hover:BOOLEAN
+	hover:BOOLEAN -- Rehausse les couleurs de l'élément sur lequel le curseur se trouve présentement.
 
-	in_image_pos:TUPLE[x,y:INTEGER]
+	in_image_pos:TUPLE[x,y:INTEGER] -- Prend un élément et le place à son emplacement prédéfini dans le tuple.
 
-	position:TUPLE[x,y:INTEGER]
+	position:TUPLE[x,y:INTEGER] -- Prend la position d'un élément et le place dans un tuple.
 
-	fileDimension:TUPLE[width,height:INTEGER]
+	fileDimension:TUPLE[width,height:INTEGER] -- Prend les dimensions d'un élément (hauteur/largeur) et les place dans un tuple.
 
 	selected:BOOLEAN assign set_selected
 			-- `Current' is selected
@@ -105,7 +105,7 @@ feature -- Access
 			Is_Assign: selected = a_selected
 		end
 
-	gameDimension:TUPLE[width,height:INTEGER]
+	gameDimension:TUPLE[width,height:INTEGER] -- Prend les dimensions prédéfinie du jeu et les appliques dans un tuple.
 
 feature {NONE} --Constants
 
