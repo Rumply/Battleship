@@ -56,8 +56,6 @@ feature {NONE}
 				-- ce qui résulte en une grille de 10x10 soit, 100 emplacements jouables.
 		local
 			l_index,l_Wreste,l_Hreste,l_x,l_y:INTEGER_32
-			l_double:REAL_64
-			l_case:CASE
 		do
 			case_dimension.width:=(dimension.width/10).floor
 			case_dimension.height:=(dimension.height/10).floor
