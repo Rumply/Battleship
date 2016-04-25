@@ -14,10 +14,12 @@ feature {NONE}
 
 	make(case_dimension:TUPLE[width,height:INTEGER])
 		do
-
+			create environement_audio.make_environment
 			create surface.make_element ("vise.png")
 			surface.gamedimension.width:=case_dimension.width
 			surface.gamedimension.height:=case_dimension.height
+			environement_audio.set_buffersize (1000)
+			environement_audio.add ("teste2.wav",-1 ) -- Faire un son continu qu'on va lancer avec méthode ou ....
 		end
 
 	initialize_pointer
@@ -39,5 +41,7 @@ feature -- Teste
 
 feature -- Access
 
+	environement_audio:SOUND_ENGINE
 	surface:MASQUE
+
 end
