@@ -33,3 +33,5 @@ feature {DIALOGUE} -- Access
 	 --| Remove line when `new_2' is initialized in creation procedure.
 
 feature -- Access
+
+end

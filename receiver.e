@@ -28,3 +28,5 @@ feature {RECEIVER} -- Access
 		attribute check False then end end --| Remove line when `receiver_reseau' is initialized in creation procedure.
 
 feature -- Access
+
+end
