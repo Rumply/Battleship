@@ -24,6 +24,7 @@ feature {NONE} -- Initialization
 
 	make(a_filename:READABLE_STRING_GENERAL)
 		require
+			a_filename_not_none: not a_filename.is_empty
 			a_filename_valide: a_filename.count > 0
 		do
 			load_background(a_filename)
