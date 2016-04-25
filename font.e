@@ -27,4 +27,5 @@ feature {FONT} -- Access
 	 --| Remove line when `font_bouton' is initialized in creation procedure.
 
 feature -- Access
+
 end
