@@ -18,24 +18,13 @@
 		<library name="game_tools" location="$ISE_LIBRARY\contrib\library\game2\game_tools\game_tools-safe.ecf"/>
 		<library name="testing" location="$ISE_LIBRARY\library\testing\testing-safe.ecf"/>
 		<cluster name="battleship" location=".\" recursive="true">
-			<class_option class="ELEMENT">
-				<assertions precondition="true" postcondition="true" check="true" invariant="true" supplier_precondition="true"/>
-			</class_option>
 			<file_rule>
 				<exclude>.git$</exclude>
 				<exclude>/EIFGENs$</exclude>
 				<exclude>/ressource$</exclude>
-			</file_rule>
-			<file_rule>
 				<exclude>^tests$</exclude>
 			</file_rule>
-			<file_rule>
-				<exclude>^tests$</exclude>
-			</file_rule>
-			<file_rule>
-				<exclude>^tests$</exclude>
-			</file_rule>
-			<cluster name="tests" location=".\tests\"/>
 		</cluster>
+		<tests name="tests" location=".\tests\"/>
 	</target>
 </system>
