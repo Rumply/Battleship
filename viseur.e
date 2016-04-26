@@ -36,7 +36,7 @@ feature {NONE}
 			surface.position.y:=0
 		end
 
-feature -- Teste
+feature -- Modification
 
 	change_image(a_image:MASQUE)
 		do
