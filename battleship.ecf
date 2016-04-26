@@ -17,12 +17,25 @@
 		<library name="game_text" location="$ISE_LIBRARY\contrib\library\game2\game_text\game_text-safe.ecf"/>
 		<library name="game_tools" location="$ISE_LIBRARY\contrib\library\game2\game_tools\game_tools-safe.ecf"/>
 		<library name="testing" location="$ISE_LIBRARY\library\testing\testing-safe.ecf"/>
+		<library name="thread" location="$ISE_LIBRARY\library\thread\thread-safe.ecf"/>
 		<cluster name="battleship" location=".\" recursive="true">
 			<file_rule>
 				<exclude>.git$</exclude>
 				<exclude>/EIFGENs$</exclude>
-				<exclude>/ressource$</exclude>
 				<exclude>^tests$</exclude>
+				<exclude>/ressource$</exclude>
+			</file_rule>
+			<file_rule>
+				<exclude>os_specific_windows</exclude>
+				<condition>
+					<platform value="unix macintosh vxworks"/>
+				</condition>
+			</file_rule>
+			<file_rule>
+				<exclude>os_specific_unix</exclude>
+				<condition>
+					<platform value="windows"/>
+				</condition>
 			</file_rule>
 		</cluster>
 		<tests name="tests" location=".\tests\"/>

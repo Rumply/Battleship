@@ -17,7 +17,6 @@ feature {NONE}
 	make_environment
 		do
 			path:="./ressource/son/"
-			bufferSize:=64000
 			create environment
 			audio_library.sources_add -- Add a sound source in the audio context.
 			source:=audio_library.last_source_added
@@ -99,17 +98,19 @@ feature -- Access
 
 	has_error:BOOLEAN
 
-	bufferSize:INTEGER assign set_bufferSize
-			-- Horizontal position of `Current'
+--	bufferSize:INTEGER assign set_bufferSize
+--			-- Horizontal position of `Current'
 
-	set_bufferSize(a_bufferSize:INTEGER)
-			-- Assign the value of `bufferSize' with `a_bufferSize'
-		do
-			bufferSize := a_bufferSize
-			source.set_buffer_size (bufferSize)
-		ensure
-			Is_Assign: bufferSize = a_bufferSize
-		end
+--	set_bufferSize(a_bufferSize:INTEGER)
+--			-- Assign the value of `bufferSize' with `a_bufferSize'
+--		require
+--			a_bufferSize_valide: a_bufferSize > 0
+--		do
+--			bufferSize := a_bufferSize
+--			source.set_buffer_size (bufferSize)
+--		ensure
+--			Is_Assign: bufferSize = a_bufferSize
+--		end
 
 feature -- Constant
 

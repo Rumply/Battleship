@@ -22,7 +22,7 @@ feature {NONE}
 			create surface.make_element ("vise.png")
 			surface.gamedimension.width:=case_dimension.width
 			surface.gamedimension.height:=case_dimension.height
-			environement_audio.set_buffersize (1000)
+			environement_audio.source.set_buffer_size(1000)
 			environement_audio.add ("teste2.wav",-1 ) -- Faire un son continu qu'on va lancer avec méthode ou lors d'un click de curseur.
 		end
 
