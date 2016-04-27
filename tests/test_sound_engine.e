@@ -26,7 +26,7 @@ feature -- Test routines
 		local
 			audio:SOUND_ENGINE
 		do
-			audio_library.disable_sound
+			audio_library.enable_sound
 
 			create audio.make_environment
 
