@@ -1,10 +1,10 @@
 note
 	description: "[
-		Classe ou tout ce qui est dessiné est créé.La grille de jeu,les images et
-		la boîte de discussion instantanée sont toutes implémantée dans le jeu grâce
-		à la classe ELEMENT.
+		Classe ou tout ce qui est dessinÃ© est crÃ©Ã©.La grille de jeu,les images et
+		la boÃ®te de discussion instantanÃ©e sont toutes implÃ©mantÃ©e dans le jeu grÃ¢ce
+		Ã  la classe ELEMENT.
 		]"
-	author: "Guillaume Hamel-Gagné"
+	author: "Guillaume Hamel-GagnÃ©"
 	date: "4 avril 2016"
 	revision: "1.0"
 
@@ -34,7 +34,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_attributs
-	-- Crée les tuples contenant les `position', les `filedimension', les `gamedimension' et les `in_image_pos'.
+	-- CrÃ©e les tuples contenant les `position', les `filedimension', les `gamedimension' et les `in_image_pos'.
 		do
 			create {TUPLE[x,y:INTEGER]} position
 			create {TUPLE[width,height:INTEGER]} filedimension
@@ -45,11 +45,11 @@ feature {NONE} -- Initialization
 		end
 
 	load_background(a_filename:READABLE_STRING_GENERAL)
-		-- Routine qui prend en argument un string afin de vérifier s'il est bon pour l'utilisation de l'application.
-		-- Un mauvais chemin pourait avoir un résultat qui ferait échouer la compilation.
+		-- Routine qui prend en argument un string afin de vÃ©rifier s'il est bon pour l'utilisation de l'application.
+		-- Un mauvais chemin pourait avoir un rÃ©sultat qui ferait Ã©chouer la compilation.
 		local
-			l_filePath:STRING_32 -- Prend un path `l_filePath' afin de trouver une image à placer en arrière plan.
-			l_image:IMG_IMAGE_FILE -- Prend une image, `l_image' classée dans l'emplacemnet `l_filePath' donné précédemment.
+			l_filePath:STRING_32 -- Prend un path `l_filePath' afin de trouver une image Ã  placer en arriÃ¨re plan.
+			l_image:IMG_IMAGE_FILE -- Prend une image, `l_image' classÃ©e dans l'emplacemnet `l_filePath' donnÃ© prÃ©cÃ©demment.
 
 		do
 			l_filePath:=""
@@ -72,11 +72,11 @@ feature {NONE} -- Initialization
 		end
 
 feature -- Access
-	-- Fait en sorte que lorsque le curseur est au dessus d'un emplacement unique du jeu, la case `hover' passe à True.
+	-- Fait en sorte que lorsque le curseur est au dessus d'un emplacement unique du jeu, la case `hover' passe Ã  True.
 	is_on(a_mouse_x,a_mouse_y:INTEGER)
 		do
-			if a_mouse_x>position.x and a_mouse_x<(position.x+gamedimension.width) then
-				if a_mouse_y>position.y and a_mouse_y<(position.y+gamedimension.height) then
+			if a_mouse_x>=position.x and a_mouse_x<=(position.x+gamedimension.width) then
+				if a_mouse_y>=position.y and a_mouse_y<=(position.y+gamedimension.height) then
 					hover:=True
 				else
 					hover:=False
@@ -86,13 +86,13 @@ feature -- Access
 			end
 		end
 
-	hover:BOOLEAN -- Rehausse les couleurs de l'élément sur lequel le curseur se trouve présentement.
+	hover:BOOLEAN -- Rehausse les couleurs de l'Ã©lÃ©ment sur lequel le curseur se trouve prÃ©sentement.
 
-	in_image_pos:TUPLE[x,y:INTEGER] -- Prend un élément et le place à son emplacement prédéfini dans le tuple.
+	in_image_pos:TUPLE[x,y:INTEGER] -- Prend un Ã©lÃ©ment et le place Ã  son emplacement prÃ©dÃ©fini dans le tuple.
 
-	position:TUPLE[x,y:INTEGER] -- Prend la position d'un élément et le place dans un tuple.
+	position:TUPLE[x,y:INTEGER] -- Prend la position d'un Ã©lÃ©ment et le place dans un tuple.
 
-	fileDimension:TUPLE[width,height:INTEGER] -- Prend les dimensions d'un élément (hauteur/largeur) et les place dans un tuple.
+	fileDimension:TUPLE[width,height:INTEGER] -- Prend les dimensions d'un Ã©lÃ©ment (hauteur/largeur) et les place dans un tuple.
 
 	selected:BOOLEAN assign set_selected
 			-- `Current' is selected
@@ -105,7 +105,7 @@ feature -- Access
 			Is_Assign: selected = a_selected
 		end
 
-	gameDimension:TUPLE[width,height:INTEGER] -- Prend les dimensions prédéfinie du jeu et les appliques dans un tuple.
+	gameDimension:TUPLE[width,height:INTEGER] -- Prend les dimensions prÃ©dÃ©finie du jeu et les appliques dans un tuple.
 
 feature {NONE} --Constants
 
