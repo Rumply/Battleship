@@ -142,7 +142,7 @@ feature --Access
 		end
 
 	get_case_position
-		-- Routine qui prend en argument quelle est la position des x et des y dans la grille.
+		-- Routine qui update les propriétés du tuple `selected_pos'.
 		do
 			selected_pos.x:=(position.x+(colonne*case_dimension.width))
 			selected_pos.y:=(position.y+(ranger*case_dimension.height))

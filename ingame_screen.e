@@ -234,8 +234,6 @@ feature -- Access
 					if grille.case_valide then
 						nb_bateau:= nb_bateau + 1
 						draw_case (a_x, a_y)
-						set_pointer
-						draw_pointer (a_x, a_y)
 					end
 				elseif not grille.hover then
 					teste:=false

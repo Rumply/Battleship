@@ -98,20 +98,6 @@ feature -- Access
 
 	has_error:BOOLEAN
 
---	bufferSize:INTEGER assign set_bufferSize
---			-- Horizontal position of `Current'
-
---	set_bufferSize(a_bufferSize:INTEGER)
---			-- Assign the value of `bufferSize' with `a_bufferSize'
---		require
---			a_bufferSize_valide: a_bufferSize > 0
---		do
---			bufferSize := a_bufferSize
---			source.set_buffer_size (bufferSize)
---		ensure
---			Is_Assign: bufferSize = a_bufferSize
---		end
-
 feature -- Constant
 
 	path:STRING_32

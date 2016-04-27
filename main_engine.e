@@ -24,7 +24,6 @@ feature {NONE}
 	make
 		local
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
-			bla:MESSAGE_CONSOLE
 		do
 			l_window_builder.set_dimension (1800,1000)
 			l_window_builder.set_title("BattleShip")
@@ -38,11 +37,6 @@ feature {NONE}
 			musique_menu.add ("theme2.wav", 1)
 			musique_menu.add ("theme1.wav", 1)
 			musique_menu.play
-
-			create bla.make
-
-			bla.write_new_line ("Salut")
-			bla.clear
 		ensure
 			musique_menu_is_playing: musique_menu.source.is_open
 			musique_menu_is_playing: musique_menu.source.is_playing

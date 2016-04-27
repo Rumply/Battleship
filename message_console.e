@@ -33,8 +33,11 @@ feature -- Access
 		end
 
 	write_new_line(a_chaine:STRING)
+		require
+			a_chaine_is_valide : not a_chaine.is_empty
 		do
 			io.put_string (a_chaine)
+			io.new_line
 		end
 
 	clear
