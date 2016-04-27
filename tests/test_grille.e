@@ -131,9 +131,6 @@ feature -- Test routines
 
 			game_library.quit_library
 		end
-
-
-
 end
 
 
