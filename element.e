@@ -34,7 +34,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_attributs
-	-- Crée les tuples contenant les `position', les `filedimension', les `gamedimension' et les `in_image_pos'.
+	-- CrÃ©e les tuples contenant les `position', les `filedimension', les `gamedimension' et les `in_image_pos'.
 		do
 			create {TUPLE[x,y:INTEGER]} position
 			create {TUPLE[width,height:INTEGER]} filedimension
