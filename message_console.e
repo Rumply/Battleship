@@ -1,8 +1,8 @@
 note
-	description: "Summary description for {MESSAGE_CONSOLE}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: ""
+	author: "Guillaume Hamel-Gagné"
+	date: "3 mai 2016"
+	revision: "1.0"
 
 class
 	MESSAGE_CONSOLE
