@@ -75,8 +75,8 @@ feature -- Access
 	-- Fait en sorte que lorsque le curseur est au dessus d'un emplacement unique du jeu, la case `hover' passe à True.
 	is_on(a_mouse_x,a_mouse_y:INTEGER)
 		do
-			if a_mouse_x>position.x and a_mouse_x<(position.x+gamedimension.width) then
-				if a_mouse_y>position.y and a_mouse_y<(position.y+gamedimension.height) then
+			if a_mouse_x>=position.x and a_mouse_x<=(position.x+gamedimension.width) then
+				if a_mouse_y>=position.y and a_mouse_y<=(position.y+gamedimension.height) then
 					hover:=True
 				else
 					hover:=False

@@ -26,14 +26,12 @@ feature -- Test routines
 		local
 			audio:SOUND_ENGINE
 		do
-			audio_library.disable_sound
+			audio_library.enable_sound
 
 			create audio.make_environment
 
-
 			audio.source.set_buffer_size (3000)
 			assert ("Positive buffersize set: ", audio.source.buffer_size = 3000)
-
 
 			audio_library.quit_library
 		end

@@ -19,7 +19,7 @@ inherit
 
 feature -- Test routines
 
-	TEST_ELEMENT
+	test_is_on
 			-- New test routine
 		note
 			testing: "execution/isolated"
@@ -31,7 +31,6 @@ feature -- Test routines
 
 
 			create element.make_as_mask(100,100)
-
 
 			mouse_x:= 0
 			mouse_y:= 0
@@ -45,9 +44,9 @@ feature -- Test routines
 
 			element.is_on (mouse_x, mouse_y)
 			assert("mouse is hover", element.hover)
-			element.is_on (mouse_x, mouse_y)
+			element.is_on (element.gamedimension.width+2, mouse_y)
 			assert("mouse is not hover", not element.hover)
-			
+
 			game_library.quit_library
 		end
 

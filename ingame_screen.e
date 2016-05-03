@@ -23,6 +23,10 @@ feature {NONE}
 		l_double:REAL_64
 	do
 		window:=a_window
+		create console.make
+		
+		console.write_new_line ("Creating Ingame_screen")
+
 		l_double:=(window.width/2-110)
 		create chat_bordure.make_as_mask (l_double.floor, 290)
 		chat_bordure.draw_rect_with_tile ("bois.jpg", l_double.floor, 290, 10)
@@ -63,6 +67,7 @@ feature {NONE}
 
 	set_as_default_pointer
 		do
+			console.write_new_line ("Set to default pointer")
 			pointer.surface.in_image_pos.x:=0
 			pointer.surface.in_image_pos.y:=0
 			pointer.surface.filedimension.width:=100
@@ -76,6 +81,7 @@ feature {NONE}
 	set_as_bateau1(a_bateau:MASQUE)
 		-- Routine qui impose les attributs de `a_bateau'.
 		do
+			console.write_new_line ("Set to bateau 4 case de long")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=0
 			a_bateau.filedimension.width:=380
@@ -89,6 +95,7 @@ feature {NONE}
 	set_as_bateau2(a_bateau:MASQUE)
 		-- Routine qui impose les attributs de `a_bateau'.
 		do
+			console.write_new_line ("Set to bateau2 (3 case de long)")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=80
 			a_bateau.filedimension.width:=280
@@ -102,6 +109,7 @@ feature {NONE}
 	set_as_bateau3(a_bateau:MASQUE)
 	-- Routine qui impose les attributs de `a_bateau'.
 		do
+			console.write_new_line ("Set to bateau3 (3 case de long)")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=160
 			a_bateau.filedimension.width:=280
@@ -115,6 +123,7 @@ feature {NONE}
 	set_as_bateau4(a_bateau:MASQUE)
 	-- Routine qui impose les attributs de `a_bateau'.
 		do
+			console.write_new_line ("Set to bateau4 (2 case de long)")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=240
 			a_bateau.filedimension.width:=180
@@ -128,6 +137,7 @@ feature {NONE}
 	set_as_bateau5(a_bateau:MASQUE)
 	-- Routine qui impose les attributs de `a_bateau'.
 		do
+			console.write_new_line ("Set to bateau5 (4 case de long)")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=320
 			a_bateau.filedimension.width:=380
@@ -141,6 +151,7 @@ feature {NONE}
 	initialize_grille
 		-- Routine qui initialise les attributs de la grille.
 		do
+			console.write_new_line ("Initialize grille")
 			grille.position.x:=80
 			grille.position.y:=80
 			grille.dimension.width:=800
@@ -155,6 +166,7 @@ feature {NONE}
 		local
 			l_double:REAL_64
 		do
+			console.write_new_line ("Initialize bordure de chat")
 			l_double:=(window.width/1.8)
 			chat_bordure.position.x:=l_double.floor
 			l_double:=(window.height/1.5)
@@ -164,6 +176,7 @@ feature {NONE}
 	initialize_bordure
 		-- Routine qui initialise les bordures de la grille.
 		do
+			console.write_new_line ("Initialize bordure de la grille")
 			bordure1.position.x:=grille.position.x - grille.dimension.bordure
 			bordure1.position.y:=grille.position.y - grille.dimension.bordure
 		end
@@ -171,6 +184,7 @@ feature {NONE}
 	setup_border
 		-- Routine qui dessine la grille, les bordures et les bordures de la discussion instantanée.
 		do
+			console.write_new_line ("Setup des borders")
 			background.draw_surface (grille.masque, grille.position.x,grille.position.y)
 			background.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 			background.draw_surface (chat_bordure, chat_bordure.position.x, chat_bordure.position.y)
@@ -323,6 +337,7 @@ feature -- Access
 			draw(speaker.surface)
 		end
 
+	console:MESSAGE_CONSOLE
 	pointer:VISEUR
 	speaker:SPEAKER
 	nb_bateau:INTEGER_32
