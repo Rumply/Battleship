@@ -111,6 +111,7 @@ feature -- Test routines
 		local
 			grille:GRILLE
 			l_width,l_height,l_bordure:INTEGER
+			position_used: ARRAYED_LIST [INTEGER]
 		do
 			game_library.enable_video
 
@@ -123,10 +124,10 @@ feature -- Test routines
 			initialize_grille(grille)
 
 			grille.get_index_from_mousepos (1, 1)
-			grille.is_position_bateau_valide (grille.case_dimension.width, grille.case_dimension.height, false)
+			create position_used.make_from_array (grille.is_position_bateau_valide (grille.case_dimension.width, grille.case_dimension.height, false).to_array)
 			assert ("Bateau case 1x1 première colonne :", grille.case_valide)
 			grille.get_index_from_mousepos ((grille.dimension.width-1), 1)
-			grille.is_position_bateau_valide ((2*(grille.case_dimension.width)), grille.case_dimension.height, false)
+			create position_used.make_from_array (grille.is_position_bateau_valide ((2*(grille.case_dimension.width)), grille.case_dimension.height, false).to_array)
 			assert ("Bateau case 2x1 dernière colonne :", not grille.case_valide)
 
 			game_library.quit_library

@@ -24,8 +24,6 @@ feature {NONE}
 	do
 		window:=a_window
 		create console.make
-		
-		console.write_new_line ("Creating Ingame_screen")
 
 		l_double:=(window.width/2-110)
 		create chat_bordure.make_as_mask (l_double.floor, 290)
@@ -49,10 +47,9 @@ feature {NONE}
 
 		initialize_chat_bordure
 		initialize_grille
-
 		initialize_bordure
-
 		load_case_element
+		initialize_bateauList
 
 		setup_object
 	end
@@ -67,7 +64,6 @@ feature {NONE}
 
 	set_as_default_pointer
 		do
-			console.write_new_line ("Set to default pointer")
 			pointer.surface.in_image_pos.x:=0
 			pointer.surface.in_image_pos.y:=0
 			pointer.surface.filedimension.width:=100
@@ -81,7 +77,6 @@ feature {NONE}
 	set_as_bateau1(a_bateau:MASQUE)
 		-- Routine qui impose les attributs de `a_bateau'.
 		do
-			console.write_new_line ("Set to bateau 4 case de long")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=0
 			a_bateau.filedimension.width:=380
@@ -95,7 +90,6 @@ feature {NONE}
 	set_as_bateau2(a_bateau:MASQUE)
 		-- Routine qui impose les attributs de `a_bateau'.
 		do
-			console.write_new_line ("Set to bateau2 (3 case de long)")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=80
 			a_bateau.filedimension.width:=280
@@ -109,7 +103,6 @@ feature {NONE}
 	set_as_bateau3(a_bateau:MASQUE)
 	-- Routine qui impose les attributs de `a_bateau'.
 		do
-			console.write_new_line ("Set to bateau3 (3 case de long)")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=160
 			a_bateau.filedimension.width:=280
@@ -123,7 +116,6 @@ feature {NONE}
 	set_as_bateau4(a_bateau:MASQUE)
 	-- Routine qui impose les attributs de `a_bateau'.
 		do
-			console.write_new_line ("Set to bateau4 (2 case de long)")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=240
 			a_bateau.filedimension.width:=180
@@ -137,7 +129,6 @@ feature {NONE}
 	set_as_bateau5(a_bateau:MASQUE)
 	-- Routine qui impose les attributs de `a_bateau'.
 		do
-			console.write_new_line ("Set to bateau5 (4 case de long)")
 			a_bateau.in_image_pos.x:=0
 			a_bateau.in_image_pos.y:=320
 			a_bateau.filedimension.width:=380
@@ -148,10 +139,18 @@ feature {NONE}
 			a_bateau.position.y:=0
 		end
 
+	initialize_bateauList
+		do
+			create position_bateau1.make (4)
+			create position_bateau2.make (3)
+			create position_bateau3.make (3)
+			create position_bateau4.make (2)
+			create position_bateau5.make (5)
+		end
+
 	initialize_grille
 		-- Routine qui initialise les attributs de la grille.
 		do
-			console.write_new_line ("Initialize grille")
 			grille.position.x:=80
 			grille.position.y:=80
 			grille.dimension.width:=800
@@ -166,7 +165,6 @@ feature {NONE}
 		local
 			l_double:REAL_64
 		do
-			console.write_new_line ("Initialize bordure de chat")
 			l_double:=(window.width/1.8)
 			chat_bordure.position.x:=l_double.floor
 			l_double:=(window.height/1.5)
@@ -176,7 +174,6 @@ feature {NONE}
 	initialize_bordure
 		-- Routine qui initialise les bordures de la grille.
 		do
-			console.write_new_line ("Initialize bordure de la grille")
 			bordure1.position.x:=grille.position.x - grille.dimension.bordure
 			bordure1.position.y:=grille.position.y - grille.dimension.bordure
 		end
@@ -184,7 +181,6 @@ feature {NONE}
 	setup_border
 		-- Routine qui dessine la grille, les bordures et les bordures de la discussion instantanée.
 		do
-			console.write_new_line ("Setup des borders")
 			background.draw_surface (grille.masque, grille.position.x,grille.position.y)
 			background.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 			background.draw_surface (chat_bordure, chat_bordure.position.x, chat_bordure.position.y)
@@ -206,6 +202,7 @@ feature {NONE}
 
 			if (nb_bateau=5) then
 				set_as_default_pointer
+
 				pointer.change_image (grille.viseur)
 			elseif (nb_bateau < 5) then
 				pointer.change_image (image_bateau)
@@ -231,6 +228,8 @@ feature -- Access
 	mouse_click(a_x,a_y:INTEGER;click:BOOLEAN)
 		-- Routine qui gère les éléments et les actions faites par le curseur.
 		-- Routine qui applique les bateaux un par un lorsqu'un click est fait dans la grille, jusqu'à un maximum de 5 bateaux dans la grille.
+		local
+			position_bateau_temp:ARRAYED_LIST[INTEGER]
 		do
 			speaker.surface.is_on (a_x, a_y)
 			grille.is_on (a_x, a_y)
@@ -243,12 +242,31 @@ feature -- Access
 					end
 				elseif grille.hover then
 					grille.get_index_from_mousePos(a_x,a_y)
-					grille.is_position_bateau_valide (pointer.surface.gamedimension.width, pointer.surface.gamedimension.height, true)
 					set_pointer
+					position_bateau_temp:= ((grille.is_position_bateau_valide (image_bateau.gamedimension.width, image_bateau.gamedimension.height, true)))
 					if grille.case_valide then
+						if nb_bateau = 0 then
+							position_bateau1:=(position_bateau_temp)
+						elseif nb_bateau = 1 then
+							position_bateau2:=(position_bateau_temp)
+						elseif nb_bateau = 2 then
+							position_bateau3:=(position_bateau_temp)
+						elseif nb_bateau = 3 then
+							position_bateau4:=(position_bateau_temp)
+						elseif nb_bateau = 4 then
+							position_bateau5:=(position_bateau_temp)
+						end
 						nb_bateau:= nb_bateau + 1
 						draw_case (a_x, a_y)
+						if nb_bateau = 6 then
+							set_as_default_pointer
+						end
+						if nb_bateau > 5 then
+							draw_pointer (a_x, a_y)
+						end
 					end
+
+
 				elseif not grille.hover then
 					teste:=false
 					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
@@ -257,14 +275,8 @@ feature -- Access
 			elseif not click then
 				if grille.hover then
 					grille.get_index_from_mousePos(a_x,a_y)
-					grille.is_position_bateau_valide (pointer.surface.gamedimension.width, pointer.surface.gamedimension.height, false)
-					set_pointer
-					if (nb_bateau < 5) then
-						draw_pointer (grille.position.x + (grille.dimension.width/2).floor, grille.position.y + grille.dimension.height)
-					end
 				else
 					teste:=false
-					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
 				end
 			end
 		end
@@ -336,6 +348,13 @@ feature -- Access
 			speaker.turnOff
 			draw(speaker.surface)
 		end
+
+
+	position_bateau1:ARRAYED_LIST[INTEGER]
+	position_bateau2:ARRAYED_LIST[INTEGER]
+	position_bateau3:ARRAYED_LIST[INTEGER]
+	position_bateau4:ARRAYED_LIST[INTEGER]
+	position_bateau5:ARRAYED_LIST[INTEGER]
 
 	console:MESSAGE_CONSOLE
 	pointer:VISEUR
