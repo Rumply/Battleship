@@ -40,6 +40,13 @@ feature -- Access
 			io.new_line
 		end
 
+	write(a_chaine:STRING)
+		require
+			a_chaine_is_valide : not a_chaine.is_empty
+		do
+			io.put_string (a_chaine)
+		end
+
 	clear
 		local
 			l_env:EXECUTION_ENVIRONMENT
