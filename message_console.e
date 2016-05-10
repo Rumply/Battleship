@@ -55,6 +55,14 @@ feature -- Access
 			l_env.system (clear_string)
 		end
 
+	close
+		local
+			l_env:EXECUTION_ENVIRONMENT
+		do
+			create l_env
+			l_env.system ("EXIT")
+		end
+
 feature {NONE} -- Thread methods
 
 	execute

@@ -11,6 +11,9 @@ note
 class
 	INGAME_SCREEN
 
+inherit
+	CONSOLE_SHARED
+
 create
 	make
 
@@ -23,7 +26,7 @@ feature {NONE}
 		l_double:REAL_64
 	do
 		window:=a_window
-		create console.make
+		console.clear
 
 		l_double:=(window.width/2-110)
 		create chat_bordure.make_as_mask (l_double.floor, 290)
@@ -45,8 +48,10 @@ feature {NONE}
 		current_index:=1
 		color:=black
 
+		mouse_x:= 0
+		mouse_y:= 0
+
 		initialize_chat_bordure
-		initialize_grille
 		initialize_bordure
 		load_case_element
 		initialize_bateau
@@ -77,18 +82,6 @@ feature {NONE}
 	initialize_bateau
 		do
 			create boat.make(grille.case_dimension.width, grille.case_dimension.height)
-		end
-
-	initialize_grille
-		-- Routine qui initialise les attributs de la grille.
-		do
-			grille.position.x:=80
-			grille.position.y:=80
-			grille.dimension.width:=800
-			grille.dimension.height:=800
-			grille.dimension.bordure:=10
-			grille.selected_pos.x:=grille.position.x
-			grille.selected_pos.y:=grille.position.y
 		end
 
 	initialize_chat_bordure
@@ -140,14 +133,10 @@ feature {NONE}
 
 feature -- Access
 
-	mouse_click(a_x,a_y:INTEGER;click:BOOLEAN)
-		-- Routine qui gère les éléments et les actions faites par le curseur.
-		-- Routine qui applique les bateaux un par un lorsqu'un click est fait dans la grille, jusqu'à un maximum de 5 bateaux dans la grille.
+	cycle
 		local
 			position_bateau_temp:ARRAYED_LIST[INTEGER]
 		do
-			speaker.surface.is_on (a_x, a_y)
-			grille.is_on (a_x, a_y)
 			if click then
 				if speaker.surface.hover then
 					if not speaker.environement_audio.muted then
@@ -156,28 +145,46 @@ feature -- Access
 						speaker_on
 					end
 				elseif grille.hover then
-					grille.get_index_from_mousePos(a_x,a_y)
+					grille.get_index_from_mousePos(mouse_x,mouse_y)
 					set_pointer
 					boat.set_bateau(id_bateau)
-					if (id_bateau < 6) then
+					if (id_bateau < 5) then
 						position_bateau_temp:= ((grille.is_position_bateau_valide (boat.image_bateau.gamedimension.width, boat.image_bateau.gamedimension.height, true)))
 						if grille.case_valide then
 							boat.fill_bateau_list(id_bateau,position_bateau_temp)
-							draw_case (a_x, a_y)
+							draw_case (mouse_x, mouse_y)
 							id_bateau:= id_bateau + 1
 						end
+					else
+						draw_pointer (mouse_x, mouse_y)
 					end
-					if id_bateau = 6 then
+
+					if id_bateau = 5 then
 								set_as_default_pointer
 					end
-					if id_bateau > 6 then
-							draw_pointer (a_x, a_y)
-					end
 				elseif not grille.hover then
-					teste:=false
 					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
 				end
+				console.clear
+				console.write (id_bateau.out)
+				click:=false
 			end
+		end
+
+	mouse_click(a_x,a_y:INTEGER;a_click:BOOLEAN)
+		-- Routine qui gère les éléments et les actions faites par le curseur.
+		-- Routine qui applique les bateaux un par un lorsqu'un click est fait dans la grille, jusqu'à un maximum de 5 bateaux dans la grille.
+		do
+			mouse_x:= a_x
+			mouse_y:= a_y
+			speaker.surface.is_on (a_x, a_y)
+			grille.is_on (a_x, a_y)
+			click:= a_click
+			if click then
+				cycle
+			end
+
+
 		end
 
 	fill_background
@@ -247,8 +254,9 @@ feature -- Access
 			draw(speaker.surface)
 		end
 
+	click:BOOLEAN
+	mouse_x,mouse_y:INTEGER
 	boat:BATEAU
-	console:MESSAGE_CONSOLE
 	pointer:VISEUR
 	speaker:SPEAKER
 	id_bateau:INTEGER_32

@@ -14,6 +14,7 @@ inherit
 	GAME_LIBRARY_SHARED
 	IMG_LIBRARY_SHARED
 	AUDIO_LIBRARY_SHARED
+	CONSOLE_SHARED
 
 create
 	make
@@ -57,6 +58,7 @@ feature {NONE} -- Implementation
 	cycle(a_timestamp: NATURAL_32)
 		-- Routine qui fait les mises à jours de l'écran et des sons.
 		do
+			menu.cycle
 			window.update
 			audio_library.update
 		end

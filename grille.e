@@ -44,8 +44,20 @@ feature {NONE}
 			create listCase.make (100)
 			create element.make ("eau.jpg") -- Crée l'élément "eau.jpg" pour l'arrière plan.
 			create viseur.make_element ("vise.png") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
-
+			initialize_grille
 			fill_listCase
+		end
+
+	initialize_grille
+		-- Routine qui initialise les attributs de la grille.
+		do
+			position.x:=80
+			position.y:=80
+			dimension.width:=800
+			dimension.height:=800
+			dimension.bordure:=10
+			selected_pos.x:=position.x
+			selected_pos.y:=position.y
 		end
 
 	fill_listCase
