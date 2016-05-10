@@ -17,7 +17,7 @@ feature {NONE} -- Initialization
 		do
 			case_width:=a_case_width
 			case_height:=a_case_height
---			set_as_bateau1
+			set_as_bateau1
 			create position_bateau1.make (4)
 			create position_bateau2.make (3)
 			create position_bateau3.make (3)
@@ -27,33 +27,38 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	get_bateau(a_id:INTEGER):MASQUE
+	set_bateau(a_id:INTEGER)
 		do
-			if (a_id=1) then
+			if (a_id=0) then
 				set_as_bateau1
-			elseif (a_id=2) then
+			elseif (a_id=1) then
 				set_as_bateau2
-			elseif (a_id=3) then
+			elseif (a_id=2) then
 				set_as_bateau3
-			elseif (a_id=4) then
+			elseif (a_id=3) then
 				set_as_bateau4
-			elseif (a_id=5) then
+			elseif (a_id=4) then
 				set_as_bateau5
 			end
+		end
+
+	get_bateau(a_id:INTEGER):MASQUE
+		do
+			set_bateau(a_id)
 			Result:=image_bateau
 		end
 
 	fill_bateau_list(a_id:INTEGER;a_position_list:ARRAYED_LIST[INTEGER])
 		do
-			if a_id = 1 then
+			if a_id = 0 then
 				position_bateau1:=(a_position_list)
-			elseif a_id = 2 then
+			elseif a_id = 1 then
 				position_bateau2:=(a_position_list)
-			elseif a_id = 3 then
+			elseif a_id = 2 then
 				position_bateau3:=(a_position_list)
-			elseif a_id = 4 then
+			elseif a_id = 3 then
 				position_bateau4:=(a_position_list)
-			elseif a_id = 5 then
+			elseif a_id = 4 then
 				position_bateau5:=(a_position_list)
 			end
 		end

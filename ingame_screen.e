@@ -59,7 +59,7 @@ feature {NONE}
 		-- Routine qui crée un pointeur à la position du curseur.
 		do
 			create pointer.make(grille.case_dimension)
-			id_bateau:=1
+			id_bateau:=0
 		end
 
 	set_as_default_pointer
@@ -158,6 +158,7 @@ feature -- Access
 				elseif grille.hover then
 					grille.get_index_from_mousePos(a_x,a_y)
 					set_pointer
+					boat.set_bateau(id_bateau)
 					if (id_bateau < 6) then
 						position_bateau_temp:= ((grille.is_position_bateau_valide (boat.image_bateau.gamedimension.width, boat.image_bateau.gamedimension.height, true)))
 						if grille.case_valide then
@@ -169,9 +170,9 @@ feature -- Access
 					if id_bateau = 6 then
 								set_as_default_pointer
 					end
-					if id_bateau > 5 then
+					if id_bateau > 6 then
 							draw_pointer (a_x, a_y)
-						end
+					end
 				elseif not grille.hover then
 					teste:=false
 					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
