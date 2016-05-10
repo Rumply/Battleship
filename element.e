@@ -34,7 +34,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_attributs
-	-- CrÃ©e les tuples contenant les `position', les `filedimension', les `gamedimension' et les `in_image_pos'.
+	-- Crée les tuples contenant les `position', les `filedimension', les `gamedimension' et les `in_image_pos'.
 		do
 			create {TUPLE[x,y:INTEGER]} position
 			create {TUPLE[width,height:INTEGER]} filedimension
@@ -110,7 +110,7 @@ feature -- Access
 feature {NONE} --Constants
 
 	image_location: STRING_32
-            -- `Result' is DIRECTORY constant named image_location.
+		-- Dit au programme ou aller chercher l'emplacement de l'image `image_location'.
         once
             Result := "./ressource/image/"
         end

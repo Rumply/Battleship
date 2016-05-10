@@ -90,13 +90,13 @@ feature -- Access
 			end
 		end
 
-	muted:BOOLEAN
+	muted:BOOLEAN -- Change le BOOL si l'utilisateur ne veut plus entendre le son.
 
-	environment:EXECUTION_ENVIRONMENT
+	environment:EXECUTION_ENVIRONMENT --
 
-	source:AUDIO_SOURCE
+	source:AUDIO_SOURCE -- Applique les instructions inscrites dans {AUDIO_SOURCE} afin que les éléments audio soient entendu.
 
-	has_error:BOOLEAN
+	has_error:BOOLEAN -- Envoit un BOOL si une erreur survient.
 
 feature -- Constant
 

@@ -11,9 +11,9 @@ class
 	INGAME_ENGINE
 
 inherit
-	GAME_LIBRARY_SHARED		-- To use `game_library'
-	IMG_LIBRARY_SHARED		-- To use `image_file_library'
-	AUDIO_LIBRARY_SHARED	-- To use `audio_library'
+	GAME_LIBRARY_SHARED
+	IMG_LIBRARY_SHARED
+	AUDIO_LIBRARY_SHARED
 
 create
 	make
@@ -26,17 +26,17 @@ feature {NONE}
 			a_window_is_open: a_window.surface.is_open
 		do
 			window := a_window
-			create musique_menu.make
-			create menu.make (window,musique_menu)
+			create music_menu.make
+			create menu.make (window,music_menu)
 
-			musique_menu.environement_audio.add ("theme1.wav", 1)
-			musique_menu.environement_audio.add ("theme2.wav", -1)
-			musique_menu.environement_audio.play
+			music_menu.environement_audio.add ("theme1.wav", 1)
+			music_menu.environement_audio.add ("theme2.wav", -1)
+			music_menu.environement_audio.play
 
 			menu.speaker_on
 		ensure
-			musique_menu_is_playing: musique_menu.environement_audio.source.is_open
-			musique_menu_is_playing: musique_menu.environement_audio.source.is_playing
+			music_menu_is_playing: music_menu.environement_audio.source.is_open
+			music_menu_is_playing: music_menu.environement_audio.source.is_playing
 		end
 
 feature
@@ -96,8 +96,10 @@ feature {NONE} -- Implementation
 feature {NONE} -- Access
 
 	menu:INGAME_SCREEN
+
 	window:GAME_WINDOW_SURFACED
-	musique_menu:SPEAKER
+
+	music_menu:SPEAKER
 
 	last_x, last_y:INTEGER
 			-- Last known coordinate of the mouse pointer inside the window
