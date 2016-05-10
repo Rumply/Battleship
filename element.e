@@ -110,7 +110,7 @@ feature -- Access
 feature {NONE} --Constants
 
 	image_location: STRING_32
-            -- `Result' is DIRECTORY constant named image_location.
+		-- Dit au programme ou aller chercher l'emplacement de l'image `image_location'.
         once
             Result := "./ressource/image/"
         end

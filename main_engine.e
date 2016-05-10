@@ -22,6 +22,7 @@ create
 feature {NONE}
 
 	make
+	-- Run application.
 		local
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
 		do

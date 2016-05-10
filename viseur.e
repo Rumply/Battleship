@@ -40,7 +40,7 @@ feature -- Modification
 
 	change_image(a_image:MASQUE)
 		do
-			surface:=a_image
+			surface:=a_image -- DOC A VENIR maybe no use at all
 		end
 
 feature -- Access

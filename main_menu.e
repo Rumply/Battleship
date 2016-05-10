@@ -285,12 +285,14 @@ feature -- Access bouton
 feature -- Access variable
 
 	background,title,bouton_S,bouton_M,speaker:ELEMENT
-	masque:MASQUE
+		-- `background'`title'`bouton_S'`bouton_M'`speaker' sont tous des éléments de {ELEMENT} qui sont utilisé dans la classe {main_menu}
 
-	singleGame:BOOLEAN
+	masque:MASQUE -- `masque' sert de passerelle à la classe {MASQUE}
 
-	window:GAME_WINDOW_SURFACED
+	singleGame:BOOLEAN -- Met le BOOL à 0 ou à 1 dépendant si l'utilisateur ne veut jouer qu'une seule partie ou non.
 
-	color,yellow,black:GAME_COLOR
+	window:GAME_WINDOW_SURFACED -- Affiche la fenêtre où les images seront appliquées et applique les dimensions de `a_window'
+
+	color,yellow,black:GAME_COLOR -- Applique les couleurs à `color', `yellow' et `black'.
 
 end
