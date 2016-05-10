@@ -49,7 +49,7 @@ feature {NONE}
 		initialize_grille
 		initialize_bordure
 		load_case_element
-		initialize_bateauList
+		initialize_bateau
 
 		setup_object
 	end
@@ -59,7 +59,7 @@ feature {NONE}
 		-- Routine qui crée un pointeur à la position du curseur.
 		do
 			create pointer.make(grille.case_dimension)
-			nb_bateau:=0
+			id_bateau:=1
 		end
 
 	set_as_default_pointer
@@ -74,78 +74,9 @@ feature {NONE}
 			pointer.surface.position.y:=0
 		end
 
-	set_as_bateau1(a_bateau:MASQUE)
-		-- Routine qui impose les attributs de `a_bateau'.
+	initialize_bateau
 		do
-			a_bateau.in_image_pos.x:=0
-			a_bateau.in_image_pos.y:=0
-			a_bateau.filedimension.width:=380
-			a_bateau.filedimension.height:=80
-			a_bateau.gamedimension.width:=grille.case_dimension.width*4
-			a_bateau.gamedimension.height:=grille.case_dimension.height
-			a_bateau.position.x:=0
-			a_bateau.position.y:=0
-		end
-
-	set_as_bateau2(a_bateau:MASQUE)
-		-- Routine qui impose les attributs de `a_bateau'.
-		do
-			a_bateau.in_image_pos.x:=0
-			a_bateau.in_image_pos.y:=80
-			a_bateau.filedimension.width:=280
-			a_bateau.filedimension.height:=80
-			a_bateau.gamedimension.width:=grille.case_dimension.width*3
-			a_bateau.gamedimension.height:=grille.case_dimension.height
-			a_bateau.position.x:=0
-			a_bateau.position.y:=0
-		end
-
-	set_as_bateau3(a_bateau:MASQUE)
-	-- Routine qui impose les attributs de `a_bateau'.
-		do
-			a_bateau.in_image_pos.x:=0
-			a_bateau.in_image_pos.y:=160
-			a_bateau.filedimension.width:=280
-			a_bateau.filedimension.height:=80
-			a_bateau.gamedimension.width:=grille.case_dimension.width*3
-			a_bateau.gamedimension.height:=grille.case_dimension.height
-			a_bateau.position.x:=0
-			a_bateau.position.y:=0
-		end
-
-	set_as_bateau4(a_bateau:MASQUE)
-	-- Routine qui impose les attributs de `a_bateau'.
-		do
-			a_bateau.in_image_pos.x:=0
-			a_bateau.in_image_pos.y:=240
-			a_bateau.filedimension.width:=180
-			a_bateau.filedimension.height:=80
-			a_bateau.gamedimension.width:=grille.case_dimension.width*2
-			a_bateau.gamedimension.height:=grille.case_dimension.height
-			a_bateau.position.x:=0
-			a_bateau.position.y:=0
-		end
-
-	set_as_bateau5(a_bateau:MASQUE)
-	-- Routine qui impose les attributs de `a_bateau'.
-		do
-			a_bateau.in_image_pos.x:=0
-			a_bateau.in_image_pos.y:=320
-			a_bateau.filedimension.width:=380
-			a_bateau.filedimension.height:=80
-			a_bateau.gamedimension.width:=grille.case_dimension.width*5
-			a_bateau.gamedimension.height:=grille.case_dimension.height
-			a_bateau.position.x:=0
-			a_bateau.position.y:=0
-		end
-
-	initialize_bateauList
-		do
-			create position_bateau1.make (4)
-			create position_bateau2.make (3)
-			create position_bateau3.make (3)
-			create position_bateau4.make (2)
-			create position_bateau5.make (5)
+			create boat.make(grille.case_dimension.width, grille.case_dimension.height)
 		end
 
 	initialize_grille
@@ -188,24 +119,8 @@ feature {NONE}
 
 	set_pointer
 		do
-			if (nb_bateau=0) then
-				set_as_bateau1 (image_bateau)
-			elseif (nb_bateau=1) then
-				set_as_bateau2 (image_bateau)
-			elseif (nb_bateau=2) then
-				set_as_bateau3 (image_bateau)
-			elseif (nb_bateau=3) then
-				set_as_bateau4 (image_bateau)
-			elseif (nb_bateau=4) then
-				set_as_bateau5 (image_bateau)
-			end
-
-			if (nb_bateau=5) then
+			if (id_bateau=5) then
 				set_as_default_pointer
-
-				pointer.change_image (grille.viseur)
-			elseif (nb_bateau < 5) then
-				pointer.change_image (image_bateau)
 			end
 
 		end
@@ -243,40 +158,23 @@ feature -- Access
 				elseif grille.hover then
 					grille.get_index_from_mousePos(a_x,a_y)
 					set_pointer
-					position_bateau_temp:= ((grille.is_position_bateau_valide (image_bateau.gamedimension.width, image_bateau.gamedimension.height, true)))
-					if grille.case_valide then
-						if nb_bateau = 0 then
-							position_bateau1:=(position_bateau_temp)
-						elseif nb_bateau = 1 then
-							position_bateau2:=(position_bateau_temp)
-						elseif nb_bateau = 2 then
-							position_bateau3:=(position_bateau_temp)
-						elseif nb_bateau = 3 then
-							position_bateau4:=(position_bateau_temp)
-						elseif nb_bateau = 4 then
-							position_bateau5:=(position_bateau_temp)
-						end
-						nb_bateau:= nb_bateau + 1
-						draw_case (a_x, a_y)
-						if nb_bateau = 6 then
-							set_as_default_pointer
-						end
-						if nb_bateau > 5 then
-							draw_pointer (a_x, a_y)
+					if (id_bateau < 6) then
+						position_bateau_temp:= ((grille.is_position_bateau_valide (boat.image_bateau.gamedimension.width, boat.image_bateau.gamedimension.height, true)))
+						if grille.case_valide then
+							boat.fill_bateau_list(id_bateau,position_bateau_temp)
+							draw_case (a_x, a_y)
+							id_bateau:= id_bateau + 1
 						end
 					end
-
-
+					if id_bateau = 6 then
+								set_as_default_pointer
+					end
+					if id_bateau > 5 then
+							draw_pointer (a_x, a_y)
+						end
 				elseif not grille.hover then
 					teste:=false
 					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
-				end
-
-			elseif not click then
-				if grille.hover then
-					grille.get_index_from_mousePos(a_x,a_y)
-				else
-					teste:=false
 				end
 			end
 		end
@@ -292,13 +190,14 @@ feature -- Access
 		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
 		local
 			l_temp:INTEGER_32
-
+			l_bateau:MASQUE
 		do
-			if (nb_bateau < 6) then
+			if (id_bateau < 6) then
+				l_bateau:=boat.get_bateau(id_bateau)
 				l_temp:=l_temp + grille.index
 				grille.get_index_from_mousepos (a_x, a_y)
 				grille.get_case_position
-				grille.masque.draw_sub_surface_with_scale (image_bateau, image_bateau.in_image_pos.x,image_bateau.in_image_pos.y, image_bateau.filedimension.width, image_bateau.filedimension.height, grille.selected_pos.x-grille.position.x, grille.selected_pos.y-grille.position.y, image_bateau.gamedimension.width, image_bateau.gamedimension.height)
+				grille.masque.draw_sub_surface_with_scale (l_bateau, l_bateau.in_image_pos.x,l_bateau.in_image_pos.y, l_bateau.filedimension.width, l_bateau.filedimension.height, grille.selected_pos.x-grille.position.x, grille.selected_pos.y-grille.position.y, l_bateau.gamedimension.width, l_bateau.gamedimension.height)
 				window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
 			end
 		end
@@ -333,8 +232,6 @@ feature -- Access
 														a_element.gamedimension.height)
 		end
 
-
-
 	speaker_on
 		-- Routine qui dessine un haut-parleur ouvert.
 		do
@@ -349,17 +246,11 @@ feature -- Access
 			draw(speaker.surface)
 		end
 
-
-	position_bateau1:ARRAYED_LIST[INTEGER]
-	position_bateau2:ARRAYED_LIST[INTEGER]
-	position_bateau3:ARRAYED_LIST[INTEGER]
-	position_bateau4:ARRAYED_LIST[INTEGER]
-	position_bateau5:ARRAYED_LIST[INTEGER]
-
+	boat:BATEAU
 	console:MESSAGE_CONSOLE
 	pointer:VISEUR
 	speaker:SPEAKER
-	nb_bateau:INTEGER_32
+	id_bateau:INTEGER_32
 	teste:BOOLEAN
 	background_tuile,background:MASQUE
 	chat_bordure,bordure1:MASQUE
@@ -371,10 +262,5 @@ feature -- Access
 
 feature {NONE} -- Singleton
 
-	image_bateau: MASQUE
-            -- `Result' is DIRECTORY constant named image_location.
-        once
-            create Result.make_element ("bateaux.png")
-        end
 
 end
