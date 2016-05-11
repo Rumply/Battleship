@@ -31,8 +31,8 @@ feature {NONE}
 			create {TUPLE [width, height, bordure: INTEGER]} case_dimension -- Crée un tuple, pour la dimension de la case, contenant la largeur, la hauteure et
 				-- les bordures sous une forme d'integer.
 			create {ARRAYED_LIST [INTEGER]} indexs_used.make (0)
-			dimension.width := a_width
-			dimension.height := a_height
+			dimension.width := a_width - (a_bordure/2).floor
+			dimension.height := a_height - (a_bordure/2).floor
 			dimension.bordure := a_bordure
 			create masque.make_as_mask (dimension.width, dimension.height)
 			masque.enable_alpha_blending
@@ -41,7 +41,7 @@ feature {NONE}
 			hover := false
 			case_valide := true
 			create black.make_rgb (0, 0, 0) -- Utilise la couleur noir (#000000)
-			create listCase.make (100)
+			create listCase.make ((a_width/10).floor)
 			create element.make ("eau.jpg") -- Crée l'élément "eau.jpg" pour l'arrière plan.
 			create viseur.make_element ("vise.png") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
 			initialize_grille
@@ -53,9 +53,9 @@ feature {NONE}
 		do
 			position.x:=80
 			position.y:=80
-			dimension.width:=800
-			dimension.height:=800
-			dimension.bordure:=10
+--			dimension.width:=800
+--			dimension.height:=800
+--			dimension.bordure:=10
 			selected_pos.x:=position.x
 			selected_pos.y:=position.y
 		end

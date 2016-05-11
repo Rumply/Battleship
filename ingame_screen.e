@@ -24,6 +24,8 @@ feature {NONE}
 		a_window_is_open: a_window.surface.is_open
 	local
 		l_double:REAL_64
+		l_bordure_size:INTEGER
+		l_case_size:INTEGER
 	do
 		window:=a_window
 		if attached console as l_console then
@@ -32,12 +34,15 @@ feature {NONE}
 
 		l_double:=(window.width/2-110)
 		create chat_bordure.make_as_mask (l_double.floor, 290)
-		chat_bordure.draw_rect_with_tile ("bois.jpg", l_double.floor, 290, 10)
+
+		l_bordure_size:=((l_double.floor)/60).floor
+		l_case_size:=((l_double.floor)/60).floor
+		chat_bordure.draw_rect_with_tile ("bois.jpg", l_double.floor, 290, l_bordure_size)
 		chat_bordure.enable_alpha_blending
-		create grille.make (800, 800, 10)
+		create grille.make ((l_double).floor, (l_double).floor, l_case_size)
 		teste:=false
-		create bordure1.make_as_mask (820, 820)
-		bordure1.draw_rect_with_tile ("bois.jpg", 820, 820, 10)
+		create bordure1.make_as_mask ((l_double).floor+l_bordure_size, (l_double).floor+l_bordure_size)
+		bordure1.draw_rect_with_tile ("bois.jpg", (l_double).floor+l_bordure_size, (l_double).floor+l_bordure_size, l_bordure_size)
 
 		create background.make_as_mask (window.width, window.height)
 		create background_tuile.make_element ("eau.jpg")
@@ -246,7 +251,7 @@ feature -- Access
 		do
 			speaker.turnon
 			draw(speaker.surface)
-			
+
 		end
 
 	speaker_off
