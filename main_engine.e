@@ -25,10 +25,16 @@ feature {NONE}
 	-- Run application.
 		local
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
+			l_display_info:GAME_DISPLAY
 		do
-			l_window_builder.set_dimension (1800,1000)
+			create l_display_info.make (0)
+			display_mode:=l_display_info.current_mode
+			l_window_builder.set_dimension (display_mode.width,display_mode.height)
+			l_window_builder.enable_border
 			l_window_builder.set_title("BattleShip")
 			window := l_window_builder.generate_window
+			window.put_border
+			window.maximize
 			create menu.make (window)
 			create musique_menu.make_environment
 
@@ -115,5 +121,7 @@ feature {NONE} -- Access
 
 	last_x, last_y:INTEGER
 			-- Last known coordinate of the mouse pointer inside the window
+
+	display_mode:GAME_DISPLAY_MODE
 
 end

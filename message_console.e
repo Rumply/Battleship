@@ -21,6 +21,8 @@ feature {NONE} -- Initialization
 
 	make
 		do
+			create my_mutex.make
+			message:=""
 			make_thread
 			must_stop:=false
 		end
@@ -30,6 +32,31 @@ feature -- Access
 	stop_thread
 		do
 			must_stop:=true
+		end
+
+	read_line:STRING_8
+		local
+			input:STRING_8
+		do
+			io.read_line
+			input:=io.last_string
+
+			if my_mutex.try_lock then
+				my_mutex.lock
+				message:=input
+				my_mutex.unlock
+			end
+
+
+			Result:=input
+		end
+
+	manage_command(command:LIST[STRING_8])
+		do
+			command.at (1).remove (1)
+			if command.at (1) = "Test" then
+				write_new_line ("Still here")
+			end
 		end
 
 	write_new_line(a_chaine:STRING)
@@ -63,6 +90,13 @@ feature -- Access
 			l_env.system ("EXIT")
 		end
 
+
+
+
+	my_mutex:MUTEX
+
+	message:STRING
+
 feature {NONE} -- Thread methods
 
 	execute
@@ -71,11 +105,21 @@ feature {NONE} -- Thread methods
 			until
 				must_stop
 			loop
-
+				sleep (100)
+				if my_mutex.try_lock then
+					my_mutex.lock
+					if ((message.at (1)) = '/') and (message.has (' ')) then
+						manage_command(message.split (' '))
+					end
+					my_mutex.unlock
+				end
 			end
+
 		end
 
 feature {NONE} -- Implementation
 	must_stop:BOOLEAN
+
+
 
 end

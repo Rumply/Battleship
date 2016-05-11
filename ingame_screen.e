@@ -26,7 +26,9 @@ feature {NONE}
 		l_double:REAL_64
 	do
 		window:=a_window
-		console.clear
+		if attached console as l_console then
+			l_console.clear
+		end
 
 		l_double:=(window.width/2-110)
 		create chat_bordure.make_as_mask (l_double.floor, 290)
@@ -64,7 +66,6 @@ feature {NONE}
 		-- Routine qui crée un pointeur à la position du curseur.
 		do
 			create pointer.make(grille.case_dimension)
-			id_bateau:=0
 		end
 
 	set_as_default_pointer
@@ -82,6 +83,7 @@ feature {NONE}
 	initialize_bateau
 		do
 			create boat.make(grille.case_dimension.width, grille.case_dimension.height)
+			id_bateau:=0
 		end
 
 	initialize_chat_bordure
@@ -165,8 +167,7 @@ feature -- Access
 				elseif not grille.hover then
 					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
 				end
-				console.clear
-				console.write (id_bateau.out)
+
 				click:=false
 			end
 		end
@@ -245,6 +246,7 @@ feature -- Access
 		do
 			speaker.turnon
 			draw(speaker.surface)
+			
 		end
 
 	speaker_off

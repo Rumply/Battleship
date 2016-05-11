@@ -35,6 +35,14 @@ feature {NONE}
 			music_menu.environement_audio.play
 
 			menu.speaker_on
+
+			if attached console as l_console then
+				my_mutex:=l_console.my_mutex
+			else
+				create my_mutex.make
+			end
+
+			create network.make()
 		ensure
 			music_menu_is_playing: music_menu.environement_audio.source.is_open
 			music_menu_is_playing: music_menu.environement_audio.source.is_playing
@@ -80,10 +88,19 @@ feature {NONE} -- Implementation
 	on_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; click_count: NATURAL_8)
 		-- Routine qui fait les mises à jours de l'écran et des sons par rapport à ce que l'utilisateur fait en ce moment.
 		-- Si l'utilisateur n'appuie pas sur le haut-parleur lors du lancement de l'application, la routine laisse le BOOLEAN à True.
+		local
+			a:STRING_8
 		do
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y
 			menu.mouse_click (last_x, last_y,True)
+
+--			if attached console as l_console then
+--				a:=l_console.read_line
+--				io.put_string (a)
+--			end
+
+
 
 			window.update
 			audio_library.update
@@ -95,6 +112,7 @@ feature {NONE} -- Implementation
 			game_library.stop  -- Stop the controller loop (allow game_library.launch to return)
 		end
 
+
 feature {NONE} -- Access
 
 	menu:INGAME_SCREEN
@@ -105,5 +123,11 @@ feature {NONE} -- Access
 
 	last_x, last_y:INTEGER
 			-- Last known coordinate of the mouse pointer inside the window
+
+	network:RESEAU
+
+	my_mutex:MUTEX
+
+	
 
 end
