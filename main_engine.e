@@ -17,12 +17,13 @@ inherit
 	AUDIO_LIBRARY_SHARED	-- To use `audio_library'
 
 create
-	make
+	make,
+	make_from_window
 
 feature {NONE}
 
 	make
-	-- Run application.
+	-- Routine qui crée la fenêtre avec la résolution de l'écran principale de l'usager, le menu et la musique.
 		local
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
 			l_display_info:GAME_DISPLAY
@@ -49,12 +50,36 @@ feature {NONE}
 			musique_menu_is_playing: musique_menu.source.is_playing
 		end
 
+	make_from_window(a_window:GAME_WINDOW_SURFACED)
+		-- Routine qui crée le menu et la musique. Il faut une fenêtre préexistante.
+		require
+			a_window_is_open: a_window.surface.is_open
+		local
+			l_display_info:GAME_DISPLAY
+		do
+			create l_display_info.make (0)
+			display_mode:=l_display_info.current_mode
+			window := a_window
+			create musique_menu.make_environment
+			create menu.make (window)
+
+			create last_x.make_from_reference (0)
+			create last_y.make_from_reference (0)
+
+			musique_menu.add ("theme2.wav", 1)
+			musique_menu.add ("theme1.wav", 1)
+			musique_menu.play
+		ensure
+			musique_menu_is_playing: musique_menu.source.is_open
+			musique_menu_is_playing: musique_menu.source.is_playing
+		end
+
 feature
 
 	run_game
-			-- Create ressources and launch the game
+			-- Cette routine ajoute des events au controler de la librarie et de la fenêtre, puis lance la librairie.
 --		local
---			l_font:TEXT_FONT
+--			l_font:TEXT_FONT -- Pas encore implémenté
 		do
 			game_library.quit_signal_actions.extend(agent on_quit(?))
 			game_library.iteration_actions.extend (agent cycle(?))
@@ -75,7 +100,7 @@ feature {NONE} -- Implementation
 		end
 
 	on_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32)
-		-- Routine qui garde en mémoire l'emplacement du curseur lors de ses mouvements.
+		-- Routine qui garde en mémoire l'emplacement du curseur lors de ses mouvements. Puis lance la gestion de clics.
 		do
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y
@@ -108,9 +133,9 @@ feature {NONE} -- Implementation
 		end
 
 	on_quit(a_timestamp: NATURAL_32)
-			-- This method is called when the quit signal is send to the application (ex: window X button pressed).
+			-- Cette routine ferme la librairie, lorsque le bouton X à été appuyer
 		do
-			game_library.stop  -- Stop the controller loop (allow game_library.launch to return)
+			game_library.stop  -- Arrête le controller en boucle.
 		end
 
 feature {NONE} -- Access
@@ -120,7 +145,7 @@ feature {NONE} -- Access
 	musique_menu:SOUND_ENGINE
 
 	last_x, last_y:INTEGER
-			-- Last known coordinate of the mouse pointer inside the window
+			-- Les dernières positions (x,y) de la sourie.
 
 	display_mode:GAME_DISPLAY_MODE
 

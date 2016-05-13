@@ -15,8 +15,13 @@ inherit
 	GAME_SURFACE
 		rename
 			make as make_game_surface
+		select
+			make_game_surface
 		end
-
+	GAME_SURFACE_ROTATE_ZOOM
+		rename
+			make as make_surface_rotate_zoom
+		end
 create
 	make
 

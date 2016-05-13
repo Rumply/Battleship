@@ -34,7 +34,7 @@ feature {NONE}
 			dimension.width := a_width - (a_bordure/2).floor
 			dimension.height := a_height - (a_bordure/2).floor
 			dimension.bordure := a_bordure
-			create masque.make_as_mask (dimension.width, dimension.height)
+			create masque.make (dimension.width, dimension.height)
 			masque.enable_alpha_blending
 			index := 1
 			old_index := 2

@@ -146,4 +146,6 @@ feature -- Singleton
             create Result.make_element ("bateaux.png")
         end
 
+	
+
 end

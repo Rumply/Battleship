@@ -16,12 +16,13 @@ create
 feature {NONE} -- Initialize
 
 	make(a_window:GAME_WINDOW_SURFACED)
+		-- Ce constructeur permet de créé le menu principale du jeu.
 	require
 		a_window_is_open: a_window.surface.is_open
 	do
 		window:=a_window
 
-		create masque.make_as_mask (window.surface.width, window.surface.height)
+		create masque.make (window.surface.width, window.surface.height)
 		masque.enable_alpha_blending
 		create background.make ("eau.jpg")
 		create bouton_s.make ("main_button.png")
@@ -68,6 +69,8 @@ feature {NONE} -- Initialize
 		local
 			l_double:REAL_64
 		do
+			bouton_m.in_image_pos.x:=0
+			bouton_m.in_image_pos.y:=250
 			bouton_m.filedimension.width:=bouton_m.width.to_integer.quotient (2).truncated_to_integer
 			bouton_m.filedimension.height:=bouton_m.height.to_integer.quotient (2).truncated_to_integer
 			bouton_m.gamedimension.width:=500
@@ -113,14 +116,13 @@ feature {NONE} -- Initialize
 feature {NONE} -- Implementation
 
 	setup_object
-			-- Événement qui est lancé à chaque itération.
 		do
 			fill_background
 			setup_button
 			setup_title
 			setup_speaker
 
-			-- Routine qui met à jour les modifications à l'écran.
+			-- Routine qui met à jour les modifications de `window'.
 			window.update
 		end
 

@@ -32,7 +32,7 @@ feature -- Test routines
 			width:= 500
 			height:=600
 
-			create masque.make_as_mask (width, height)
+			create masque.make (width, height)
 
 			assert("Width set", masque.width = width)
 			assert("Height set", masque.height = height)

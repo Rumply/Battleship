@@ -33,7 +33,7 @@ feature {NONE}
 		end
 
 		l_double:=(window.width/2-110)
-		create chat_bordure.make_as_mask (l_double.floor, 290)
+		create chat_bordure.make (l_double.floor, 290)
 
 		l_bordure_size:=((l_double.floor)/60).floor
 		l_case_size:=((l_double.floor)/60).floor
@@ -41,10 +41,10 @@ feature {NONE}
 		chat_bordure.enable_alpha_blending
 		create grille.make ((l_double).floor, (l_double).floor, l_case_size)
 		teste:=false
-		create bordure1.make_as_mask ((l_double).floor+l_bordure_size, (l_double).floor+l_bordure_size)
+		create bordure1.make ((l_double).floor+l_bordure_size, (l_double).floor+l_bordure_size)
 		bordure1.draw_rect_with_tile ("bois.jpg", (l_double).floor+l_bordure_size, (l_double).floor+l_bordure_size, l_bordure_size)
 
-		create background.make_as_mask (window.width, window.height)
+		create background.make (window.width, window.height)
 		create background_tuile.make_element ("eau.jpg")
 
 		speaker:=a_speaker
@@ -177,7 +177,7 @@ feature -- Access
 			end
 		end
 
-	mouse_click(a_x,a_y:INTEGER;a_click:BOOLEAN)
+	left_mouse_click(a_x,a_y:INTEGER;a_click:BOOLEAN)
 		-- Routine qui gère les éléments et les actions faites par le curseur.
 		-- Routine qui applique les bateaux un par un lorsqu'un click est fait dans la grille, jusqu'à un maximum de 5 bateaux dans la grille.
 		do
@@ -189,7 +189,10 @@ feature -- Access
 			if click then
 				cycle
 			end
+		end
 
+	right_mouse_click(a_x,a_y:INTEGER)
+		do
 
 		end
 
@@ -213,6 +216,7 @@ feature -- Access
 				grille.get_case_position
 				grille.masque.draw_sub_surface_with_scale (l_bateau, l_bateau.in_image_pos.x,l_bateau.in_image_pos.y, l_bateau.filedimension.width, l_bateau.filedimension.height, grille.selected_pos.x-grille.position.x, grille.selected_pos.y-grille.position.y, l_bateau.gamedimension.width, l_bateau.gamedimension.height)
 				window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
+				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 			end
 		end
 
@@ -228,6 +232,7 @@ feature -- Access
 			if not (grille.old_index = grille.index) then
 				grille.get_case_position
 				window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
+				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 				window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille.selected_pos.x, grille.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
 			end
 		end
@@ -260,6 +265,7 @@ feature -- Access
 			speaker.turnOff
 			draw(speaker.surface)
 		end
+
 
 	click:BOOLEAN
 	mouse_x,mouse_y:INTEGER

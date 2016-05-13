@@ -30,7 +30,7 @@ feature -- Test routines
 			game_library.enable_video
 
 
-			create element.make_as_mask(100,100)
+			create element.make(100,100)
 
 			mouse_x:= 0
 			mouse_y:= 0

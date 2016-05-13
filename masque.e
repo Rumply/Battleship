@@ -20,11 +20,11 @@ inherit
 
 create
 	make_element,
-	make_as_mask
+	make
 
 feature {NONE}
 
-	make_as_mask (a_width, a_height: INTEGER_32)
+	make (a_width, a_height: INTEGER_32)
 		-- Routine qui dessine des masques.
 		require
 			a_width_valide: a_width >= 0
@@ -39,6 +39,11 @@ feature {NONE}
 			enable_alpha_blending
 			gamedimension.width:=a_width;
 			gamedimension.height:=a_height
+		end
+
+	make_masque_rotate(a_angle: REAL_64)
+		do
+			make_rotate (Current, a_angle, false)
 		end
 
 feature -- Access

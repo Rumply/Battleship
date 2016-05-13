@@ -9,13 +9,16 @@ class
 
 inherit
 	MASQUE
+		rename
+			make as make_as_mask
+		end
 
 create
 	make
 
 feature {NONE} -- Initialization
 
-	make(a_x, a_y, a_width, a_height, a_bordure:INTEGER)
+	make (a_x, a_y, a_width, a_height, a_bordure:INTEGER)
 			-- Initialization for `Current'.
 		require
 			a_x_valide: a_x >= 0
