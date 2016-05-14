@@ -12,9 +12,15 @@ class
 	MAIN_ENGINE
 
 inherit
-	GAME_LIBRARY_SHARED		-- To use `game_library'
-	IMG_LIBRARY_SHARED		-- To use `image_file_library'
-	AUDIO_LIBRARY_SHARED	-- To use `audio_library'
+	ENGINE
+		rename
+			make as make_engine
+		redefine
+			manage_input,
+			manage_mouse_move,
+			manage_mouse_click,
+			manage_command
+		end
 
 create
 	make,
@@ -24,129 +30,99 @@ feature {NONE}
 
 	make
 	-- Routine qui crée la fenêtre avec la résolution de l'écran principale de l'usager, le menu et la musique.
-		local
-			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
-			l_display_info:GAME_DISPLAY
 		do
-			create l_display_info.make (0)
-			display_mode:=l_display_info.current_mode
-			l_window_builder.set_dimension (display_mode.width,display_mode.height)
-			l_window_builder.enable_border
-			l_window_builder.set_title("BattleShip")
-			window := l_window_builder.generate_window
-			window.put_border
-			window.maximize
-			create menu.make (window)
-			create musique_menu.make_environment
+			make_engine
 
-			create last_x.make_from_reference (0)
-			create last_y.make_from_reference (0)
-
-			musique_menu.add ("theme2.wav", 1)
-			musique_menu.add ("theme1.wav", 1)
-			musique_menu.play
+			create menu.make (window, music_menu)
+			music_menu.environement_audio.add ("theme2.wav", 1)
+			music_menu.environement_audio.add ("theme1.wav", 1)
+			music_menu.environement_audio.play
 		ensure
-			musique_menu_is_playing: musique_menu.source.is_open
-			musique_menu_is_playing: musique_menu.source.is_playing
+			music_menu_is_open: music_menu.environement_audio.source.is_open
+			music_menu_is_playing: music_menu.environement_audio.source.is_playing
 		end
 
 	make_from_window(a_window:GAME_WINDOW_SURFACED)
 		-- Routine qui crée le menu et la musique. Il faut une fenêtre préexistante.
 		require
 			a_window_is_open: a_window.surface.is_open
-		local
-			l_display_info:GAME_DISPLAY
 		do
-			create l_display_info.make (0)
-			display_mode:=l_display_info.current_mode
-			window := a_window
-			create musique_menu.make_environment
-			create menu.make (window)
+			make_engine
 
-			create last_x.make_from_reference (0)
-			create last_y.make_from_reference (0)
-
-			musique_menu.add ("theme2.wav", 1)
-			musique_menu.add ("theme1.wav", 1)
-			musique_menu.play
+			create menu.make (a_window, music_menu)
 		ensure
-			musique_menu_is_playing: musique_menu.source.is_open
-			musique_menu_is_playing: musique_menu.source.is_playing
+			music_menu_is_playing: music_menu.environement_audio.source.is_open
+			music_menu_is_playing: music_menu.environement_audio.source.is_playing
 		end
 
-feature
-
-	run_game
-			-- Cette routine ajoute des events au controler de la librarie et de la fenêtre, puis lance la librairie.
---		local
---			l_font:TEXT_FONT -- Pas encore implémenté
+	setup_music
+		-- Setup la musique disponible dans cette engine.
 		do
-			game_library.quit_signal_actions.extend(agent on_quit(?))
-			game_library.iteration_actions.extend (agent cycle(?))
-			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- When the user move the mouse on the window
-			window.mouse_button_pressed_actions.extend (agent on_mouse_click(?,?,?))
-
-			game_library.launch
-			game_library.quit_library
+			music_menu.environement_audio.add ("theme2.wav", 1)
+			music_menu.environement_audio.add ("theme1.wav", 1)
+			music_menu.environement_audio.play
 		end
 
 feature {NONE} -- Implementation
 
-	cycle(a_timestamp: NATURAL_32)
-		-- Routine qui fait les mises à jours de l'écran et de la librairie de son.
+	manage_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32)
+		-- Routine qui gère les mouvements de la souris.
 		do
-			window.update
-			audio_library.update
+			menu.mouse_click (music_menu, last_x, last_y,False)
 		end
 
-	on_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32)
-		-- Routine qui garde en mémoire l'emplacement du curseur lors de ses mouvements. Puis lance la gestion de clics.
-		do
-			last_x:=a_mouse_state.x
-			last_y:=a_mouse_state.y
-
-			menu.mouse_click (musique_menu, last_x, last_y,False)
-
-			window.update
-			audio_library.update
-		end
-
-
-	on_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; click_count: NATURAL_8)
-		-- Routine qui garde en mémoire les actions du curseur lorsqu'un click est effectué.
+	manage_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; click_count: NATURAL_8)
+		-- Routine qui gère les clicks de la souris.
 		local
-			game:INGAME_ENGINE
+			game: detachable INGAME_ENGINE
 		do
-			last_x:=a_mouse_state.x
-			last_y:=a_mouse_state.y
-			menu.mouse_click (musique_menu, last_x, last_y,True)
+			menu.mouse_click (music_menu, last_x, last_y,True)
 
 			if menu.singlegame then
 				game_library.clear_all_events
-				musique_menu.source.stop
-				create game.make(window)
+				music_menu.environement_audio.source.stop
+				create game.make
 				game.run_game
+
+				last_x:=0
+				last_y:=0
+				make_from_window (window)
+				game:=void
+				run_game
+			else
+				audio_library.update
+				window.update
 			end
 
-			window.update
-			audio_library.update
 		end
 
-	on_quit(a_timestamp: NATURAL_32)
-			-- Cette routine ferme la librairie, lorsque le bouton X à été appuyer
+	manage_input(a_input:STRING; a_console:MESSAGE_CONSOLE)
+		-- Routine qui gère les touches du clavier.
 		do
-			game_library.stop  -- Arrête le controller en boucle.
+			if a_input.is_equal ("esc") then
+				game_library.stop  -- Arrête le controller en boucle.
+			end
+		end
+
+	manage_command
+		-- Cette routine gère les commandes avec le contenu de `input_buffer'.
+		local
+			list_command:LIST[STRING_8]
+		do
+			list_command:=input_buffer.split (' ')
+			if list_command.count > 1 then
+				if list_command.at (1).is_equal ("connect") then
+					command.connect (list_command.at (2))
+				elseif list_command.at (1).is_equal ("host") then
+
+				elseif list_command.at (1).is_equal ("host") then
+
+				end
+			end
 		end
 
 feature {NONE} -- Access
 
 	menu:MAIN_MENU
-	window:GAME_WINDOW_SURFACED
-	musique_menu:SOUND_ENGINE
-
-	last_x, last_y:INTEGER
-			-- Les dernières positions (x,y) de la sourie.
-
-	display_mode:GAME_DISPLAY_MODE
 
 end

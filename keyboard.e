@@ -117,6 +117,8 @@ feature
 				l_key:="left"
 			elseif a_key_state.is_backspace then
 				l_key:="backspace"
+			elseif a_key_state.is_return then
+				l_key:="return"
 			end
 
 			Result:=l_key

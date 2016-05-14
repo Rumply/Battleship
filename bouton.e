@@ -12,12 +12,6 @@ inherit
 		rename
 			make as make_element
 		end
-	TEXT_SURFACE_BLENDED
-		rename
-			make as make_text_surface
-		select
-			make_surface
-		end
 
 create
 	make_bouton

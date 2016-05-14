@@ -15,7 +15,7 @@ create
 
 feature {NONE} -- Initialize
 
-	make(a_window:GAME_WINDOW_SURFACED)
+	make(a_window:GAME_WINDOW_SURFACED; a_speaker:SPEAKER)
 		-- Ce constructeur permet de créé le menu principale du jeu.
 	require
 		a_window_is_open: a_window.surface.is_open
@@ -27,7 +27,9 @@ feature {NONE} -- Initialize
 		create background.make ("eau.jpg")
 		create bouton_s.make ("main_button.png")
 		create bouton_m.make ("main_button.png")
-		create speaker.make ("speaker.png")
+
+		speaker:=a_speaker
+
 		create title.make ("title.png")
 
 		create yellow.make_rgb (255, 255, 0)
@@ -39,7 +41,6 @@ feature {NONE} -- Initialize
 		initialize_bouton_s
 		initialize_bouton_m
 
-		initialize_speaker
 		initialize_title
 
 		setup_object
@@ -81,19 +82,6 @@ feature {NONE} -- Initialize
 			l_double:=window.height/2
 			l_double:=l_double+(bouton_m.gamedimension.height/2)
 			bouton_m.position.y:=l_double.floor
-		end
-
-	initialize_speaker
-		-- Routine qui initialise le haut-parleur dans le menu.
-		do
-			speaker.position.x:=10
-			speaker.position.y:=10
-			speaker.in_image_pos.x:=0
-			speaker.in_image_pos.y:=0
-			speaker.filedimension.width:=speaker.width.to_integer.quotient (2).truncated_to_integer
-			speaker.filedimension.height:=speaker.height
-			speaker.gamedimension.width:=50
-			speaker.gamedimension.height:=50
 		end
 
 	initialize_title
@@ -167,7 +155,7 @@ feature {NONE} -- Implementation
 	setup_speaker
 		-- Routine qui dessine le haut parleur.
 		do
-			draw(speaker)
+			draw(speaker.surface)
 		end
 
 	setup_button
@@ -182,20 +170,18 @@ feature {NONE} -- Implementation
 
 feature -- Access bouton
 
-	mouse_click(audio:SOUND_ENGINE;a_x,a_y:INTEGER;click:BOOLEAN)
+	mouse_click(audio:SPEAKER;a_x,a_y:INTEGER;click:BOOLEAN)
 		-- Routine qui applique le BOOLEAN de click lorsque l'utilisateur appuis sur le haut-parleur afin de fermer ou d'ouvrir le son.
 		do
-			speaker.is_on (a_x, a_y)
+			speaker.surface.is_on (a_x, a_y)
 			bouton_s.is_on (a_x, a_y)
 			bouton_m.is_on (a_x, a_y)
 			if click then
-				if speaker.hover then
-					if not audio.muted then
-						audio.mute
-						speaker_off
-					elseif audio.muted then
-						audio.unmute
-						speaker_on
+				if speaker.surface.hover then
+					if not audio.environement_audio.muted then
+						audio.turnoff
+					elseif audio.environement_audio.muted then
+						audio.turnon
 					end
 				end
 
@@ -270,24 +256,26 @@ feature -- Access bouton
 		end
 
 	speaker_on
-		-- Routine qui dessine un haut-parleur.
+		-- Routine qui dessine un haut-parleur ouvert.
 		do
-			speaker.in_image_pos.x:=0
-			speaker.in_image_pos.y:=0
-			draw(speaker)
+			speaker.turnon
+			draw(speaker.surface)
+
 		end
+
 	speaker_off
 		-- Routine qui dessine un haut-parleur barré.
 		do
-			speaker.in_image_pos.x:=250
-			speaker.in_image_pos.y:=0
-			draw(speaker)
+			speaker.turnOff
+			draw(speaker.surface)
 		end
 
 feature -- Access variable
 
-	background,title,bouton_S,bouton_M,speaker:ELEMENT
-		-- `background'`title'`bouton_S'`bouton_M'`speaker' sont tous des éléments de {ELEMENT} qui sont utilisé dans la classe {main_menu}
+	speaker:SPEAKER
+
+	background,title,bouton_S,bouton_M:ELEMENT
+		-- `background'`title'`bouton_S'`bouton_M' sont tous des éléments de {ELEMENT} qui sont utilisé dans la classe {main_menu}
 
 	masque:MASQUE -- `masque' sert de passerelle à la classe {MASQUE}
 

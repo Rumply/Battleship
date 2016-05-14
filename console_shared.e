@@ -9,10 +9,10 @@ deferred class
 
 feature -- Access
 
-	console: detachable MESSAGE_CONSOLE
+	console:MESSAGE_CONSOLE
 			-- The main controller of the game library
 		once
 			create Result.make
 		end
-	
+
 end
