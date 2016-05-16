@@ -4,7 +4,7 @@ note
 	date: "$Date$"
 	revision: "$Revision$"
 
-class
+deferred class
 	ENGINE
 
 inherit
@@ -12,9 +12,6 @@ inherit
 	IMG_LIBRARY_SHARED		-- To use `image_file_library'
 	AUDIO_LIBRARY_SHARED	-- To use `audio_library'
 	CONSOLE_SHARED
-
-create
-	make
 
 feature {NONE}
 
@@ -45,7 +42,7 @@ feature {NONE}
 		local
 			l_window_builder:GAME_WINDOW_SURFACED_BUILDER
         once
-            l_window_builder.set_dimension (display_mode.width,display_mode.height)
+            l_window_builder.set_dimension ((display_mode.width * 0.9).rounded,(display_mode.height * 0.9).rounded)
 			l_window_builder.enable_border
 			l_window_builder.set_title("BattleShip")
 			Result:=l_window_builder.generate_window

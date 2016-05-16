@@ -29,6 +29,7 @@ feature {NONE} -- Initialization
 			create l_engine.make
 			l_engine.run_game  -- Run the core creator of the game.
 			l_engine := Void
+			game_library.clear_all_events
 			audio_library.quit_library  -- Correctly unlink audio files library
 			text_library.quit_library	-- Correctly unlink text files library
 			image_file_library.quit_library  -- Correctly unlink image files library
