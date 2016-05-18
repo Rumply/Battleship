@@ -1,4 +1,5 @@
-﻿note
+﻿
+note
 	description: "Summary description for {KEYBOARD}."
 	author: ""
 	date: "$Date$"
