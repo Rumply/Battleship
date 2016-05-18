@@ -149,7 +149,9 @@ feature -- Access
 	on_quit(a_timestamp: NATURAL_32)
 			-- Cette routine ferme la librairie, lorsque le bouton X à été appuyer
 		do
-
+			window.clear_events
+			game_library.clear_all_events
+			music_menu.environement_audio.source.stop
 			game_library.stop  -- Arrête le controller en boucle.
 		end
 
@@ -158,8 +160,6 @@ feature
 	music_menu:SPEAKER
 
 	command:COMMAND
-
---	window:GAME_WINDOW_SURFACED
 
 	last_x, last_y:INTEGER
 			-- Les dernières positions (x,y) de la sourie.
