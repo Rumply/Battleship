@@ -1,8 +1,8 @@
 note
 	description: "Summary description for {COMMAND}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	author: "Guillaume Hamel-Gagné"
+	date: "16 mai 2016"
+	revision: "1.2"
 
 class
 	COMMAND
@@ -34,19 +34,35 @@ feature
 			Result:=l_ip
 		end
 
-	connect(argument:STRING)
+	connect(argument:STRING;network:RESEAU)
 		-- Routine pour la commande 'connect'. Afin de lancer une connection TCP.
 		local
 			ip:ARRAY [NATURAL_8]
 		do
 			ip:=ip_parse(argument)
-
+			network.client(ip)
 		end
 
-	host
-		-- Routine pour la commande 'command'. Afin d'attendre un connection TCP.
+	host(network:RESEAU)
+		-- Routine pour la commande 'host'. Afin d'attendre un connection TCP.
 		do
+			network.host
+		end
 
+	msg(argument:STRING;network:RESEAU)
+		-- Routine pour la commande 'msg'. Afin d'ajouté un message à envoyé.
+		do
+			network.buffer_send.extend (argument)
+		end
+
+	read(network:RESEAU): detachable STRING
+		-- Cette fonction retourne le premier élément de la file `buffer_receive'.
+		local
+			first_item: detachable STRING
+		do
+			first_item:=network.buffer_receive.item
+			network.buffer_receive.remove
+			Result:=first_item
 		end
 
 end

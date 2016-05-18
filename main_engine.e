@@ -5,8 +5,8 @@ note
 				l'utilisateur appuis à l'emplacement de son curseur.
 				]"
 	author: "Guillaume Hamel-Gagné"
-	date: "1 Mars 2016"
-	revision: "1.0"
+	date: "16 mai 2016"
+	revision: "1.3"
 
 class
 	MAIN_ENGINE
@@ -34,9 +34,7 @@ feature {NONE}
 			make_engine
 
 			create menu.make (window, music_menu)
-			music_menu.environement_audio.add ("theme2.wav", 1)
-			music_menu.environement_audio.add ("theme1.wav", 1)
-			music_menu.environement_audio.play
+			setup_music
 		ensure
 			music_menu_is_open: music_menu.environement_audio.source.is_open
 			music_menu_is_playing: music_menu.environement_audio.source.is_playing
@@ -48,7 +46,7 @@ feature {NONE}
 			a_window_is_open: a_window.surface.is_open
 		do
 			make_engine
-
+			setup_music
 			create menu.make (a_window, music_menu)
 		ensure
 			music_menu_is_playing: music_menu.environement_audio.source.is_open
@@ -101,6 +99,9 @@ feature {NONE} -- Implementation
 		do
 			if a_input.is_equal ("esc") then
 				game_library.stop  -- Arrête le controller en boucle.
+			elseif a_input.is_equal ("return") then
+				console.clear
+				console.write_new_line (input_buffer)
 			end
 		end
 
@@ -110,13 +111,19 @@ feature {NONE} -- Implementation
 			list_command:LIST[STRING_8]
 		do
 			list_command:=input_buffer.split (' ')
-			if list_command.count > 1 then
+			if list_command.count > 0 then
 				if list_command.at (1).is_equal ("connect") then
-					command.connect (list_command.at (2))
+					command.connect (list_command.at (2), network)
 				elseif list_command.at (1).is_equal ("host") then
-
-				elseif list_command.at (1).is_equal ("host") then
-
+					command.host(network)
+				elseif list_command.at (1).is_equal ("msg") then
+					if list_command.count > 1 then
+						command.msg (list_command.at (2), network)
+					end
+				elseif list_command.at (1).is_equal ("read") then
+					if attached command.read (network) as message then
+						console.write_new_line (message)
+					end
 				end
 			end
 		end
