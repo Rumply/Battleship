@@ -19,14 +19,29 @@ feature {NONE}
 		-- Initialization for `Current'.
 		do
 			create environement_audio.make_environment
-			create surface.make_element ("vise.png")
+			create surface.make_element ("explosion.png")
 			surface.gamedimension.width:=case_dimension.width
 			surface.gamedimension.height:=case_dimension.height
-			environement_audio.source.set_buffer_size(1000)
-			environement_audio.add ("teste2.wav",-1 ) -- Faire un son continu qu'on va lancer avec méthode ou lors d'un click de curseur.
+			--environement_audio.source.set_buffer_size(1000)
+			environement_audio.add ("blast.wav") -- Faire un son continu qu'on va lancer avec méthode ou lors d'un click de curseur.
+			environement_audio.start ("blast.wav", 0)
 		end
 
-	initialize_pointer
+
+
+feature -- Modification
+
+	teste
+		do
+			--environement_audio.source.
+		end
+
+	change_image(a_image:MASQUE)
+		do
+			surface:=a_image -- DOC A VENIR maybe no use at all
+		end
+
+	set_as_default_pointer
 		do
 			surface.in_image_pos.x:=0
 			surface.in_image_pos.y:=0
@@ -36,12 +51,6 @@ feature {NONE}
 			surface.position.y:=0
 		end
 
-feature -- Modification
-
-	change_image(a_image:MASQUE)
-		do
-			surface:=a_image -- DOC A VENIR maybe no use at all
-		end
 
 feature -- Access
 

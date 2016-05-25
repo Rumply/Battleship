@@ -22,6 +22,8 @@ feature {NONE}
 			source:=audio_library.last_source_added
 			source.gain:=0.2
 			muted:=False
+
+			create audio_files.make_caseless (5)
 		end
 
 feature -- Access
@@ -69,7 +71,7 @@ feature -- Access
 		end
 
 
-	add(a_filename:READABLE_STRING_GENERAL; a_nb_loop:INTEGER)
+	add(a_filename:READABLE_STRING_GENERAL)
 		-- Routine qui prend en argument le chemin d'accès d'une ou de plusieurs musiques et qui les joues.
 		local
 			l_filePath:STRING_32
@@ -78,10 +80,33 @@ feature -- Access
 			l_filePath:=path
 			l_filePath.append_string_general (a_filename)
 			create l_sound.make (l_filePath)
-			if l_sound.is_openable then
-				l_sound.open
-				if l_sound.is_open then
-					source.queue_sound_loop (l_sound, a_nb_loop)
+			audio_files.extend (l_sound, a_filename)
+		end
+
+	start(a_name:STRING; a_nb_loop:INTEGER)
+		do
+			if not source.is_playing then
+				if attached audio_files.at (a_name) as l_sound then
+					open(l_sound, a_nb_loop)
+				else
+					add(a_name)
+					if attached audio_files.at (a_name) as l_sound then
+						open(l_sound, a_nb_loop)
+					else
+						has_error:=True
+					end
+				end
+			end
+		end
+
+feature
+
+	open(file:AUDIO_SOUND_FILE; a_nb_loop:INTEGER)
+		do
+			if file.is_openable then
+				file.open
+				if file.is_open then
+					source.queue_sound_loop (file, a_nb_loop)
 				else
 					has_error := True
 				end
@@ -90,6 +115,7 @@ feature -- Access
 			end
 		end
 
+
 	muted:BOOLEAN -- Change le BOOL si l'utilisateur ne veut plus entendre le son.
 
 	environment:EXECUTION_ENVIRONMENT --
@@ -97,6 +123,8 @@ feature -- Access
 	source:AUDIO_SOURCE -- Applique les instructions inscrites dans {AUDIO_SOURCE} afin que les éléments audio soient entendu.
 
 	has_error:BOOLEAN -- Envoit un BOOL si une erreur survient.
+
+	audio_files:STRING_TABLE[AUDIO_SOUND_FILE]
 
 feature -- Constant
 

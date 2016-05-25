@@ -51,11 +51,8 @@ feature {NONE}
 	initialize_grille
 		-- Routine qui initialise les attributs de la grille.
 		do
-			position.x:=80
+			position.x:=250
 			position.y:=80
---			dimension.width:=800
---			dimension.height:=800
---			dimension.bordure:=10
 			selected_pos.x:=position.x
 			selected_pos.y:=position.y
 		end
@@ -65,32 +62,40 @@ feature {NONE}
 			-- ce qui résulte en une grille de 10x10 soit, 100 emplacements jouables.
 		local
 			l_index, l_Wreste, l_Hreste, l_x, l_y: INTEGER_32
+			l_colonne,l_ranger:INTEGER
 		do
 			case_dimension.width := (dimension.width / 10).floor
 			case_dimension.height := (dimension.height / 10).floor
 			case_dimension.bordure := (dimension.bordure / 2).floor
 			l_index := 1
+			l_colonne:=0
+			l_ranger:=0
 			from
-				l_Hreste := dimension.height
 			until
-				l_Hreste <= 0
+				l_ranger >= 10
 			loop
 				from
 					l_Wreste := dimension.width
 				until
-					l_Wreste <= 0
+					l_colonne >= 10
 				loop
+					if l_index > 100 then
+						io.new_line
+						io.put_integer (l_index)
+					end
 					l_Wreste := l_Wreste - case_dimension.width
 					add_case (l_index, l_x, l_y)
 					l_x := l_x + case_dimension.width
 					l_index := l_index + 1
+					l_colonne := l_colonne + 1
 				end
+				l_colonne:=0
 				l_x := 0
-				listcase.move (l_index)
+--				listcase.move (l_index)
 				l_Hreste := l_Hreste - case_dimension.height
-				add_case (l_index, l_x, l_y)
+--				add_case (l_index, l_x, l_y)
 				l_y := l_y + case_dimension.height
-				l_index := l_index + 1
+				l_ranger := l_ranger + 1
 			end
 		end
 
@@ -132,8 +137,7 @@ feature --Access
 					end
 					l_index := l_index + 1
 				end
-			end
-			if l_nombre_case_vertical > 1 then
+			elseif l_nombre_case_vertical > 1 then
 				from
 					l_index := 0
 				until
@@ -141,6 +145,12 @@ feature --Access
 				loop
 					position_used.extend (index + l_index)
 					l_index := l_index + 10
+				end
+			else
+				if indexs_used.has (index) then
+					case_valide:=false
+				else
+					position_used.extend (index)
 				end
 			end
 			if case_valide then
@@ -211,18 +221,25 @@ feature --Access
 			l_temp: INTEGER_32
 			l_colonne, l_ranger: INTEGER_32
 		do
+
 			old_ranger := ranger
 			l_temp := (a_mouse_y - position.y)
 			l_ranger := (l_temp.integer_quotient ((dimension.height / 10).floor))
-			if not (l_ranger = old_ranger) then
-				ranger := l_ranger
-			end
-			old_colonne := colonne
+
 			l_temp := (a_mouse_x - position.x)
 			l_colonne := l_temp.integer_quotient ((dimension.width / 10).floor)
-			if not (old_colonne = l_colonne) then
-				colonne := l_colonne
+
+			if not ((l_ranger > 9) or (l_colonne > 9)) then
+				if not (l_ranger = old_ranger) then
+					ranger := l_ranger
+				end
+				old_colonne := colonne
+
+				if not (old_colonne = l_colonne) then
+					colonne := l_colonne
+				end
 			end
+
 			l_temp := ((ranger * 10) + colonne) + 1
 			if not (l_temp = index) then
 				old_index := index
@@ -255,6 +272,5 @@ feature --Access
 	position: TUPLE [x, y: INTEGER]
 
 	listCase: ARRAYED_LIST [CASE]
-			-- future -- boolMap:ARRAYED_LIST[BOOLEAN]
 
 end
