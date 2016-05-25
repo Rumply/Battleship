@@ -1,8 +1,8 @@
 note
 	description: "Summary description for {ENGINE}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	author: "Guillaume Hamel-Gagné"
+	date: "16 mai 2016"
+	revision: "1.1"
 
 deferred class
 	ENGINE
@@ -27,9 +27,13 @@ feature {NONE}
 			create command
 
 			input_buffer:=""
+
+			create server.make
+			server.launch
 		end
 
 	display_mode:GAME_DISPLAY_MODE
+		-- Permet d'avoir le mode de d'affichage de l'écran principale.
 		local
 			l_display_info:GAME_DISPLAY
 		once
@@ -107,27 +111,27 @@ feature -- Implementation
 		local
 			l_input:STRING
 		do
-			if attached console as l_console then
-				l_input:=keyboard.get_key (a_key_state)
-				if l_input.count = 1 then
-					l_console.clear
-					input_buffer:= input_buffer + l_input
-					l_console.write (input_buffer) 	-- Pour le moment ils sont écrit dans la console, mais lorsque
-													-- la boite de chat sera implémenté, ils iront dans la boite de chat.
-				elseif l_input.is_equal ("backspace") and (input_buffer.count > 0) then
-					input_buffer:=input_buffer.substring (1, input_buffer.count-1)
-					l_console.clear
-					if input_buffer.count > 0 then
-						l_console.write (input_buffer)
-					end
-				elseif l_input.is_equal ("return") and (input_buffer.count > 0) then
-					manage_command
+
+			l_input:=keyboard.get_key (a_key_state)
+			if l_input.count = 1 then
+				console.clear
+				input_buffer:= input_buffer + l_input
+				console.write (input_buffer) 	-- Pour le moment ils sont écrit dans la console, mais lorsque
+												-- la boite de chat sera implémenté, ils iront dans la boite de chat.
+			elseif l_input.is_equal ("backspace") and (input_buffer.count > 0) then
+				input_buffer:=input_buffer.substring (1, input_buffer.count-1)
+				console.clear
+				if input_buffer.count > 0 then
+					console.write (input_buffer)
 				end
-				manage_input(l_input, l_console)
+			elseif l_input.is_equal ("return") and (input_buffer.count > 0) then
+				manage_command
 			end
+			manage_input(l_input, console)
 		end
 
 	manage_input(a_input:STRING; a_console:MESSAGE_CONSOLE)
+
 		do
 		end
 
@@ -137,10 +141,17 @@ feature -- Implementation
 
 feature -- Access
 
+	network:RESEAU
+		once
+			Result:=server
+		end
+
 	on_quit(a_timestamp: NATURAL_32)
 			-- Cette routine ferme la librairie, lorsque le bouton X à été appuyer
 		do
-
+			window.clear_events
+			game_library.clear_all_events
+			music_menu.environement_audio.source.stop
 			game_library.stop  -- Arrête le controller en boucle.
 		end
 
@@ -149,8 +160,6 @@ feature
 	music_menu:SPEAKER
 
 	command:COMMAND
-
---	window:GAME_WINDOW_SURFACED
 
 	last_x, last_y:INTEGER
 			-- Les dernières positions (x,y) de la sourie.
@@ -161,5 +170,6 @@ feature
 	keyboard:KEYBOARD
 
 	input_buffer:STRING
+	server:RESEAU
 
 end

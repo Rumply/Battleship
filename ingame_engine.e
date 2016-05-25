@@ -4,8 +4,8 @@ note
 				Classe contrôle aussi les sons dès le moment où l'application est lancée.
 				]"
 	author: "Guillaume Hamel-Gagné"
-	date: "6 avri 2016"
-	revision: "1.0"
+	date: "16 mai 2016"
+	revision: "1.5"
 
 class
 	INGAME_ENGINE
@@ -39,7 +39,7 @@ feature {NONE}
 
 			menu.speaker_on
 
-			create network.make
+
 		ensure
 			music_menu_is_playing: music_menu.environement_audio.source.is_open
 			music_menu_is_playing: music_menu.environement_audio.source.is_playing
@@ -91,8 +91,5 @@ feature {NONE} -- Implementation
 feature {NONE} -- Access
 
 	menu:INGAME_SCREEN
-
-	network:RESEAU
-
 
 end
