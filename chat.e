@@ -37,7 +37,6 @@ feature -- Access
 	run
 		do
 			game_library.iteration_actions.extent (agent on_iteration)
-			window.mouse_button_pressed_action.extend(agent on_mouse_pressed)
 			window.key_pressed_actions.extend (agent on_key_pressed)
 			window.text_input_actions.extend (agent on_text_input)
 			game_library.quit_signal_action.extend (agent on_quit)
@@ -64,8 +63,7 @@ feature {NONE}
 			l_text_surface:TEXT_SURFACE_BLENDED
 			l_color:GAME_COLOR
 		do
-			window.surface.draw_rectangle (create{GAME_COLOR}.make_rgb (255, 255, 255), 0, 0, window.width, window.height)
-			create l_color.make_rgb (0, 0, 0)
+			create l_color.make_rgb (0, 0, 0) --
 			across
 				texts as la_texts
 			loop
@@ -75,15 +73,6 @@ feature {NONE}
 				end
 			end
 			window.update
-		end
-
-	on_mouse_pressed(a_timestamp:NATURAL_32; a_mouse_state:GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_click:NATURAL_8)
-		-- Lorsque l'utilisateur click à l'aide de sa souris sur `a_window'
-		do
-			if a_nb_click = 1 and a_mouse_state.is_left_button_pressed then
-				window.start_text_input
-				texts.extend([a_mouse_state.x, a_mouse_state.y, {STRING_32}""])
-			end
 		end
 
 	on_text_input(a_timestamp:NATURAL_32; a_text:STRING_32)
