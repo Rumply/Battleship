@@ -37,7 +37,7 @@ feature {NONE}
 			setup_music
 		ensure
 			music_menu_is_open: music_menu.environement_audio.source.is_open
-			music_menu_is_playing: music_menu.environement_audio.source.is_playing
+			--music_menu_is_playing: music_menu.environement_audio.source.is_playing
 		end
 
 	make_from_window(a_window:GAME_WINDOW_SURFACED)
@@ -50,14 +50,14 @@ feature {NONE}
 			create menu.make (a_window, music_menu)
 		ensure
 			music_menu_is_playing: music_menu.environement_audio.source.is_open
-			music_menu_is_playing: music_menu.environement_audio.source.is_playing
+			--music_menu_is_playing: music_menu.environement_audio.source.is_playing
 		end
 
 	setup_music
 		-- Setup la musique disponible dans cette engine.
 		do
-			music_menu.environement_audio.add ("theme2.wav", 1)
-			music_menu.environement_audio.add ("theme1.wav", 1)
+			music_menu.environement_audio.add ("theme2.wav")
+			music_menu.environement_audio.start ("theme2.wav", -1)
 			music_menu.environement_audio.play
 		end
 
@@ -81,7 +81,9 @@ feature {NONE} -- Implementation
 				music_menu.environement_audio.source.stop
 				create game.make
 				game.run_game
-
+				window.clear_events
+				--text_library.disable_text
+				--window.stop_text_input
 				last_x:=0
 				last_y:=0
 				make_from_window (window)
@@ -94,38 +96,21 @@ feature {NONE} -- Implementation
 
 		end
 
-	manage_input(a_input:STRING; a_console:MESSAGE_CONSOLE)
+	manage_input(a_input:STRING)
 		-- Routine qui gère les touches du clavier.
 		do
 			if a_input.is_equal ("esc") then
 				game_library.stop  -- Arrête le controller en boucle.
 			elseif a_input.is_equal ("return") then
-				console.clear
-				console.write_new_line (input_buffer)
+				if input_buffer.count > 0 then
+					input_buffer:=""
+				end
 			end
 		end
 
 	manage_command
 		-- Cette routine gère les commandes avec le contenu de `input_buffer'.
-		local
-			list_command:LIST[STRING_8]
 		do
-			list_command:=input_buffer.split (' ')
-			if list_command.count > 0 then
-				if list_command.at (1).is_equal ("connect") then
-					command.connect (list_command.at (2), network)
-				elseif list_command.at (1).is_equal ("host") then
-					command.host(network)
-				elseif list_command.at (1).is_equal ("msg") then
-					if list_command.count > 1 then
-						command.msg (list_command.at (2), network)
-					end
-				elseif list_command.at (1).is_equal ("read") then
-					if attached command.read (network) as message then
-						console.write_new_line (message)
-					end
-				end
-			end
 		end
 
 feature {NONE} -- Access

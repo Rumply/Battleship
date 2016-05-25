@@ -11,7 +11,7 @@ inherit
 	GAME_LIBRARY_SHARED		-- To use `game_library'
 	IMG_LIBRARY_SHARED		-- To use `image_file_library'
 	AUDIO_LIBRARY_SHARED	-- To use `audio_library'
-	CONSOLE_SHARED
+	TEXT_LIBRARY_SHARED		-- To use `text_library'
 
 feature {NONE}
 
@@ -19,6 +19,8 @@ feature {NONE}
 		do
 			window.maximize
 
+			create font.make("./ressource/font/font.ttf",24)
+			font.open
 			create last_x.make_from_reference (0)
 			create last_y.make_from_reference (0)
 
@@ -27,10 +29,9 @@ feature {NONE}
 			create command
 
 			input_buffer:=""
-
-			create server.make
-			server.launch
 		end
+
+
 
 	display_mode:GAME_DISPLAY_MODE
 		-- Permet d'avoir le mode de d'affichage de l'écran principale.
@@ -62,9 +63,9 @@ feature -- Run
 			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- When the user move the mouse on the window
 			window.mouse_button_pressed_actions.extend (agent on_mouse_click(?,?,?))
 			window.key_pressed_actions.extend (agent on_key_pressed(?,?))
-
+			window.start_text_input
+			window.text_input_actions.extend (agent on_text_input)
 			game_library.launch
-
 		end
 
 feature -- Implementation
@@ -72,9 +73,10 @@ feature -- Implementation
 	cycle(a_timestamp: NATURAL_32)
 		-- Routine qui fait les mises à jours de l'écran et des sons.
 		do
+			manage_cycle(a_timestamp)
+
 			window.update
 			audio_library.update
-			manage_cycle(a_timestamp)
 		end
 
 	manage_cycle(a_timestamp: NATURAL_32)
@@ -87,6 +89,8 @@ feature -- Implementation
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y
 			manage_mouse_move(a_timestamp,a_mouse_state,a_delta_x, a_delta_y)
+			window.update
+			audio_library.update
 		end
 
 	manage_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32)
@@ -99,6 +103,8 @@ feature -- Implementation
 			last_x:=a_mouse_state.x
 			last_y:=a_mouse_state.y
 			manage_mouse_click(a_timestamp,a_mouse_state,click_count)
+			window.update
+			audio_library.update
 		end
 
 	manage_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; click_count: NATURAL_8)
@@ -111,27 +117,29 @@ feature -- Implementation
 		local
 			l_input:STRING
 		do
-
 			l_input:=keyboard.get_key (a_key_state)
-			if l_input.count = 1 then
-				console.clear
-				input_buffer:= input_buffer + l_input
-				console.write (input_buffer) 	-- Pour le moment ils sont écrit dans la console, mais lorsque
-												-- la boite de chat sera implémenté, ils iront dans la boite de chat.
-			elseif l_input.is_equal ("backspace") and (input_buffer.count > 0) then
+			if l_input.is_equal ("backspace") and (input_buffer.count > 0) then
 				input_buffer:=input_buffer.substring (1, input_buffer.count-1)
-				console.clear
-				if input_buffer.count > 0 then
-					console.write (input_buffer)
-				end
 			elseif l_input.is_equal ("return") and (input_buffer.count > 0) then
 				manage_command
 			end
-			manage_input(l_input, console)
+			manage_input(l_input)
+			window.update
+			audio_library.update
 		end
 
-	manage_input(a_input:STRING; a_console:MESSAGE_CONSOLE)
+	on_text_input(a_timestamp:NATURAL_32; a_text:STRING_32)
+			-- When the user write a character on the keyboard (does not handle special key like backspace, return, etc.
+		do
+			if input_buffer.count < 81 then
+				input_buffer:= input_buffer + a_text.to_string_8
+				manage_input(a_text.to_string_8)
+			end
+			window.update
+			audio_library.update
+		end
 
+	manage_input(a_input:STRING)--; a_console:MESSAGE_CONSOLE)
 		do
 		end
 
@@ -141,21 +149,25 @@ feature -- Implementation
 
 feature -- Access
 
-	network:RESEAU
-		once
-			Result:=server
-		end
+
+
+	--texts:LINKED_LIST[TUPLE[x, y:INTEGER; text:STRING_32]]
 
 	on_quit(a_timestamp: NATURAL_32)
 			-- Cette routine ferme la librairie, lorsque le bouton X à été appuyer
 		do
+			--window.stop_text_input
 			window.clear_events
 			game_library.clear_all_events
+
 			music_menu.environement_audio.source.stop
 			game_library.stop  -- Arrête le controller en boucle.
 		end
 
+
 feature
+
+	font:TEXT_FONT
 
 	music_menu:SPEAKER
 
@@ -170,6 +182,6 @@ feature
 	keyboard:KEYBOARD
 
 	input_buffer:STRING
-	server:RESEAU
+
 
 end

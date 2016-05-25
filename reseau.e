@@ -41,6 +41,33 @@ feature {NONE} -- Initialization
 			hosting:=false
 		end
 
+feature -- Utility
+
+	ip_parse(a_ip:STRING): ARRAY [NATURAL_8]
+		-- Cette fonction transforme un `a_ip' en array afin de pouvoir l'utiliser avec la librairie 'net'
+		local
+			l_ip:ARRAY [NATURAL_8]
+			list_temp:LIST[STRING_8]
+			l_valide:BOOLEAN
+			l_count:INTEGER
+		do
+			create l_ip.make_empty
+
+			l_count:=1
+			l_valide:=true
+			list_temp:=a_ip.split ('.')
+			if list_temp.count = 4 then
+				l_ip.grow (4)
+				across list_temp as element loop
+					if element.item.is_natural_8 then
+						l_ip.put (element.item.to_natural_8, l_count)
+						l_count:= l_count + 1
+					end
+				end
+			end
+			Result:=l_ip
+		end
+
 feature -- Access
 
 	stop_thread
@@ -56,31 +83,59 @@ feature -- Access
 			end
 		end
 
-	client(a_ip:ARRAY[NATURAL_8])
+	client(ip_string:STRING)
 		local
 			l_addr_factory:INET_ADDRESS_FACTORY
 			l_address:INET_ADDRESS
+			l_ip:ARRAY[NATURAL_8]
 		do
-			create IP.make_from_array (a_ip)
 			create l_addr_factory
-			--l_addr_factory.create_from_address (a_ip)
-			if attached l_addr_factory.create_from_address (a_ip) as l_ip then
-				l_address:=l_ip
+
+			if ip_string.is_equal ("localhost") then
+				if attached l_addr_factory.create_from_name ("localhost") as l_ip2 then
+					l_address:=l_ip2
+					create client_socket.make_client_by_address_and_port (l_address,port)
+				end
+			else
+				l_ip:=ip_parse(ip_string)
+				create IP.make_from_array (l_ip)
+				if attached l_addr_factory.create_from_address (l_ip) as l_ip2 then
+				l_address:=l_ip2
 				create client_socket.make_client_by_address_and_port (l_address,port)
 			end
+			end
+
+
+			--l_addr_factory.create_from_address (a_ip)
+
 			connecting:=true
 		end
+
+
 
 feature {NONE} -- Thread methods
 
 	execute
-		local
-			l_count:INTEGER
 		do
 			from
 			until
 				must_stop
 			loop
+				if listening then
+					from
+					until
+						not listening
+					loop
+						from
+						until
+							client_socket.is_readable
+						loop
+							client_socket.read_line
+							buffer_receive.put (client_socket.last_string)
+						end
+						sleep(1000)
+					end
+				end
 				if hosting then
 					server_socket.listen (1)
 					server_socket.accept
@@ -99,24 +154,9 @@ feature {NONE} -- Thread methods
 					connecting:=false
 					listening:=true
 					sending:=true
-				elseif listening then
-					if client_socket.is_readable then
-						client_socket.read_line
-						buffer_receive.put (client_socket.last_string)
-					end
-				elseif sending then
-					if buffer_send.count > 0 then
-						from
-						until buffer_send.is_empty
-						loop
-							if not client_socket.is_closed then
-								client_socket.put_string (buffer_send.item)
-								buffer_send.remove
-							end
-						end
-						buffer_send_empty:=true
-					end
-				elseif closed then
+				end
+
+				if closed then
 					client_socket.close
 					buffer_send.wipe_out
 					connecting:=false
@@ -125,6 +165,7 @@ feature {NONE} -- Thread methods
 					closed:=false
 					hosting:=false
 				end
+				sleep (1000)
 			end
 		end
 

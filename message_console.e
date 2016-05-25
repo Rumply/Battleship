@@ -22,6 +22,7 @@ feature {NONE} -- Initialization
 	make
 		do
 			create my_mutex.make
+			create env
 			message:=""
 			make_thread
 			must_stop:=false
@@ -51,14 +52,6 @@ feature -- Access
 			Result:=input
 		end
 
-	manage_command(command:LIST[STRING_8])
-		do
-			command.at (1).remove (1)
-			if command.at (1) = "Test" then
-				write_new_line ("Still here")
-			end
-		end
-
 	write_new_line(a_chaine:STRING)
 		require
 			a_chaine_is_valide : not a_chaine.is_empty
@@ -75,23 +68,18 @@ feature -- Access
 		end
 
 	clear
-		local
-			l_env:EXECUTION_ENVIRONMENT
+			-- Permet de d'effacer le contenu de la console
 		do
-			create l_env
-			l_env.system (clear_string)
+			env.system (clear_string)
 		end
 
 	close
-		local
-			l_env:EXECUTION_ENVIRONMENT
 		do
-			create l_env
-			l_env.system ("EXIT")
+			env.system ("EXIT")
 		end
 
 
-
+	env:EXECUTION_ENVIRONMENT
 
 	my_mutex:MUTEX
 
@@ -105,14 +93,6 @@ feature {NONE} -- Thread methods
 			until
 				must_stop
 			loop
-				sleep (100)
-				if my_mutex.try_lock then
-					my_mutex.lock
-					if ((message.at (1)) = '/') and (message.has (' ')) then
-						manage_command(message.split (' '))
-					end
-					my_mutex.unlock
-				end
 			end
 
 		end

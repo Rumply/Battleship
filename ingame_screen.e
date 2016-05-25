@@ -25,27 +25,27 @@ feature {NONE}
 	local
 		l_double:REAL_64
 		l_bordure_size:INTEGER
-		l_case_size:INTEGER
 	do
 		window:=a_window
 		if attached console as l_console then
 			l_console.clear
 		end
 
-		l_double:=(window.width/2-110)
-		create chat_bordure.make (l_double.floor, 290)
-
+		l_double:=(window.width/3)
+		--window.start_text_input	-- On some OS, it show the onscreen keyboard
 		l_bordure_size:=((l_double.floor)/60).floor
-		l_case_size:=((l_double.floor)/60).floor
-		chat_bordure.draw_rect_with_tile ("bois.jpg", l_double.floor, 290, l_bordure_size)
-		chat_bordure.enable_alpha_blending
-		create grille.make ((l_double).floor, (l_double).floor, l_case_size)
+
+		create grille_joueur1.make ((l_double).floor, (l_double).floor, l_bordure_size)
+		create grille_joueur2.make ((l_double).floor, (l_double).floor, l_bordure_size)
+		grille_joueur2.position.x:=grille_joueur1.dimension.width + (((l_double).floor/2).floor)
 		teste:=false
 		create bordure1.make ((l_double).floor+l_bordure_size, (l_double).floor+l_bordure_size)
-		bordure1.draw_rect_with_tile ("bois.jpg", (l_double).floor+l_bordure_size, (l_double).floor+l_bordure_size, l_bordure_size)
+		bordure1.draw_rect_with_tile ("bois.jpg", bordure1.gamedimension.width, bordure1.gamedimension.height, l_bordure_size)
 
 		create background.make (window.width, window.height)
 		create background_tuile.make_element ("eau.jpg")
+
+		create dialogue.make (window)
 
 		speaker:=a_speaker
 
@@ -58,7 +58,6 @@ feature {NONE}
 		mouse_x:= 0
 		mouse_y:= 0
 
-		initialize_chat_bordure
 		initialize_bordure
 		load_case_element
 		initialize_bateau
@@ -70,7 +69,7 @@ feature {NONE}
 		-- Routine qui fait en sorte que la texture de bois soit autour du cadre (grille).
 		-- Routine qui crée un pointeur à la position du curseur.
 		do
-			create pointer.make(grille.case_dimension)
+			create pointer.make(grille_joueur1.case_dimension)
 		end
 
 	set_as_default_pointer
@@ -79,48 +78,38 @@ feature {NONE}
 			pointer.surface.in_image_pos.y:=0
 			pointer.surface.filedimension.width:=100
 			pointer.surface.filedimension.height:=100
-			pointer.surface.gamedimension.width:=grille.case_dimension.width
-			pointer.surface.gamedimension.height:=grille.case_dimension.height
+			pointer.surface.gamedimension.width:=grille_joueur1.case_dimension.width
+			pointer.surface.gamedimension.height:=grille_joueur1.case_dimension.height
 			pointer.surface.position.x:=0
 			pointer.surface.position.y:=0
 		end
 
 	initialize_bateau
 		do
-			create boat.make(grille.case_dimension.width, grille.case_dimension.height)
+			create boat.make(grille_joueur1.case_dimension.width, grille_joueur1.case_dimension.height)
 			id_bateau:=0
-		end
-
-	initialize_chat_bordure
-		-- Routine qui initialise la bordure de discussion instantanée.
-		local
-			l_double:REAL_64
-		do
-			l_double:=(window.width/1.8)
-			chat_bordure.position.x:=l_double.floor
-			l_double:=(window.height/1.5)
-			chat_bordure.position.y:=l_double.floor
 		end
 
 	initialize_bordure
 		-- Routine qui initialise les bordures de la grille.
 		do
-			bordure1.position.x:=grille.position.x - grille.dimension.bordure
-			bordure1.position.y:=grille.position.y - grille.dimension.bordure
+			bordure1.position.x:=grille_joueur1.position.x - grille_joueur1.dimension.bordure
+			bordure1.position.y:=grille_joueur1.position.y - grille_joueur1.dimension.bordure
 		end
 
 	setup_border
 		-- Routine qui dessine la grille, les bordures et les bordures de la discussion instantanée.
 		do
-			background.draw_surface (grille.masque, grille.position.x,grille.position.y)
+			background.draw_surface (grille_joueur1.masque, grille_joueur1.position.x,grille_joueur1.position.y)
+			background.draw_surface (grille_joueur2.masque, grille_joueur2.position.x,grille_joueur2.position.y)
 			background.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
-			background.draw_surface (chat_bordure, chat_bordure.position.x, chat_bordure.position.y)
+			background.draw_surface (dialogue, dialogue.position.x, dialogue.position.y)
 		end
 
 	set_pointer
 		do
 			if (id_bateau=5) then
-				set_as_default_pointer
+				pointer.set_as_default_pointer
 			end
 
 		end
@@ -151,28 +140,41 @@ feature -- Access
 					elseif speaker.environement_audio.muted then
 						speaker_on
 					end
-				elseif grille.hover then
-					grille.get_index_from_mousePos(mouse_x,mouse_y)
+				elseif grille_joueur1.hover then
+					grille_joueur1.get_index_from_mousePos(mouse_x,mouse_y)
 					set_pointer
 					boat.set_bateau(id_bateau)
 					if (id_bateau < 5) then
-						position_bateau_temp:= ((grille.is_position_bateau_valide (boat.image_bateau.gamedimension.width, boat.image_bateau.gamedimension.height, true)))
-						if grille.case_valide then
+						position_bateau_temp:= ((grille_joueur1.is_position_bateau_valide (boat.image_bateau.gamedimension.width, boat.image_bateau.gamedimension.height, true)))
+						if grille_joueur1.case_valide then
 							boat.fill_bateau_list(id_bateau,position_bateau_temp)
 							draw_case (mouse_x, mouse_y)
 							id_bateau:= id_bateau + 1
 						end
-					else
-						draw_pointer (mouse_x, mouse_y)
 					end
-
-					if id_bateau = 5 then
-								set_as_default_pointer
-					end
-				elseif not grille.hover then
-					window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
 				end
-
+				if grille_joueur2.hover then
+					grille_joueur2.get_index_from_mousePos(mouse_x,mouse_y)
+					if (id_bateau >= 5) then
+						position_bateau_temp:= ((grille_joueur2.is_position_bateau_valide (pointer.surface.gamedimension.width, pointer.surface.gamedimension.height, true)))
+						if grille_joueur2.case_valide then
+							draw_explosion (mouse_x, mouse_y)
+						end
+					end
+				end
+				io.put_integer (id_bateau)
+				io.new_line
+				if not grille_joueur1.hover then
+					window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
+				end
+				if not grille_joueur2.hover then
+					window.surface.draw_surface (grille_joueur2.masque, grille_joueur2.position.x, grille_joueur2.position.y)
+				end
+				if dialogue.hover then
+					window.start_text_input	-- On some OS, it show the onscreen keyboard
+				elseif not dialogue.hover then
+					window.stop_text_input
+				end
 				click:=false
 			end
 		end
@@ -184,11 +186,19 @@ feature -- Access
 			mouse_x:= a_x
 			mouse_y:= a_y
 			speaker.surface.is_on (a_x, a_y)
-			grille.is_on (a_x, a_y)
+			grille_joueur1.is_on (a_x, a_y)
+			grille_joueur2.is_on (a_x, a_y)
+			dialogue.is_on (a_x, a_y)
 			click:= a_click
 			if click then
 				cycle
 			end
+		end
+
+	write_box(a_text_surface:TEXT_SURFACE_BLENDED)
+		do
+			window.surface.draw_surface (dialogue, dialogue.position.x, dialogue.position.y)
+			window.surface.draw_surface (a_text_surface, dialogue.position.x + dialogue.bordure + 30, dialogue.position.y - dialogue.bordure + dialogue.height - 50)
 		end
 
 	right_mouse_click(a_x,a_y:INTEGER)
@@ -211,13 +221,27 @@ feature -- Access
 		do
 			if (id_bateau < 6) then
 				l_bateau:=boat.get_bateau(id_bateau)
-				l_temp:=l_temp + grille.index
-				grille.get_index_from_mousepos (a_x, a_y)
-				grille.get_case_position
-				grille.masque.draw_sub_surface_with_scale (l_bateau, l_bateau.in_image_pos.x,l_bateau.in_image_pos.y, l_bateau.filedimension.width, l_bateau.filedimension.height, grille.selected_pos.x-grille.position.x, grille.selected_pos.y-grille.position.y, l_bateau.gamedimension.width, l_bateau.gamedimension.height)
-				window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
+				l_temp:=l_temp + grille_joueur1.index
+				grille_joueur1.get_index_from_mousepos (a_x, a_y)
+				grille_joueur1.get_case_position
+				grille_joueur1.masque.draw_sub_surface_with_scale (l_bateau, l_bateau.in_image_pos.x,l_bateau.in_image_pos.y, l_bateau.filedimension.width, l_bateau.filedimension.height, grille_joueur1.selected_pos.x-grille_joueur1.position.x, grille_joueur1.selected_pos.y-grille_joueur1.position.y, l_bateau.gamedimension.width, l_bateau.gamedimension.height)
+				window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
 				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 			end
+		end
+
+	draw_explosion(a_x,a_y:INTEGER)
+		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
+		local
+			l_temp:INTEGER_32
+			l_bateau:MASQUE
+		do
+			grille_joueur2.get_case_position
+			grille_joueur2.masque.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur2.selected_pos.x-grille_joueur2.position.x, grille_joueur2.selected_pos.y-grille_joueur2.position.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
+			window.surface.draw_surface (grille_joueur2.masque, grille_joueur2.position.x, grille_joueur2.position.y)
+			window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
+
+			window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur2.selected_pos.x, grille_joueur2.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
 		end
 
 	draw_pointer(a_x,a_y:INTEGER_32)
@@ -226,14 +250,14 @@ feature -- Access
 			l_temp:INTEGER_32
 		do
 			l_temp:=0
-			l_temp:=l_temp + grille.index
-			grille.get_index_from_mousepos (a_x, a_y)
+			l_temp:=l_temp + grille_joueur1.index
+			grille_joueur1.get_index_from_mousepos (a_x, a_y)
 
-			if not (grille.old_index = grille.index) then
-				grille.get_case_position
-				window.surface.draw_surface (grille.masque, grille.position.x, grille.position.y)
+			if not (grille_joueur1.old_index = grille_joueur1.index) then
+				grille_joueur1.get_case_position
+				window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
 				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
-				window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille.selected_pos.x, grille.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
+				window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur1.selected_pos.x, grille_joueur1.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
 			end
 		end
 
@@ -266,7 +290,7 @@ feature -- Access
 			draw(speaker.surface)
 		end
 
-
+	dialogue:DIALOGUE
 	click:BOOLEAN
 	mouse_x,mouse_y:INTEGER
 	boat:BATEAU
@@ -275,14 +299,14 @@ feature -- Access
 	id_bateau:INTEGER_32
 	teste:BOOLEAN
 	background_tuile,background:MASQUE
-	chat_bordure,bordure1:MASQUE
-	grille:GRILLE
+	bordure1:MASQUE
+	grille_joueur1:GRILLE
+	grille_joueur2:GRILLE
+
 	current_index:INTEGER_32
 	window:GAME_WINDOW_SURFACED
 
 	color,yellow,black:GAME_COLOR
-
-feature {NONE} -- Singleton
 
 
 end
