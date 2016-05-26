@@ -8,49 +8,45 @@ class
 	BOUTON
 
 inherit
-	ELEMENT
+	MASQUE
 		rename
-			make as make_element
+			make as make_masque
 		end
 
 create
-	make_bouton
+	make
 
 feature {NONE}
 
-	make_bouton(a_filename:READABLE_STRING_GENERAL;a_text:STRING)
+	make(a_width, a_height:INTEGER)
 		-- Routine qui fait en sorte que l'écriture dans les boutons soit d'une certaine couleur et d'une certaine police d'écriture prédéfinie.
-	local
-		l_font:TEXT_FONT
-		l_black:GAME_COLOR
 	do
-		make_element(a_filename)
+		make_masque (a_width, a_height)
+		initialize_bouton
 
-		create l_black.make_rgb (0,0,0)
-
-		create l_font.make ("./ressource/font/ArmyStamp.ttf", 50)
-		if l_font.is_openable then
-			l_font.open
-		end
-
-		make_text_surface (a_text, l_font, l_black)
-		--set_text(a_text)
+	--	create bouton_play.make ("main_button.png")
 	end
+
+	initialize_bouton
+		-- Routine qui initialise les attributs du bouton afin de jouer seul.
+		local
+			l_double:REAL_64
+		do
+			in_image_pos.x:=0
+			in_image_pos.y:=0
+			filedimension.width:=width.to_integer.quotient (2).truncated_to_integer
+			filedimension.height:=height.to_integer.quotient (2).truncated_to_integer
+			gamedimension.width:=500
+			gamedimension.height:=250
+--			l_double:=window.width/2
+--			l_double:=l_double-(gamedimension.width/2)
+--			position.x:=l_double.floor
+--			l_double:=window.height/2
+--			l_double:=l_double-(gamedimension.height)
+--			position.y:=l_double.floor
+		end
 
 feature --Access
 
---	set_text(a_text:STRING)
---	local
---		l_font:TEXT_FONT
---		l_color:GAME_COLOR_READABLE
---	do
---		create l_font.make (".\ressource\font\ArmyStamp.ttf", 20)
---		create l_color.make_rgb (0, 0, 0)
-
-
---		make_text("SALUT",l_font,l_color)
---		--text.text:=a_text
---		--text.font:=l_font
---	end
 
 end

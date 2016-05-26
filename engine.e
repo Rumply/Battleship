@@ -139,7 +139,7 @@ feature -- Implementation
 			audio_library.update
 		end
 
-	manage_input(a_input:STRING)--; a_console:MESSAGE_CONSOLE)
+	manage_input(a_input:STRING)
 		do
 		end
 

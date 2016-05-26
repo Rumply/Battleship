@@ -35,9 +35,11 @@ feature {NONE}
 			dimension.height := a_height - (a_bordure/2).floor
 			dimension.bordure := a_bordure
 			create masque.make (dimension.width, dimension.height)
+			create masque_bombes.make (dimension.width, dimension.height)
 			masque.enable_alpha_blending
 			index := 1
 			old_index := 2
+			nombre_bateau:=0
 			hover := false
 			case_valide := true
 			create black.make_rgb (0, 0, 0) -- Utilise la couleur noir (#000000)
@@ -46,6 +48,11 @@ feature {NONE}
 			create viseur.make_element ("vise.png") -- Crée l'élément "bois.jpg" pour indiquer l'emplacement visé dans la grille de jeu.
 			initialize_grille
 			fill_listCase
+
+			create bombe.make(case_dimension)
+
+			create boats.make(case_dimension.width, case_dimension.height)
+
 		end
 
 	initialize_grille
@@ -247,6 +254,97 @@ feature --Access
 			end
 		end
 
+	gestion_click
+		local
+			l_boat:MASQUE
+			l_position_list:ARRAYED_LIST[INTEGER]
+		do
+			io.new_line
+			io.put_integer (nombre_bateau)
+			if nombre_bateau < 5 then
+				l_boat:=boats.get_bateau (nombre_bateau)
+				l_position_list := is_position_bateau_valide (l_boat.gamedimension.width, l_boat.gamedimension.height, True)
+				if case_valide then
+					boats.fill_bateau_list (nombre_bateau, l_position_list)
+					draw_bateau (nombre_bateau)
+					nombre_bateau := nombre_bateau + 1
+				end
+			elseif nombre_bateau >= 4 then
+				l_position_list := is_position_bateau_valide (bombe.surface.gamedimension.width, bombe.surface.gamedimension.height, True)
+				if case_valide then
+					draw_explosion
+				end
+			end
+		end
+
+	draw_element_on(a_element_destination,a_element:MASQUE)
+		do
+			get_case_position
+
+--			a_element_destination.draw_surface_with_scale (a_element,
+--															a_element.position.x,
+--															a_element.position.y,
+--															a_element.gamedimension.width,
+--															a_element.gamedimension.height)
+--			a_element_destination.draw_sub_surface (a_element,
+--													0,
+--													0,
+--													a_element.gamedimension.width,
+--													a_element.gamedimension.height,
+--													(colonne * case_dimension.width),
+--													(ranger * case_dimension.height))
+--			a_element_destination.draw_surface (a_element, 500, 0)
+			io.new_line
+			io.put_integer (a_element.height)
+			a_element_destination.draw_sub_surface_with_scale (a_element,
+																0,
+																0,
+																a_element.width,
+																a_element.height,
+																selected_pos.x,
+																selected_pos.y,
+																a_element.gamedimension.width,
+																a_element.gamedimension.height)
+		end
+
+	draw_sub_element_on(a_element_destination,a_element:MASQUE)
+		do
+			get_case_position
+			a_element_destination.draw_sub_surface_with_scale (a_element,
+																a_element.in_image_pos.x,
+																a_element.in_image_pos.y,
+																a_element.filedimension.width,
+																a_element.filedimension.height,
+																selected_pos.x-position.x,
+																selected_pos.y-position.y,
+																a_element.gamedimension.width,
+																a_element.gamedimension.height)
+		end
+
+	draw_bateau(id:INTEGER)
+		local
+			l_bateau:MASQUE
+		do
+			if id < 5 then
+				l_bateau := boats.get_bateau (id)
+				draw_sub_element_on (masque,l_bateau)
+			end
+
+		end
+
+	draw_explosion
+		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
+		do
+			if nombre_bateau >= 5 then
+				get_case_position
+				draw_element_on (masque,bombe.surface)
+			end
+		end
+
+	masque_bombes:MASQUE
+
+	nombre_bateau:INTEGER
+
 	old_colonne, old_ranger: INTEGER_32
 
 	colonne, ranger: INTEGER_32
@@ -272,5 +370,11 @@ feature --Access
 	position: TUPLE [x, y: INTEGER]
 
 	listCase: ARRAYED_LIST [CASE]
+
+	boats:BATEAU
+
+feature {NONE}
+
+	bombe:VISEUR
 
 end

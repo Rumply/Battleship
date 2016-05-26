@@ -12,11 +12,11 @@ create
 
 feature {NONE} -- Initialization
 
-	make(a_case_width,a_case_height:INTEGER)
+	make(a_case_dimension:TUPLE[width,height:INTEGER])
 			-- Initialization for `Current'.
 		do
-			case_width:=a_case_width
-			case_height:=a_case_height
+			case_width:=a_case_dimension.width
+			case_height:=a_case_dimension.height
 			set_as_bateau1
 			create position_bateau1.make (4)
 			create position_bateau2.make (3)
@@ -146,6 +146,6 @@ feature -- Singleton
             create Result.make_element ("bateaux.png")
         end
 
-	
+
 
 end

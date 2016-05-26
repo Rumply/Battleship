@@ -1,6 +1,6 @@
 note
 	description: "Classe ou les dialogues en jeu sont créé à des fin d'apprentisage."
-	author: ""
+	author: "Guillaume Hamel-Gagné"
 	date: "$Date$"
 	revision: "$Revision$"
 

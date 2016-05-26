@@ -11,9 +11,6 @@ note
 class
 	INGAME_SCREEN
 
-inherit
-	CONSOLE_SHARED
-
 create
 	make
 
@@ -27,12 +24,8 @@ feature {NONE}
 		l_bordure_size:INTEGER
 	do
 		window:=a_window
-		if attached console as l_console then
-			l_console.clear
-		end
 
 		l_double:=(window.width/3)
-		--window.start_text_input	-- On some OS, it show the onscreen keyboard
 		l_bordure_size:=((l_double.floor)/60).floor
 
 		create grille_joueur1.make ((l_double).floor, (l_double).floor, l_bordure_size)
@@ -144,31 +137,21 @@ feature -- Access
 					grille_joueur1.get_index_from_mousePos(mouse_x,mouse_y)
 					set_pointer
 					boat.set_bateau(id_bateau)
-					if (id_bateau < 5) then
-						position_bateau_temp:= ((grille_joueur1.is_position_bateau_valide (boat.image_bateau.gamedimension.width, boat.image_bateau.gamedimension.height, true)))
-						if grille_joueur1.case_valide then
-							boat.fill_bateau_list(id_bateau,position_bateau_temp)
-							draw_case (mouse_x, mouse_y)
-							id_bateau:= id_bateau + 1
-						end
-					end
+					grille_joueur1.gestion_click
+					window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
+					window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 				end
 				if grille_joueur2.hover then
 					grille_joueur2.get_index_from_mousePos(mouse_x,mouse_y)
-					if (id_bateau >= 5) then
-						position_bateau_temp:= ((grille_joueur2.is_position_bateau_valide (pointer.surface.gamedimension.width, pointer.surface.gamedimension.height, true)))
-						if grille_joueur2.case_valide then
-							draw_explosion (mouse_x, mouse_y)
-						end
-					end
+					grille_joueur2.gestion_click
+					window.surface.draw_surface (grille_joueur2.masque, grille_joueur2.position.x, grille_joueur2.position.y)
+					window.surface.draw_surface (grille_joueur2.masque_bombes, grille_joueur2.position.x, grille_joueur2.position.y)
 				end
-				io.put_integer (id_bateau)
-				io.new_line
 				if not grille_joueur1.hover then
-					window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
+				--	window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
 				end
 				if not grille_joueur2.hover then
-					window.surface.draw_surface (grille_joueur2.masque, grille_joueur2.position.x, grille_joueur2.position.y)
+				--	window.surface.draw_surface (grille_joueur2.masque, grille_joueur2.position.x, grille_joueur2.position.y)
 				end
 				if dialogue.hover then
 					window.start_text_input	-- On some OS, it show the onscreen keyboard
@@ -177,6 +160,7 @@ feature -- Access
 				end
 				click:=false
 			end
+			window.surface.draw_surface (grille_joueur2.masque_bombes, grille_joueur2.position.x, grille_joueur2.position.y)
 		end
 
 	left_mouse_click(a_x,a_y:INTEGER;a_click:BOOLEAN)
@@ -230,19 +214,19 @@ feature -- Access
 			end
 		end
 
-	draw_explosion(a_x,a_y:INTEGER)
-		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
-		local
-			l_temp:INTEGER_32
-			l_bateau:MASQUE
-		do
-			grille_joueur2.get_case_position
-			grille_joueur2.masque.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur2.selected_pos.x-grille_joueur2.position.x, grille_joueur2.selected_pos.y-grille_joueur2.position.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
-			window.surface.draw_surface (grille_joueur2.masque, grille_joueur2.position.x, grille_joueur2.position.y)
-			window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
+--	draw_explosion(a_x,a_y:INTEGER)
+--		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
+--		local
+--			l_temp:INTEGER_32
+--			l_bateau:MASQUE
+--		do
+--			grille_joueur2.get_case_position
+--			grille_joueur2.masque.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur2.selected_pos.x-grille_joueur2.position.x, grille_joueur2.selected_pos.y-grille_joueur2.position.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
+--			window.surface.draw_surface (grille_joueur2.masque, grille_joueur2.position.x, grille_joueur2.position.y)
+--			window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
 
-			window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur2.selected_pos.x, grille_joueur2.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
-		end
+--			window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur2.selected_pos.x, grille_joueur2.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
+--		end
 
 	draw_pointer(a_x,a_y:INTEGER_32)
 		-- Routine qui dessine un élément temporaire à l'emplacement du curseur sur la grille.

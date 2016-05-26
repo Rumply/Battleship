@@ -25,8 +25,8 @@ feature {NONE} -- Initialize
 		create masque.make (window.surface.width, window.surface.height)
 		masque.enable_alpha_blending
 		create background.make ("eau.jpg")
-		create bouton_s.make ("main_button.png")
-		create bouton_m.make ("main_button.png")
+		create bouton_play.make ("main_button.png")
+		create bouton.make (500, 250)
 
 		speaker:=a_speaker
 
@@ -38,50 +38,32 @@ feature {NONE} -- Initialize
 		color:=black
 		singleGame:=False
 
-		initialize_bouton_s
-		initialize_bouton_m
+		initialize_bouton_play
 
 		initialize_title
 
 		setup_object
+
+
 	end
 
-	initialize_bouton_s
+	initialize_bouton_play
 		-- Routine qui initialise les attributs du bouton afin de jouer seul.
 		local
 			l_double:REAL_64
 		do
-			bouton_s.in_image_pos.x:=0
-			bouton_s.in_image_pos.y:=0
-			bouton_s.filedimension.width:=bouton_s.width.to_integer.quotient (2).truncated_to_integer
-			bouton_s.filedimension.height:=bouton_s.height.to_integer.quotient (2).truncated_to_integer
-			bouton_s.gamedimension.width:=500
-			bouton_s.gamedimension.height:=250
+			bouton_play.in_image_pos.x:=0
+			bouton_play.in_image_pos.y:=0
+			bouton_play.filedimension.width:=bouton_play.width.to_integer.quotient (2).truncated_to_integer
+			bouton_play.filedimension.height:=bouton_play.height.to_integer.quotient (2).truncated_to_integer
+			bouton_play.gamedimension.width:=500
+			bouton_play.gamedimension.height:=250
 			l_double:=window.width/2
-			l_double:=l_double-(bouton_s.gamedimension.width/2)
-			bouton_s.position.x:=l_double.floor
+			l_double:=l_double-(bouton_play.gamedimension.width/2)
+			bouton_play.position.x:=l_double.floor
 			l_double:=window.height/2
-			l_double:=l_double-(bouton_s.gamedimension.height)
-			bouton_s.position.y:=l_double.floor
-		end
-
-	initialize_bouton_m
-		-- Routine qui initialise les attributs du bouton afin de jouer contre quelqu'un d'autre.
-		local
-			l_double:REAL_64
-		do
-			bouton_m.in_image_pos.x:=0
-			bouton_m.in_image_pos.y:=250
-			bouton_m.filedimension.width:=bouton_m.width.to_integer.quotient (2).truncated_to_integer
-			bouton_m.filedimension.height:=bouton_m.height.to_integer.quotient (2).truncated_to_integer
-			bouton_m.gamedimension.width:=500
-			bouton_m.gamedimension.height:=250
-			l_double:=window.width/2
-			l_double:=l_double-(bouton_m.gamedimension.width/2)
-			bouton_m.position.x:=l_double.floor
-			l_double:=window.height/2
-			l_double:=l_double+(bouton_m.gamedimension.height/2)
-			bouton_m.position.y:=l_double.floor
+			l_double:=l_double-(bouton_play.gamedimension.height)
+			bouton_play.position.y:=l_double.floor
 		end
 
 	initialize_title
@@ -141,7 +123,6 @@ feature {NONE} -- Implementation
 				end
 				l_x:=0
 				l_Hreste:= l_Hreste - height
-				window.surface.draw_surface(background, l_x, l_y)
 				l_y:= l_y + height
 			end
 		end
@@ -162,10 +143,7 @@ feature {NONE} -- Implementation
 		-- Routine qui dessine les boutons.
 		do
 			-- Bouton SinglePlayer
-			draw_bouton(bouton_s)
-
-			-- Bouton MultiPlayer
-			draw_bouton(bouton_m)
+			draw_bouton(bouton_play)
 		end
 
 feature -- Access bouton
@@ -174,8 +152,7 @@ feature -- Access bouton
 		-- Routine qui applique le BOOLEAN de click lorsque l'utilisateur appuis sur le haut-parleur afin de fermer ou d'ouvrir le son.
 		do
 			speaker.surface.is_on (a_x, a_y)
-			bouton_s.is_on (a_x, a_y)
-			bouton_m.is_on (a_x, a_y)
+			bouton_play.is_on (a_x, a_y)
 			if click then
 				if speaker.surface.hover then
 					if not audio.environement_audio.muted then
@@ -185,48 +162,28 @@ feature -- Access bouton
 					end
 				end
 
-				if bouton_s.hover then
-					bouton_s.set_selected (True)
+				if bouton_play.hover then
+					bouton_play.set_selected (True)
 					singleGame:=True
-				elseif not bouton_s.hover then
-					bouton_s.set_selected (False)
-				end
-				if bouton_m.hover then
-					bouton_m.set_selected (True)
-				elseif not bouton_m.hover then
-					bouton_m.set_selected (False)
+				elseif not bouton_play.hover then
+					bouton_play.set_selected (False)
 				end
 			end
 
-			if bouton_s.hover then
-				bouton_s.in_image_pos.x:=500
-				bouton_s.in_image_pos.y:=0
-			elseif not bouton_s.hover then
-				bouton_s.in_image_pos.x:=0
-				bouton_s.in_image_pos.y:=0
+			if bouton_play.hover then
+				bouton_play.in_image_pos.x:=500
+				bouton_play.in_image_pos.y:=0
+			elseif not bouton_play.hover then
+				bouton_play.in_image_pos.x:=0
+				bouton_play.in_image_pos.y:=0
 			end
 
-			if bouton_m.hover then
-				bouton_m.in_image_pos.x:=500
-				bouton_m.in_image_pos.y:=250
-			elseif not bouton_m.hover then
-				bouton_m.in_image_pos.x:=0
-				bouton_m.in_image_pos.y:=250
-			end
-
-			if bouton_s.selected then
+			if bouton_play.selected then
 				color:=yellow
-			elseif not bouton_s.selected then
+			elseif not bouton_play.selected then
 				color:=black
 			end
-			draw_bouton(bouton_s)
-
-			if bouton_m.selected then
-				color:=yellow
-			elseif not bouton_m.selected then
-				color:=black
-			end
-			draw_bouton(bouton_m)
+			draw_bouton(bouton_play)
 		end
 
 	draw(a_element:ELEMENT)
@@ -274,8 +231,10 @@ feature -- Access variable
 
 	speaker:SPEAKER
 
-	background,title,bouton_S,bouton_M:ELEMENT
-		-- `background'`title'`bouton_S'`bouton_M' sont tous des éléments de {ELEMENT} qui sont utilisé dans la classe {main_menu}
+	bouton:BOUTON
+
+	background,title,bouton_play:ELEMENT
+		-- `background'`title'`bouton_play' sont tous des éléments de {ELEMENT} qui sont utilisé dans la classe {main_menu}
 
 	masque:MASQUE -- `masque' sert de passerelle à la classe {MASQUE}
 
