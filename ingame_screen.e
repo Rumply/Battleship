@@ -197,54 +197,40 @@ feature -- Access
 			window.surface.draw_surface(background, 0, 0)
 		end
 
-	draw_case(a_x,a_y:INTEGER)
-		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
-		local
-			l_temp:INTEGER_32
-			l_bateau:MASQUE
-		do
-			if (id_bateau < 6) then
-				l_bateau:=boat.get_bateau(id_bateau)
-				l_temp:=l_temp + grille_joueur1.index
-				grille_joueur1.get_index_from_mousepos (a_x, a_y)
-				grille_joueur1.get_case_position
-				grille_joueur1.masque.draw_sub_surface_with_scale (l_bateau, l_bateau.in_image_pos.x,l_bateau.in_image_pos.y, l_bateau.filedimension.width, l_bateau.filedimension.height, grille_joueur1.selected_pos.x-grille_joueur1.position.x, grille_joueur1.selected_pos.y-grille_joueur1.position.y, l_bateau.gamedimension.width, l_bateau.gamedimension.height)
-				window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
-				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
-			end
-		end
-
-
---	draw_explosion(a_x,a_y:INTEGER)
+--	draw_case(a_x,a_y:INTEGER)
 --		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
 --		local
 --			l_temp:INTEGER_32
 --			l_bateau:MASQUE
 --		do
---			grille_joueur2.get_case_position
---			grille_joueur2.masque.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur2.selected_pos.x-grille_joueur2.position.x, grille_joueur2.selected_pos.y-grille_joueur2.position.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
---			window.surface.draw_surface (grille_joueur2.masque, grille_joueur2.position.x, grille_joueur2.position.y)
---			window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
-
---			window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur2.selected_pos.x, grille_joueur2.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
+--			if (id_bateau < 6) then
+--				l_bateau:=boat.get_bateau(id_bateau)
+--				l_temp:=l_temp + grille_joueur1.index
+--				grille_joueur1.get_index_from_mousepos (a_x, a_y)
+--				grille_joueur1.get_case_position
+--				grille_joueur1.masque.draw_sub_surface_with_scale (l_bateau, l_bateau.in_image_pos.x,l_bateau.in_image_pos.y, l_bateau.filedimension.width, l_bateau.filedimension.height, grille_joueur1.selected_pos.x-grille_joueur1.position.x, grille_joueur1.selected_pos.y-grille_joueur1.position.y, l_bateau.gamedimension.width, l_bateau.gamedimension.height)
+--				window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
+--				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
+--			end
 --		end
 
-	draw_pointer(a_x,a_y:INTEGER_32)
-		-- Routine qui dessine un élément temporaire à l'emplacement du curseur sur la grille.
-		local
-			l_temp:INTEGER_32
-		do
-			l_temp:=0
-			l_temp:=l_temp + grille_joueur1.index
-			grille_joueur1.get_index_from_mousepos (a_x, a_y)
 
-			if not (grille_joueur1.old_index = grille_joueur1.index) then
-				grille_joueur1.get_case_position
-				window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
-				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
-				window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur1.selected_pos.x, grille_joueur1.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
-			end
-		end
+--	draw_pointer(a_x,a_y:INTEGER_32)
+--		-- Routine qui dessine un élément temporaire à l'emplacement du curseur sur la grille.
+--		local
+--			l_temp:INTEGER_32
+--		do
+--			l_temp:=0
+--			l_temp:=l_temp + grille_joueur1.index
+--			grille_joueur1.get_index_from_mousepos (a_x, a_y)
+
+--			if not (grille_joueur1.old_index = grille_joueur1.index) then
+--				grille_joueur1.get_case_position
+--				window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
+--				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
+--				window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur1.selected_pos.x, grille_joueur1.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
+--			end
+--		end
 
 	draw(a_element:ELEMENT)
 		-- Routine qui dessine à l'écran les éléments de a_element.
