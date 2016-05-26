@@ -39,6 +39,15 @@
 					<platform value="windows"/>
 				</condition>
 			</file_rule>
+			<file_rule>
+				<exclude>^os_specific_windows$</exclude>
+			</file_rule>
+			<file_rule>
+				<exclude>^os_specific_windows$</exclude>
+			</file_rule>
+			<file_rule>
+				<exclude>^os_specific_windows$</exclude>
+			</file_rule>
 		</cluster>
 		<tests name="tests" location=".\tests\"/>
 	</target>
