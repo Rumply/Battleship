@@ -232,9 +232,6 @@ feature -- Access
 
 	draw_explosion(a_x,a_y:INTEGER)
 		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
-		local
-			l_temp:INTEGER_32
-			l_bateau:MASQUE
 		do
 			grille_joueur2.get_case_position
 			grille_joueur2.masque.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur2.selected_pos.x-grille_joueur2.position.x, grille_joueur2.selected_pos.y-grille_joueur2.position.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
