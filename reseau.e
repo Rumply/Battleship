@@ -22,6 +22,7 @@ create
 feature {NONE} -- Initialization
 
 	make
+	-- Routine qui crée le thread qui serviera pour le réseau.
 		do
 			port:=45500
 			create IP.make_empty
@@ -44,7 +45,7 @@ feature {NONE} -- Initialization
 feature -- Utility
 
 	ip_parse(a_ip:STRING): ARRAY [NATURAL_8]
-		-- Cette fonction transforme un `a_ip' en array afin de pouvoir l'utiliser avec la librairie 'net'
+		-- Cette fonction transforme un `a_ip' en array afin de pouvoir l'utiliser avec la librairie 'net'.
 		local
 			l_ip:ARRAY [NATURAL_8]
 			list_temp:LIST[STRING_8]
@@ -71,11 +72,13 @@ feature -- Utility
 feature -- Access
 
 	stop_thread
+	-- Routine qui arrete le thread servant au réseau.
 		do
 			must_stop:=true
 		end
 
 	host
+	-- Routine qui fait en sorte que la personne qui donne son adresse IP devienne 'host' lors de l'initialisation du réseau.
 		do
 			if not hosting then
 				create server_socket.make_server_by_port (port)
@@ -84,6 +87,7 @@ feature -- Access
 		end
 
 	client(ip_string:STRING)
+	-- Routine qui prend en note les adresses IP.
 		local
 			l_addr_factory:INET_ADDRESS_FACTORY
 			l_address:INET_ADDRESS
@@ -103,7 +107,7 @@ feature -- Access
 				l_address:=l_ip2
 				create client_socket.make_client_by_address_and_port (l_address,port)
 			end
-			end
+		end
 
 
 			--l_addr_factory.create_from_address (a_ip)
@@ -116,6 +120,7 @@ feature -- Access
 feature {NONE} -- Thread methods
 
 	execute
+	-- Routine qui lance le thread.
 		do
 			from
 			until

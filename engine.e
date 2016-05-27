@@ -60,7 +60,7 @@ feature -- Run
 		do
 			game_library.quit_signal_actions.extend(agent on_quit(?))
 			game_library.iteration_actions.extend (agent cycle(?))
-			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- When the user move the mouse on the window
+			window.mouse_motion_actions.extend (agent on_mouse_move(?, ?, ?, ?))	-- Lorsque l'utilisateur bouge son curseur sur l'écran
 			window.mouse_button_pressed_actions.extend (agent on_mouse_click(?,?,?))
 			window.key_pressed_actions.extend (agent on_key_pressed(?,?))
 			window.start_text_input
@@ -154,7 +154,7 @@ feature -- Access
 	--texts:LINKED_LIST[TUPLE[x, y:INTEGER; text:STRING_32]]
 
 	on_quit(a_timestamp: NATURAL_32)
-			-- Cette routine ferme la librairie, lorsque le bouton X à été appuyer
+			-- Cette routine ferme la librairie, lorsque le bouton X ou la touche escape ont été appuyés.
 		do
 			--window.stop_text_input
 			window.clear_events

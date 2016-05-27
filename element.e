@@ -28,6 +28,7 @@ create
 feature {NONE} -- Initialization
 
 	make(a_filename:READABLE_STRING_GENERAL)
+	-- Routine qui lis les strings dans `a_filename'.
 		require
 			a_filename_not_none: not a_filename.is_empty
 			a_filename_valide: a_filename.count > 0

@@ -26,10 +26,10 @@ feature {NONE}
 		do
 			create {TUPLE [x, y: INTEGER]} position -- Crée un tuple qui garde en mémoire la position en x et en y sous une forme d'integer.
 			create {TUPLE [x, y: INTEGER]} selected_pos -- Crée un tuple qui garde en mémoire la position sélectionnée en x et en y sous une forme d'integer.
-			create {TUPLE [width, height, bordure: INTEGER]} dimension -- Crée un tuple, pour les dimensions, contenant la largeur, la hauteure et les bordures
-				-- sous forme d'integer.
+			create {TUPLE [width, height, bordure: INTEGER]} dimension -- Crée un tuple, pour les dimensions, contenant la largeur, la hauteure et les bordures.
+																	   -- sous forme d'integer.
 			create {TUPLE [width, height, bordure: INTEGER]} case_dimension -- Crée un tuple, pour la dimension de la case, contenant la largeur, la hauteure et
-				-- les bordures sous une forme d'integer.
+																			-- les bordures sous une forme d'integer.
 			create {ARRAYED_LIST [INTEGER]} indexs_used.make (0)
 			dimension.width := a_width - (a_bordure/2).floor
 			dimension.height := a_height - (a_bordure/2).floor
@@ -98,15 +98,14 @@ feature {NONE}
 				end
 				l_colonne:=0
 				l_x := 0
---				listcase.move (l_index)
 				l_Hreste := l_Hreste - case_dimension.height
---				add_case (l_index, l_x, l_y)
 				l_y := l_y + case_dimension.height
 				l_ranger := l_ranger + 1
 			end
 		end
 
 	add_case (a_index, a_x, a_y: INTEGER)
+	-- Routine qui crée une case à l'endroit prévu à son effet
 		local
 			l_case: CASE
 		do
@@ -120,6 +119,7 @@ feature {NONE}
 feature --Access
 
 	is_position_bateau_valide (a_bateau_width, a_bateau_height: INTEGER; canAdd: BOOLEAN): ARRAYED_LIST [INTEGER]
+	-- Routine qui test si la position ou est-ce que l'utilisateur veut placer le bateau est libre
 		local
 			l_nombre_case_horizontal, l_nombre_case_vertical: INTEGER
 			l_index: INTEGER
@@ -169,6 +169,7 @@ feature --Access
 		end
 
 	get_list_position (a_width, a_height: INTEGER): ARRAYED_LIST [INTEGER]
+	-- Routine qui met dans une liste liée les positions de la grille qui sont actuellement utilisée sous forme d'integer
 		local
 			l_nombre_case_horizontal, l_nombre_case_vertical: INTEGER
 			position_used: ARRAYED_LIST [INTEGER]
@@ -255,6 +256,8 @@ feature --Access
 		end
 
 	gestion_click
+	-- Routine qui test si le nombre de bateaux actuel est inférieur à 5 et si le nombre de bateaux est inférieur,
+	-- test si la position visée est valide au dépot du second bateau. Par la suite, la routine test si la position visée peut accueillir une bombe.
 		local
 			l_boat:MASQUE
 			l_position_list:ARRAYED_LIST[INTEGER]
@@ -278,6 +281,7 @@ feature --Access
 		end
 
 	draw_element_on(a_element_destination,a_element:MASQUE)
+	-- Routine qui dessine un masque à la position sélectionnée sur la case adverse.
 		do
 			get_case_position
 
@@ -308,6 +312,7 @@ feature --Access
 		end
 
 	draw_sub_element_on(a_element_destination,a_element:MASQUE)
+	-- Routine qui prend la position de la case puis qui dessine un masque à cette position.
 		do
 			get_case_position
 			a_element_destination.draw_sub_surface_with_scale (a_element,
@@ -322,6 +327,7 @@ feature --Access
 		end
 
 	draw_bateau(id:INTEGER)
+	-- Routine qui dessine un masque de bateau via l' `id' de celui-ci.
 		local
 			l_bateau:MASQUE
 		do

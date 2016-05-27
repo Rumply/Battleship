@@ -28,6 +28,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	set_bateau(a_id:INTEGER)
+	-- Routine qui donne un `a_id' à chaque bateaux.
 		do
 			if (a_id=0) then
 				set_as_bateau1
@@ -43,12 +44,14 @@ feature -- Access
 		end
 
 	get_bateau(a_id:INTEGER):MASQUE
+	-- Routine qui prend le `a_id' de l'actuel bateau.
 		do
 			set_bateau(a_id)
 			Result:=image_bateau
 		end
 
 	fill_bateau_list(a_id:INTEGER;a_position_list:ARRAYED_LIST[INTEGER])
+	-- Routine qui prend chaque bateaux et qui garde en mémoire leur position sur la grille.
 		do
 			if a_id = 0 then
 				position_bateau1:=(a_position_list)

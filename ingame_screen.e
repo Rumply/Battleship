@@ -66,6 +66,7 @@ feature {NONE}
 		end
 
 	set_as_default_pointer
+	-- Routine qui place le pointeur qui dictera ou créer la surface de la grille.
 		do
 			pointer.surface.in_image_pos.x:=0
 			pointer.surface.in_image_pos.y:=0
@@ -78,6 +79,7 @@ feature {NONE}
 		end
 
 	initialize_bateau
+	-- Routine qui initialise le premier bateau qui sera placé sur la grille.
 		do
 			create boat.make(grille_joueur1.case_dimension.width, grille_joueur1.case_dimension.height)
 			id_bateau:=0
@@ -100,6 +102,7 @@ feature {NONE}
 		end
 
 	set_pointer
+	-- Routine qui limite le nombre de bateaux.
 		do
 			if (id_bateau=5) then
 				pointer.set_as_default_pointer
@@ -108,7 +111,7 @@ feature {NONE}
 		end
 
 	setup_object
-			-- Event that is launch at each iteration.
+			-- Événement qui se lance à chaque itération.
 		do
 			fill_background
 			setup_border
@@ -116,13 +119,14 @@ feature {NONE}
 			window.surface.draw_surface (background, 0,0)
 
 			draw(speaker.surface)
-			-- Update modification in the screen
+			-- Actualise toutes les modifications sur l'écran
 			window.update
 		end
 
 feature -- Access
 
 	cycle
+	-- Routine qui s'occupe de tout ce qui peut être appuyé dans l'écran de jeu.
 		local
 			position_bateau_temp:ARRAYED_LIST[INTEGER]
 		do
@@ -180,12 +184,14 @@ feature -- Access
 		end
 
 	write_box(a_text_surface:TEXT_SURFACE_BLENDED)
+	-- Routine qui déssine une surface pour la boite de dialogue.
 		do
 			window.surface.draw_surface (dialogue, dialogue.position.x, dialogue.position.y)
 			window.surface.draw_surface (a_text_surface, dialogue.position.x + dialogue.bordure + 30, dialogue.position.y - dialogue.bordure + dialogue.height - 50)
 		end
 
 	right_mouse_click(a_x,a_y:INTEGER)
+	-- Routine à intégrer.
 		do
 
 		end
@@ -196,41 +202,6 @@ feature -- Access
 			background.draw_background_with_tuile (background_tuile)
 			window.surface.draw_surface(background, 0, 0)
 		end
-
---	draw_case(a_x,a_y:INTEGER)
---		-- Routine qui applique les bateaux un par un sur la grille. Le nombre de bateau maximum est de 5.
---		local
---			l_temp:INTEGER_32
---			l_bateau:MASQUE
---		do
---			if (id_bateau < 6) then
---				l_bateau:=boat.get_bateau(id_bateau)
---				l_temp:=l_temp + grille_joueur1.index
---				grille_joueur1.get_index_from_mousepos (a_x, a_y)
---				grille_joueur1.get_case_position
---				grille_joueur1.masque.draw_sub_surface_with_scale (l_bateau, l_bateau.in_image_pos.x,l_bateau.in_image_pos.y, l_bateau.filedimension.width, l_bateau.filedimension.height, grille_joueur1.selected_pos.x-grille_joueur1.position.x, grille_joueur1.selected_pos.y-grille_joueur1.position.y, l_bateau.gamedimension.width, l_bateau.gamedimension.height)
---				window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
---				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
---			end
---		end
-
-
---	draw_pointer(a_x,a_y:INTEGER_32)
---		-- Routine qui dessine un élément temporaire à l'emplacement du curseur sur la grille.
---		local
---			l_temp:INTEGER_32
---		do
---			l_temp:=0
---			l_temp:=l_temp + grille_joueur1.index
---			grille_joueur1.get_index_from_mousepos (a_x, a_y)
-
---			if not (grille_joueur1.old_index = grille_joueur1.index) then
---				grille_joueur1.get_case_position
---				window.surface.draw_surface (grille_joueur1.masque, grille_joueur1.position.x, grille_joueur1.position.y)
---				window.surface.draw_surface (bordure1, bordure1.position.x, bordure1.position.y)
---				window.surface.draw_sub_surface_with_scale (pointer.surface, pointer.surface.in_image_pos.x,pointer.surface.in_image_pos.y, pointer.surface.filedimension.width, pointer.surface.filedimension.height, grille_joueur1.selected_pos.x, grille_joueur1.selected_pos.y, pointer.surface.gamedimension.width, pointer.surface.gamedimension.height)
---			end
---		end
 
 	draw(a_element:ELEMENT)
 		-- Routine qui dessine à l'écran les éléments de a_element.

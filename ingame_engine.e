@@ -50,17 +50,20 @@ feature {NONE}
 feature {NONE} -- Implementation
 
 	manage_cycle(a_timestamp: NATURAL_32)
+	-- Routine qui s'occupe du délais d'attente pour le menu.
 		do
 			menu.cycle
 		end
 
 	manage_mouse_move(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_MOTION_STATE; a_delta_x, a_delta_y: INTEGER_32)
+		-- Routine qui s'occupe du délais d'attente pour les click effectués.
 		do
 			menu.left_mouse_click (last_x, last_y,False)
 
 		end
 
 	manage_mouse_click(a_timestamp: NATURAL_32;a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; click_count: NATURAL_8)
+	-- Routine qui s'occupe de la réception des click de souris ainsi que de leur délais d'attente à partir de leur précédente location.
 		do
 			if (a_mouse_state.is_left_button_pressed) then
 				menu.left_mouse_click (last_x, last_y,True)
@@ -70,6 +73,7 @@ feature {NONE} -- Implementation
 		end
 
 	manage_input(a_input:STRING)
+	-- Routine qui s'occupe des entrées de textes.
 		local
 			l_text_surface:TEXT_SURFACE_BLENDED
 		do
@@ -99,6 +103,7 @@ feature {NONE} -- Implementation
 		end
 
 	manage_command
+	-- Routine qui lis les commandes écrites dans le buffer de texte et qui l'éxécute si la commande lue est valide.
 		local
 			list_command:LIST[STRING_8]
 		do

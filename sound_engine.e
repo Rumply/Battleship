@@ -15,6 +15,7 @@ create
 feature {NONE}
 
 	make_environment
+	-- Routine qui initialise les sons.
 		do
 			path:="./ressource/son/"
 			create environment
@@ -84,6 +85,7 @@ feature -- Access
 		end
 
 	start(a_name:STRING; a_nb_loop:INTEGER)
+	-- Routine qui fait en sorte que la musique choisie puisse être jouée un nombre prédéfini de fois.
 		do
 			if not source.is_playing then
 				if attached audio_files.at (a_name) as l_sound then
@@ -102,6 +104,7 @@ feature -- Access
 feature
 
 	open(file:AUDIO_SOUND_FILE; a_nb_loop:INTEGER)
+	-- Routine qui lis le bon type de fichier audio pendant un nombre prédéfini de fois.
 		do
 			if file.is_openable then
 				file.open

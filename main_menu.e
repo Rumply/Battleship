@@ -86,6 +86,7 @@ feature {NONE} -- Initialize
 feature {NONE} -- Implementation
 
 	setup_object
+	-- Routine qui initialise les objets du menu.
 		do
 			fill_background
 			setup_button
